@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Seguridad Patrimonial · Evaluación de Desempeño · Vanguardia</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root{
+  --navy:#060B1F; --navy-2:#0B1330; --navy-3:#121B42;
+  --line:rgba(255,255,255,0.09); --ink:#F4F6FA; --muted:rgba(244,246,250,0.55);
+  --blue-light:#7FD1F0; --blue:#2E8FE0;
+  --g:#34C77B; --y:#E8C547; --r:#F0524B; --o:#F0964B;
+  --paei-p:#2E8FE0; --paei-a:#E8C547; --paei-e:#34C77B; --paei-i:#A6415A;
+  --shadow:0 1px 2px rgba(0,0,0,0.2), 0 12px 32px -16px rgba(0,0,0,0.55);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--navy);color:var(--ink);font-family:'Manrope',sans-serif;-webkit-font-smoothing:antialiased;}
+main{max-width:1040px;margin:0 auto;padding:0 5vw 90px;}
+
+header.top{
+  background:radial-gradient(ellipse at 75% -10%, rgba(46,143,224,0.22), transparent 55%), var(--navy);
+  padding:40px 5vw 0; border-bottom:1px solid var(--line);
+}
+.eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--blue-light); margin:0 0 10px; }
+.hero-title{ font-weight:800; font-size:clamp(24px,3vw,34px); margin:0 0 8px; letter-spacing:-.01em; }
+.hero-sub{ font-size:13.5px; color:var(--muted); max-width:620px; line-height:1.6; margin:0 0 26px; }
+
+.tabs{ display:flex; gap:4px; }
+.tab-btn{
+  font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.04em; text-transform:uppercase;
+  color:var(--muted); background:none; border:none; padding:14px 18px; cursor:pointer;
+  border-bottom:3px solid transparent; transition:color .15s,border-color .15s;
+}
+.tab-btn:hover{ color:var(--blue-light); }
+.tab-btn.active{ color:var(--ink); border-bottom-color:var(--blue); font-weight:700; }
+.panel{ display:none; } .panel.active{ display:block; }
+
+section{ padding:36px 0 8px; border-bottom:1px solid var(--line); }
+section:last-of-type{ border-bottom:none; }
+.section-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; margin-bottom:20px; }
+.section-kicker{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--blue-light); margin:0 0 6px; }
+.section-title{ font-weight:800; font-size:clamp(18px,2vw,22px); margin:0; }
+.section-note{ font-size:12.5px; color:var(--muted); max-width:340px; line-height:1.5; text-align:right; }
+
+.card{ background:var(--navy-2); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); }
+
+.kpi-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+@media(max-width:800px){ .kpi-grid{ grid-template-columns:1fr 1fr; } }
+.kpi{ padding:20px; }
+.kpi .l{ font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.kpi .n{ font-weight:800; font-size:28px; }
+.kpi .sub{ margin-top:6px; font-size:11.5px; color:var(--muted); }
+
+.delta-up{ color:var(--g); font-weight:700; } .delta-down{ color:var(--r); font-weight:700; } .delta-flat{ color:var(--muted); font-weight:700; }
+.tier-pill{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; padding:3px 9px; border-radius:20px; display:inline-block; }
+.tier-pill.SOBRESALIENTE{ background:rgba(52,199,123,0.15); color:var(--g); }
+.pill-warn{ font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.05em; text-transform:uppercase; padding:2px 8px; border-radius:20px; background:rgba(240,150,75,0.13); color:var(--o); display:inline-block; }
+
+table.rtable{ width:100%; border-collapse:collapse; font-size:13px; }
+table.rtable th{ text-align:left; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); padding:10px 12px; border-bottom:1px solid var(--line); }
+table.rtable td{ padding:11px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+table.rtable td.num{ font-family:'IBM Plex Mono',monospace; text-align:right; }
+table.rtable tr:last-child td{ border-bottom:none; }
+
+.donut-legend .li{ display:flex; align-items:center; gap:8px; font-size:12.5px; margin-bottom:6px; }
+.donut-legend .sw{ width:9px; height:9px; border-radius:2px; }
+.donut-legend .li span.v{ margin-left:auto; font-family:'IBM Plex Mono',monospace; color:var(--muted); }
+
+.comment-box{ padding:22px 24px; font-size:14px; line-height:1.7; }
+.comment-box b{ color:var(--blue-light); }
+.note-box{ padding:16px 20px; font-size:12.5px; color:var(--muted); line-height:1.6; border-left:3px solid var(--o); background:rgba(240,150,75,0.05); border-radius:0 10px 10px 0; }
+
+.persona-card{ padding:0; overflow:hidden; margin-bottom:20px; }
+.persona-head{ padding:20px 24px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+.persona-head h3{ margin:0; font-size:16px; font-weight:800; }
+.persona-head .puesto{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted); margin-top:3px; }
+.persona-body{ padding:20px 24px; display:flex; flex-direction:column; gap:16px; }
+.persona-body .blk-label{ font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--blue-light); margin-bottom:6px; }
+.persona-body p{ margin:0; font-size:13.5px; line-height:1.65; color:var(--ink); }
+.reco-box{ background:var(--navy-3); border-radius:10px; padding:16px 18px; border-left:3px solid var(--blue); }
+.reco-box ul{ margin:6px 0 0; padding-left:18px; font-size:13px; line-height:1.6; }
+
+.indicator-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px; }
+@media(max-width:700px){ .indicator-grid{ grid-template-columns:1fr 1fr; } }
+.ind-card{ background:var(--navy-3); border-radius:10px; padding:14px 16px; }
+.ind-card .ik{ font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.06em; text-transform:uppercase; margin-bottom:6px; }
+.ind-card.P .ik{ color:var(--paei-p); } .ind-card.A .ik{ color:var(--paei-a); }
+.ind-card.E .ik{ color:var(--paei-e); } .ind-card.I .ik{ color:var(--paei-i); }
+.ind-card .iv{ font-weight:800; font-size:20px; margin-bottom:2px; }
+.ind-card .iw{ font-size:10.5px; color:var(--muted); }
+.doc-block{ background:var(--navy-3); border-radius:10px; padding:14px 16px; margin-bottom:10px; }
+.doc-block .dk{ font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--blue-light); margin-bottom:6px; }
+.doc-block p{ margin:0; font-size:13px; line-height:1.65; white-space:pre-line; color:var(--ink); }
+.meta-row{ display:flex; flex-wrap:wrap; gap:18px; font-size:11.5px; color:var(--muted); font-family:'IBM Plex Mono',monospace; margin-bottom:16px; }
+.meta-row b{ color:var(--ink); font-weight:600; }
+.period-divider{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--blue-light); margin:24px 0 12px; padding-top:20px; border-top:1px dashed var(--line); }
+.period-divider:first-child{ border-top:none; padding-top:0; margin-top:0; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <p class="eyebrow">Capital Humano · Grupo Vanguardia · Servicios Centrales</p>
+  <h1 class="hero-title">Seguridad Patrimonial</h1>
+  <p class="hero-sub">Evaluación de Desempeño PAEI. Jefe inmediato: Carmen Alejandra Díaz Gómez. Comparativo 2025–2026, detalle completo por periodo, análisis individual y recomendaciones de desarrollo.</p>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="general">Vista General</button>
+    <button class="tab-btn" data-tab="d26">2026 · Detalle</button>
+    <button class="tab-btn" data-tab="d25">2025 · Detalle</button>
+  </div>
+</header>
+
+<main>
+
+<div class="panel active" id="panel-general">
+
+<section style="padding-top:32px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Resumen ejecutivo</p><h2 class="section-title">Cumplimiento y resultados</h2></div>
+  </div>
+  <div class="kpi-grid">
+    <div class="card kpi"><div class="l">Colaboradores</div><div class="n">2</div><div class="sub">100% cumplimiento de evaluación</div></div>
+    <div class="card kpi"><div class="l">Promedio global 2026</div><div class="n">100.0</div><div class="sub">2 de 2 evaluados</div></div>
+    <div class="card kpi"><div class="l">Variación vs. 2025</div><div class="n" style="font-size:22px;"><span class="delta-flat">▬ 0.0</span></div><div class="sub">promedio 2025: 100.0 (1 colaborador)</div></div>
+    <div class="card kpi"><div class="l">Nivel de desempeño</div><div class="n" style="font-size:22px;">100%</div><div class="sub">del equipo en Sobresaliente</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Indicadores PAEI</p><h2 class="section-title">Distribución y radar</h2></div>
+    <p class="section-note">Ambos colaboradores obtuvieron calificación máxima en los cuatro indicadores en su evaluación más reciente.</p>
+  </div>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+    <div class="card" style="padding:20px; display:flex; flex-direction:column; align-items:center; gap:14px;">
+      <div class="section-kicker" style="margin:0;">Distribución de resultados 2026</div>
+      <svg viewBox="0 0 150 150" width="150" height="150">
+        <circle cx="75" cy="75" r="65" fill="none" stroke="var(--g)" stroke-width="16"/>
+        <text x="75" y="71" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="22" fill="var(--ink)">2</text>
+        <text x="75" y="91" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="var(--muted)">total</text>
+      </svg>
+      <div class="donut-legend" style="width:100%;">
+        <div class="li"><span class="sw" style="background:var(--g)"></span>Sobresaliente<span class="v">2</span></div>
+        <div class="li"><span class="sw" style="background:var(--y)"></span>Adecuado<span class="v">0</span></div>
+        <div class="li"><span class="sw" style="background:var(--r)"></span>Insatisfactorio<span class="v">0</span></div>
+      </div>
+    </div>
+    <div class="card" style="padding:20px; display:flex; flex-direction:column; align-items:center; gap:14px;">
+      <div class="section-kicker" style="margin:0;">Radar PAEI (2026 y 2025)</div>
+      <svg viewBox="0 0 220 220" width="220" height="220">
+        <polygon points="110,45 175,110 110,175 45,110" fill="none" stroke="var(--line)" stroke-width="1"/>
+        <polygon points="110,62 158,110 110,158 62,110" fill="none" stroke="var(--line)" stroke-width="1"/>
+        <line x1="110" y1="110" x2="110" y2="45" stroke="var(--line)"/><line x1="110" y1="110" x2="175" y2="110" stroke="var(--line)"/>
+        <line x1="110" y1="110" x2="110" y2="175" stroke="var(--line)"/><line x1="110" y1="110" x2="45" y2="110" stroke="var(--line)"/>
+        <text x="110" y="34" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="var(--muted)">P</text>
+        <text x="188" y="114" text-anchor="start" font-family="IBM Plex Mono" font-size="10" fill="var(--muted)">A</text>
+        <text x="110" y="192" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="var(--muted)">E</text>
+        <text x="32" y="114" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="var(--muted)">I</text>
+        <polygon points="110,45 175,110 110,175 45,110" fill="rgba(127,209,240,0.16)" stroke="var(--blue-light)" stroke-width="2.5"/>
+      </svg>
+      <div class="donut-legend" style="width:100%;">
+        <div class="li"><span class="sw" style="background:var(--paei-p)"></span>(P) Eficiencia<span class="v">100.0</span></div>
+        <div class="li"><span class="sw" style="background:var(--paei-a)"></span>(A) Administración<span class="v">100.0</span></div>
+        <div class="li"><span class="sw" style="background:var(--paei-e)"></span>(E) Proactividad<span class="v">100.0</span></div>
+        <div class="li"><span class="sw" style="background:var(--paei-i)"></span>(I) Colaboración<span class="v">100.0</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Tendencia</p><h2 class="section-title">Por indicador PAEI — (P) (A) (E) (I) juntas</h2></div>
+    <p class="section-note">Promedio del departamento. César tiene los tres periodos; Salvador solo 2026.</p>
+  </div>
+  <div class="card" style="padding:22px;">
+    <div id="paeiTrendWrap" style="display:flex; justify-content:center;"></div>
+    <div style="display:flex; gap:16px; justify-content:center; margin-top:14px; flex-wrap:wrap;" id="paeiTrendLegend"></div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Comparativo</p><h2 class="section-title">Colaboradores del departamento</h2></div>
+  </div>
+  <div class="card" style="padding:6px 16px;">
+    <table class="rtable">
+      <thead><tr><th>Colaborador</th><th>Puesto</th><th style="text-align:right">2025</th><th style="text-align:right">2026</th><th style="text-align:right">Variación</th><th>Nivel 2026</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>César Javier Rodríguez Moreno</td>
+          <td>Auditor de Procesos Jr</td>
+          <td class="num">100.0</td>
+          <td class="num">100.0</td>
+          <td class="num"><span class="delta-flat">▬ 0.0</span></td>
+          <td><span class="tier-pill SOBRESALIENTE">Sobresaliente</span></td>
+        </tr>
+        <tr>
+          <td>Salvador Hiram Rivas Arellano</td>
+          <td>Auditor Patrimonial Jr</td>
+          <td class="num">—</td>
+          <td class="num">100.0</td>
+          <td class="num"><span class="delta-flat">—</span></td>
+          <td><span class="tier-pill SOBRESALIENTE">Sobresaliente</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Análisis individual</p><h2 class="section-title">Comparativo de comentarios y recomendaciones</h2></div>
+    <p class="section-note">Lectura de lo evaluado en cada periodo y sugerencia de desarrollo por colaborador.</p>
+  </div>
+
+  <div class="card persona-card">
+    <div class="persona-head">
+      <div><h3>César Javier Rodríguez Moreno</h3><div class="puesto">Auditor de Procesos Jr · Antigüedad 23.5 años · Ingreso 17/01/2003</div></div>
+      <span class="tier-pill SOBRESALIENTE">Sobresaliente · 3 periodos consecutivos</span>
+    </div>
+    <div class="persona-body">
+      <div>
+        <div class="blk-label">Consistencia 2025 → 2026</div>
+        <p>César tiene <b>tres evaluaciones consecutivas con calificación global de 100</b> (Jul–Dic 2025, Ene–Jun 2025 y Ene–Jun 2026). Los comentarios de evidencia se repiten casi palabra por palabra entre los tres periodos: mismo dashboard de conciliaciones bancarias (división automotriz y financiera), mismo envío mensual de cargos internos a responsables de departamento, misma organización de archivos de auditoría en DropBox, y la misma presentación de resultados ante Dirección. Esto indica un <b>desempeño estable y ya institucionalizado</b>, no una mejora reciente — el reto ya no es alcanzar el resultado sino sostenerlo y, potencialmente, ampliar su alcance.</p>
+      </div>
+      <div class="reco-box">
+        <div class="blk-label" style="margin-bottom:8px;">Recomendación de desarrollo</div>
+        <ul>
+          <li>No requiere capacitación remedial — su brecha no está en el desempeño técnico sino en el siguiente escalón de carrera.</li>
+          <li>Dada su antigüedad (23.5 años) y dominio consistente del proceso, es candidato natural para un <b>rol de mentor/tutor</b> de nuevos ingresos del área (ej. Salvador).</li>
+          <li>Capacitación en <b>liderazgo y gestión de equipos</b> como preparación para una eventual promoción a un puesto de coordinación dentro de Seguridad Patrimonial.</li>
+          <li>Explorar una certificación externa en auditoría interna o compliance para profesionalizar y documentar formalmente su expertise ya demostrado.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card persona-card">
+    <div class="persona-head">
+      <div><h3>Salvador Hiram Rivas Arellano</h3><div class="puesto">Auditor Patrimonial Jr · Antigüedad 1.7 años · Ingreso 12/11/2024</div></div>
+      <span class="tier-pill SOBRESALIENTE">Sobresaliente · primer registro</span>
+    </div>
+    <div class="persona-body">
+      <div>
+        <div class="blk-label">Primer periodo evaluado, sin línea base</div>
+        <p>Salvador no tiene evaluación 2025 en el archivo fuente — consistente con su fecha de ingreso (noviembre 2024), es probable que no cubriera un semestre completo evaluable en ese periodo. Su única evaluación registrada (Ene–Jun 2026) ya muestra calificación global de 100: cobertura de 38 indicadores en 11 almacenes de refacciones de la ZMG, cumplimiento del 100% de las auditorías programadas, y un plan de reforzamiento de procesos (salidas DMS, estandarización de ajustes de inventario, seguimiento a pedidos abiertos y cartera vencida). Es un <b>arranque sobresaliente para un colaborador con menos de dos años de antigüedad</b>.</p>
+      </div>
+      <div class="reco-box">
+        <div class="blk-label" style="margin-bottom:8px;">Recomendación de desarrollo</div>
+        <ul>
+          <li>Validar formalmente el cierre de su periodo de adaptación/certificación como Auditor Patrimonial, dado el nivel alcanzado en su primera evaluación completa.</li>
+          <li><b>Capacitación cruzada con César</b> en conciliación bancaria y cargos internos, para ampliar su perfil dentro del departamento y crear redundancia de conocimiento en el equipo (hoy concentrado en una sola persona).</li>
+          <li>Dar seguimiento en el próximo ciclo para confirmar si el resultado se sostiene — con un solo periodo evaluado aún no hay tendencia, solo una fotografía.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Lectura ejecutiva</p><h2 class="section-title">Comentario</h2></div>
+  </div>
+  <div class="card comment-box">
+    El departamento de <b>Seguridad Patrimonial</b> cerró el Primer Semestre 2026 con el <b>100%</b> de su plantilla evaluada y un promedio de <b>100.0</b> puntos. César Javier Rodríguez Moreno sostiene ese resultado por tercer periodo consecutivo, con evidencia de trabajo prácticamente idéntica entre 2025 y 2026 — señal de un proceso maduro y ya consolidado. Salvador Hiram Rivas Arellano debuta con el mismo nivel en su primera evaluación completa, sin antecedente 2025 con el cual comparar. No hay colaboradores en riesgo. La oportunidad para este equipo ya no es de desempeño sino de <b>desarrollo de carrera y redundancia de conocimiento</b>: formalizar a César como mentor y capacitar de forma cruzada a Salvador.
+  </div>
+</section>
+
+</div>
+
+<div class="panel" id="panel-d26">
+
+<section style="padding-top:32px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Primer Semestre 2026</p><h2 class="section-title">Detalle completo de evaluación</h2></div>
+    <p class="section-note">Ponderación, calificación otorgada y evidencia documentada por cada indicador PAEI.</p>
+  </div>
+
+  <div class="card persona-card">
+    <div class="persona-head">
+      <div><h3>César Javier Rodríguez Moreno</h3><div class="puesto">Auditor de Procesos Jr</div></div>
+      <span class="tier-pill SOBRESALIENTE">Sobresaliente · Global 100</span>
+    </div>
+    <div class="persona-body">
+      <div class="meta-row">
+        <span>Fecha de evaluación: <b>20/06/2026</b></span>
+        <span>Antigüedad: <b>23.5 años</b></span>
+        <span>Formato firmado: <b>OK</b></span>
+      </div>
+      <div class="indicator-grid">
+        <div class="ind-card P"><div class="ik">Producción</div><div class="iv">100</div><div class="iw">ponderación 50 · puntos 50</div></div>
+        <div class="ind-card A"><div class="ik">Administración</div><div class="iv">100</div><div class="iw">ponderación 20 · puntos 20</div></div>
+        <div class="ind-card E"><div class="ik">Emprendimiento</div><div class="iv">100</div><div class="iw">ponderación 10 · puntos 20 <span class="pill-warn">revisar</span></div></div>
+        <div class="ind-card I"><div class="ik">Integración</div><div class="iv">100</div><div class="iw">ponderación 10 · puntos 10</div></div>
+      </div>
+      <div class="doc-block"><div class="dk">Qué se midió — Producción</div><p>1.- Dashboard por mes acumulando las conciliaciones bancarias de la división automotriz y financiera.
+2.- Envio mail de cargos internos por mes a cada resonsable de departamento generando condentrado por agencia y departamento.
+3.- Elaboración de archivos por auditoría e investigación realizada organizada en DropBox.</p></div>
+      <div class="doc-block"><div class="dk">Qué se midió — Administración</div><p>Elaboración de la presentación de resultados del departamento en colaboracion del Director de Seguridad Patrimonial, realizando la presentación física a nuestros 3 directores.</p></div>
+      <div class="doc-block"><div class="dk">Qué se midió — Emprendimiento</div><p>Generación de material preventivo y de capacitación (código de ética, gestión del tiempo, cargos internos).</p></div>
+      <div class="doc-block"><div class="dk">Qué se midió — Integración</div><p>Realizar auditorías e investigaciones con respeto y confianza; para Seguridad Patrimonial ¡Todos son inocentes hasta que se demuestre lo contrario!</p></div>
+      <div class="note-box">Nota de captura: en el archivo fuente, los "puntos otorgados" de Emprendimiento (20) no coinciden con ponderación×calificación (10×100%=10) como sí ocurre en los otros tres indicadores. No afecta la calificación global reportada (100), pero vale la pena revisarlo en el Excel original.</div>
+    </div>
+  </div>
+
+  <div class="card persona-card">
+    <div class="persona-head">
+      <div><h3>Salvador Hiram Rivas Arellano</h3><div class="puesto">Auditor Patrimonial Jr</div></div>
+      <span class="tier-pill SOBRESALIENTE">Sobresaliente · Global 100</span>
+    </div>
+    <div class="persona-body">
+      <div class="meta-row">
+        <span>Fecha de evaluación: <b>20/06/2026</b></span>
+        <span>Antigüedad: <b>1.7 años</b></span>
+        <span>Formato firmado: <b>OK</b></span>
+      </div>
+      <div class="indicator-grid">
+        <div class="ind-card P"><div class="ik">Producción</div><div class="iv">100</div><div class="iw">ponderación 50 · puntos 50</div></div>
+        <div class="ind-card A"><div class="ik">Administración</div><div class="iv">100</div><div class="iw">ponderación 20 · puntos 20</div></div>
+        <div class="ind-card E"><div class="ik">Emprendimiento</div><div class="iv">100</div><div class="iw">ponderación 10 · puntos 20 <span class="pill-warn">revisar</span></div></div>
+        <div class="ind-card I"><div class="ik">Integración</div><div class="iv">100</div><div class="iw">ponderación 10 · puntos 10</div></div>
+      </div>
+      <div class="doc-block"><div class="dk">Qué se midió — Producción</div><p>Se realizan auditorías de refacciones cubriendo 38 indicadores en los 11 almacenes de la ZMG.
+Se mide con:
+- Dashboard de auditorías.
+- Reporte de ajustes de invesntario.
+- Reporte de pedidos abiertos.
+- Reporte de entradas (compras)
+- Reporte de Requisiciones
+- Inventario selectivo (100 items)</p></div>
+      <div class="doc-block"><div class="dk">Qué se midió — Administración</div><p>Reporte de resultados de autorías de refacciones 2026.
+Este resultado se presenta a dirección mensualmente como parte de los indicadores del depertamento de Seguridad Patrimonial.
+- Se cumplió con el 100% de las auditorías programadas.</p></div>
+      <div class="doc-block"><div class="dk">Qué se midió — Emprendimiento</div><p>Reforzamiento de los procesos fundsamentales del área de refacciones.
+- Cada pieza entregada debe tener una salida DMS.
+- Estandarización de ajustes de inventarios autorizados.
+- Estandarización de recorridos en mesas de trabajo.
+- Seguimiento a pedidos abiertos.
+- Seguimiento a cartera vencida.
+- Seguimiento a KIA y GEELY procesos.</p></div>
+      <div class="doc-block"><div class="dk">Qué se midió — Integración</div><p>Se realizan auditorías de refacciones programadas mensualmente en 11 almacenes de ZMG y 1 foraneo.
+Trabajando en equipo con gerente regional y 10 gerentes de departamento.</p></div>
+      <div class="note-box">Misma observación que en el registro de César: los "puntos otorgados" de Emprendimiento (20) no coinciden con ponderación×calificación (10×100%=10) en el archivo fuente.</div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<div class="panel" id="panel-d25">
+
+<section style="padding-top:32px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Ciclo 2025</p><h2 class="section-title">Detalle completo de evaluación</h2></div>
+    <p class="section-note">Eficacia, ponderación y desempeño otorgado por indicador, con evidencia documentada.</p>
+  </div>
+
+  <div class="card persona-card">
+    <div class="persona-head">
+      <div><h3>César Javier Rodríguez Moreno</h3><div class="puesto">Auditor de Procesos Jr</div></div>
+      <span class="tier-pill SOBRESALIENTE">Sobresaliente en ambos semestres</span>
+    </div>
+    <div class="persona-body">
+
+      <div class="period-divider">Enero – Junio 2025</div>
+      <div class="meta-row">
+        <span>Fecha de evaluación: <b>08/10/2025</b></span>
+        <span>Calificación global: <b>100</b></span>
+        <span>Formato firmado: <b>OK</b></span>
+      </div>
+      <div class="indicator-grid">
+        <div class="ind-card P"><div class="ik">Producción</div><div class="iv">100</div><div class="iw">eficacia 50 / ponderación 50</div></div>
+        <div class="ind-card A"><div class="ik">Administración</div><div class="iv">100</div><div class="iw">eficacia 20 / ponderación 20</div></div>
+        <div class="ind-card E"><div class="ik">Emprendimiento</div><div class="iv">100</div><div class="iw">eficacia 20 / ponderación 20</div></div>
+        <div class="ind-card I"><div class="ik">Integración</div><div class="iv">100</div><div class="iw">eficacia 10 / ponderación 10</div></div>
+      </div>
+      <div class="doc-block"><div class="dk">Qué se midió — Producción</div><p>1.- Archivos de Excel por mes acumulando las conciliaciones bancarias de la división automotriz y otro para la división financiera (Dashboard).
+2.- Envío de correos a toda la división financiera con los cargos internos por mes; elaboración de un concentrado.
+3.- Elaboración de presentaciones en Power Point almacenadas en DropBox.
+4.- Generación de archivo con el cúmulo de incidencias que afectan monetariamente a las empresa.
+5.- Elaboración de archivos por cada auditoría preventiva, la cual se almacena en la carpeta de Dropbox de Segudad Patrimonial.</p></div>
+      <div class="doc-block"><div class="dk">Qué se midió — Administración</div><p>Elaboración de la presentación de resultados del departamento en colaboración del Directo de Seguridad Patrimonial, realizando la presentación los primeros días del mes siguiente al Director General, Director Automotriz y Director Financiero.</p></div>
+      <div class="doc-block"><div class="dk">Qué se midió — Emprendimiento</div><p>Ser particicpe de realizar, vivir y promover la prevención dentro y fuera de Grupo Vanguardia. Se considera en el plan de trabajo generar material preventivo y realizar capacitaciones de Código de ética.</p></div>
+      <div class="doc-block"><div class="dk">Qué se midió — Integración</div><p>Realiza auditorías e invetigaciones con respeto y confianza; tratando a los colaboradores con los valores de Grupo Vanguardia.</p></div>
+      <div class="doc-block"><div class="dk">Acuerdos generales</div><p>Sin información.</p></div>
+
+      <div class="period-divider">Julio – Diciembre 2025</div>
+      <div class="meta-row">
+        <span>Fecha de evaluación: <b>16/01/2025</b></span>
+        <span>Calificación global: <b>100</b></span>
+        <span>Formato firmado: <b>OK</b></span>
+      </div>
+      <div class="indicator-grid">
+        <div class="ind-card P"><div class="ik">Producción</div><div class="iv">100</div><div class="iw">eficacia 50 / ponderación 50</div></div>
+        <div class="ind-card A"><div class="ik">Administración</div><div class="iv">100</div><div class="iw">eficacia 20 / ponderación 20</div></div>
+        <div class="ind-card E"><div class="ik">Emprendimiento</div><div class="iv">100</div><div class="iw">eficacia 20 / ponderación 20</div></div>
+        <div class="ind-card I"><div class="ik">Integración</div><div class="iv">100</div><div class="iw">eficacia 10 / ponderación 10</div></div>
+      </div>
+      <div class="doc-block"><div class="dk">Qué se midió — Producción</div><p>1.- Archivos de Excel por mes acumulando las conciliaciones bancarias de la división automotriz y otro para la división financiera (Dashboard).
+2.- Envío de correos a toda la división.
+3.- Elaboración de presentaciones en Power Point almacenadas en DropBox.
+4.- Generación de archivo con el cúmulo de incidencias que afectan monetariamente a las empresa.
+5.- Elaboración de archivos por cada auditoría preventiva, la cual se almacena en la carpeta de Dropbox de Segudad Patrimonial.</p></div>
+      <div class="doc-block"><div class="dk">Qué se midió — Administración</div><p>Elaboración de la presentación de resultados del departamento en colaboración del Directo de Seguridad Patrimonial, realizando la presentación los primeros días del mes siguiente al Director General, Director Automotriz y Director Financiero.</p></div>
+      <div class="doc-block"><div class="dk">Qué se midió — Emprendimiento</div><p>Ser particicpe de realizar, vivir y promover la prevención dentro y fuera de Grupo Vanguardia. Se considera en el plan de trabajo generar material preventivo y realizar capacitaciones de Código de ética.</p></div>
+      <div class="doc-block"><div class="dk">Qué se midió — Integración</div><p>Realiza auditorías e invetigaciones con respeto y confianza; tratando a los colaboradores con los valores de Grupo Vanguardia.</p></div>
+      <div class="doc-block"><div class="dk">Acuerdos generales</div><p>Sin información.</p></div>
+
+      <div class="note-box">Las fechas de evaluación de ambos semestres 2025 aparecen invertidas en el archivo fuente (Ene–Jun se firmó el 08/10/2025, después que Jul–Dic firmado el 16/01/2025) — es una inconsistencia del Excel original, no un error de esta página.</div>
+    </div>
+  </div>
+
+  <div class="card persona-card">
+    <div class="persona-head">
+      <div><h3>Salvador Hiram Rivas Arellano</h3><div class="puesto">Auditor Patrimonial Jr</div></div>
+      <span class="pill-warn">Sin registro 2025</span>
+    </div>
+    <div class="persona-body">
+      <p>No existe evaluación 2025 para este colaborador en el archivo fuente. Ingresó el 12/11/2024, por lo que es probable que no cubriera un semestre completo evaluable antes del ciclo Ene–Jun 2026. Su primer registro disponible es el de 2026, visible en la pestaña "2026 · Detalle".</p>
+    </div>
+  </div>
+</section>
+
+</div>
+
+</main>
+
+<script>
+const PAEI_LABEL_SP = {P:'(P) Eficiencia', A:'(A) Administración', E:'(E) Proactividad', I:'(I) Colaboración'};
+const PAEI_HEX_SP = {P:'#2E8FE0', A:'#E8C547', E:'#34C77B', I:'#A6415A'};
+
+// César: Ene-Jun25=100, Jul-Dic25=100, Ene-Jun26=100 (todos los indicadores). Salvador: solo 2026=100 (todos).
+const SP_DATA = {
+  P: [100, 100, 100],
+  A: [100, 100, 100],
+  E: [100, 100, 100],
+  I: [100, 100, 100],
+};
+
+function paeiTrendChart(){
+  const W=620,H=280,padL=44,padR=54,padT=16,padB=36;
+  const plotW=W-padL-padR, plotH=H-padT-padB;
+  const yMin=90,yMax=100.5;
+  const xPos = i => padL + (i/2)*plotW;
+  const yPos = v => padT + plotH - ((v-yMin)/(yMax-yMin))*plotH;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">`;
+  [90,95,100].forEach(v=>{
+    const y=yPos(v);
+    svg += `<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="var(--line)" stroke-width="1"/><text x="${padL-8}" y="${y+4}" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="var(--muted)">${v}</text>`;
+  });
+  ['Ene–Jun 25','Jul–Dic 25','Ene–Jun 26'].forEach((lbl,i)=> svg += `<text x="${xPos(i)}" y="${H-12}" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="var(--muted)">${lbl}</text>`);
+
+  const ends = [];
+  ['P','A','E','I'].forEach(k=>{
+    const vals = SP_DATA[k];
+    const pts = vals.map((v,i)=>`${xPos(i)},${yPos(v)}`).join(' ');
+    svg += `<polyline points="${pts}" fill="none" stroke="${PAEI_HEX_SP[k]}" stroke-width="2.75"/>`;
+    vals.forEach((v,i)=> svg += `<circle cx="${xPos(i)}" cy="${yPos(v)}" r="4" fill="${PAEI_HEX_SP[k]}"/>`);
+    ends.push({y: yPos(vals[2]), val:vals[2], color:PAEI_HEX_SP[k], letter:k});
+  });
+  ends.sort((a,b)=>a.y-b.y);
+  for (let i=1;i<ends.length;i++){ if (ends[i].y-ends[i-1].y<16) ends[i].y = ends[i-1].y+16; }
+  ends.forEach(e=> svg += `<text x="${W-padR+8}" y="${e.y+4}" font-family="IBM Plex Mono" font-weight="700" font-size="11" fill="${e.color}">(${e.letter}) ${e.val.toFixed(1)}</text>`);
+  svg += `</svg>`;
+  document.getElementById('paeiTrendWrap').innerHTML = svg;
+  document.getElementById('paeiTrendLegend').innerHTML = ['P','A','E','I'].map(k=>`
+    <div style="display:flex; align-items:center; gap:6px; font-size:12px;">
+      <span style="width:16px; height:3px; background:${PAEI_HEX_SP[k]}; display:inline-block; border-radius:2px;"></span>${PAEI_LABEL_SP[k]}
+    </div>`).join('');
+}
+paeiTrendChart();
+
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>
