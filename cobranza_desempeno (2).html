@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Cobranza · Centro de Inteligencia del Desempeño · Vanguardia</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+:root{
+  --navy:#060B1F; --navy-2:#0B1330; --navy-3:#121B42;
+  --line:rgba(255,255,255,0.09); --ink:#F4F6FA; --muted:rgba(244,246,250,0.55);
+  --blue-light:#7FD1F0; --blue:#2E8FE0;
+  --g:#34C77B; --y:#E8C547; --r:#F0524B; --o:#F0964B;
+  --paei-p:#2E8FE0; --paei-a:#E8C547; --paei-e:#34C77B; --paei-i:#A6415A;
+  --shadow:0 1px 2px rgba(0,0,0,0.2), 0 12px 32px -16px rgba(0,0,0,0.55);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--navy);color:var(--ink);font-family:'Manrope',sans-serif;-webkit-font-smoothing:antialiased;}
+main{max-width:1100px;margin:0 auto;padding:0 5vw 90px;}
+header.top{ background:radial-gradient(ellipse at 75% -10%, rgba(46,143,224,0.22), transparent 55%), var(--navy); padding:40px 5vw 0; border-bottom:1px solid var(--line); }
+.eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--blue-light); margin:0 0 10px; }
+.hero-title{ font-weight:800; font-size:clamp(24px,3vw,34px); margin:0 0 8px; letter-spacing:-.01em; }
+.hero-sub{ font-size:13.5px; color:var(--muted); max-width:660px; line-height:1.6; margin:0 0 26px; }
+.tabs{ display:flex; gap:4px; flex-wrap:wrap; }
+.tab-btn{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.03em; text-transform:uppercase; color:var(--muted); background:none; border:none; padding:14px 16px; cursor:pointer; border-bottom:3px solid transparent; transition:color .15s,border-color .15s; white-space:nowrap; }
+.tab-btn:hover{ color:var(--blue-light); }
+.tab-btn.active{ color:var(--ink); border-bottom-color:var(--blue); font-weight:700; }
+.panel{ display:none; } .panel.active{ display:block; }
+section{ padding:34px 0 8px; border-bottom:1px solid var(--line); }
+section:last-of-type{ border-bottom:none; }
+.section-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; margin-bottom:18px; }
+.section-kicker{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--blue-light); margin:0 0 6px; }
+.section-title{ font-weight:800; font-size:clamp(18px,2vw,22px); margin:0; }
+.section-note{ font-size:12.5px; color:var(--muted); max-width:360px; line-height:1.5; text-align:right; }
+.card{ background:var(--navy-2); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); }
+.kpi-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+@media(max-width:800px){ .kpi-grid{ grid-template-columns:1fr 1fr; } }
+.kpi{ padding:18px; }
+.kpi .l{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.kpi .n{ font-weight:800; font-size:24px; }
+.kpi .sub{ margin-top:6px; font-size:11px; color:var(--muted); }
+.delta-up{ color:var(--g); font-weight:700; } .delta-down{ color:var(--r); font-weight:700; } .delta-flat{ color:var(--muted); font-weight:700; }
+.tier-pill{ font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.05em; text-transform:uppercase; padding:3px 9px; border-radius:20px; display:inline-block; }
+.tier-pill.SOBRESALIENTE{ background:rgba(52,199,123,0.15); color:var(--g); }
+.tier-pill.ADECUADO{ background:rgba(232,197,71,0.15); color:var(--y); }
+.tier-pill.INSATISFACTORIO{ background:rgba(240,82,75,0.15); color:var(--r); }
+.pill-warn{ font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.05em; text-transform:uppercase; padding:2px 8px; border-radius:20px; background:rgba(240,150,75,0.13); color:var(--o); display:inline-block; }
+.pill-action{ font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.03em; padding:5px 11px; border-radius:8px; background:var(--navy-3); border:1px solid var(--line); color:var(--ink); display:inline-block; }
+table.rtable{ width:100%; border-collapse:collapse; font-size:12.5px; }
+table.rtable th{ text-align:left; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); padding:9px 10px; border-bottom:1px solid var(--line); }
+table.rtable td{ padding:10px 10px; border-bottom:1px solid var(--line); vertical-align:middle; }
+table.rtable td.num{ font-family:'IBM Plex Mono',monospace; text-align:right; }
+table.rtable tr:last-child td{ border-bottom:none; }
+.comment-box{ padding:20px 22px; font-size:13.5px; line-height:1.7; }
+.comment-box b{ color:var(--blue-light); }
+.ai-box{ padding:20px 22px; font-size:13.5px; line-height:1.75; border-left:3px solid var(--blue-light); background:rgba(127,209,240,0.05); }
+.ai-box .aihead{ display:flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--blue-light); margin-bottom:10px; }
+.note-box{ padding:16px 20px; font-size:12.5px; color:var(--muted); line-height:1.6; border-left:3px solid var(--o); background:rgba(240,150,75,0.05); border-radius:0 10px 10px 0; }
+.doc-block{ background:var(--navy-3); border-radius:10px; padding:12px 14px; margin-bottom:8px; }
+.doc-block .dk{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--blue-light); margin-bottom:5px; }
+.doc-block p{ margin:0; font-size:12.5px; line-height:1.6; white-space:pre-line; color:var(--ink); }
+
+/* --- highlight cards (Lo mejor del equipo) --- */
+.highlight-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+@media(max-width:800px){ .highlight-grid{ grid-template-columns:1fr 1fr; } }
+.hl-card{ padding:18px; text-align:center; }
+.hl-card .stars{ color:var(--y); font-size:13px; margin-bottom:8px; }
+.hl-card .hn{ font-weight:800; font-size:17px; margin-bottom:4px; }
+.hl-card .hv{ font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--blue-light); margin-bottom:6px; }
+.hl-card .hl{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+
+/* --- team cards (Mi Equipo) --- */
+.team-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+@media(max-width:900px){ .team-grid{ grid-template-columns:1fr 1fr; } }
+.team-card{ padding:18px; cursor:pointer; transition:border-color .15s, transform .15s; }
+.team-card:hover{ border-color:rgba(127,209,240,0.35); transform:translateY(-2px); }
+.avatar{ width:42px; height:42px; border-radius:50%; background:var(--navy-3); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; color:var(--blue-light); margin-bottom:10px; }
+.team-card .tn{ font-weight:700; font-size:14px; margin-bottom:2px; }
+.team-card .tp{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--muted); margin-bottom:10px; }
+.team-card .tv{ font-weight:800; font-size:22px; }
+.team-card .stars{ color:var(--y); font-size:11px; margin:4px 0 8px; }
+.team-card .tlink{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--blue-light); text-transform:uppercase; letter-spacing:.05em; }
+
+/* --- heatmap --- */
+.heat-table{ width:100%; border-collapse:collapse; font-size:12.5px; }
+.heat-table th{ font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; color:var(--muted); padding:8px 10px; text-align:center; }
+.heat-table th:first-child{ text-align:left; }
+.heat-table td{ padding:8px 10px; text-align:center; border-bottom:1px solid var(--line); }
+.heat-table td:first-child{ text-align:left; font-weight:600; }
+.heat-cell{ display:inline-block; min-width:40px; padding:5px 8px; border-radius:6px; font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:12px; }
+
+/* --- quadrant matrix --- */
+.quad-legend{ display:flex; flex-wrap:wrap; gap:14px; margin-top:14px; font-size:11.5px; color:var(--muted); }
+
+/* --- tendencias --- */
+.filter-row{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+.filter-chip{ font-family:'IBM Plex Mono',monospace; font-size:11px; padding:7px 13px; border-radius:20px; border:1px solid var(--line); background:var(--navy-3); color:var(--muted); cursor:pointer; }
+.filter-chip.active{ color:var(--ink); border-color:var(--blue-light); background:rgba(127,209,240,0.08); }
+
+/* --- persistencia --- */
+.persist-card{ padding:18px 20px; }
+.persist-steps{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:10px 0; }
+.persist-step{ background:var(--navy-3); border-radius:8px; padding:8px 12px; font-size:12px; }
+.persist-step .pl{ font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--muted); text-transform:uppercase; }
+.persist-arrow{ color:var(--muted); }
+
+/* --- expediente / historial --- */
+.hist-shell{ display:grid; grid-template-columns:230px 1fr; gap:24px; }
+@media(max-width:800px){ .hist-shell{ grid-template-columns:1fr; } }
+.hist-list{ display:flex; flex-direction:column; gap:4px; }
+.hist-item{ padding:10px 14px; border-radius:9px; cursor:pointer; font-size:13px; display:flex; justify-content:space-between; align-items:center; }
+.hist-item:hover{ background:var(--navy-3); }
+.hist-item.active{ background:rgba(127,209,240,0.1); color:var(--blue-light); font-weight:700; }
+.expediente-header{ display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:14px; padding:20px 22px; }
+.expediente-header .av-lg{ width:56px; height:56px; border-radius:50%; background:var(--navy-3); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:19px; color:var(--blue-light); }
+.exp-meta{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; padding:0 22px 20px; }
+@media(max-width:650px){ .exp-meta{ grid-template-columns:1fr 1fr; } }
+.exp-meta .em{ background:var(--navy-3); border-radius:9px; padding:10px 12px; }
+.exp-meta .ek{ font-family:'IBM Plex Mono',monospace; font-size:9px; text-transform:uppercase; color:var(--muted); margin-bottom:3px; }
+.exp-meta .ev{ font-weight:700; font-size:13px; }
+.btn-pdf{ font-family:'Manrope',sans-serif; font-weight:700; font-size:12.5px; color:#06101F; background:var(--blue-light); border:none; border-radius:9px; padding:10px 16px; cursor:pointer; }
+.paei-bar-row{ display:grid; grid-template-columns:110px 1fr 90px; align-items:center; gap:10px; padding:8px 0; }
+.paei-bar-row .pl{ font-size:12.5px; font-weight:600; }
+.paei-bar-track{ height:9px; background:var(--navy-3); border-radius:6px; overflow:hidden; }
+.paei-bar-fill{ height:100%; border-radius:6px; }
+.paei-bar-row .pval{ text-align:right; font-family:'IBM Plex Mono',monospace; font-size:12px; }
+.badge-atendido{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; padding:3px 9px; border-radius:20px; display:inline-block; }
+.badge-atendido.total{ background:rgba(52,199,123,0.15); color:var(--g); }
+.badge-atendido.parcial{ background:rgba(232,197,71,0.15); color:var(--y); }
+.badge-atendido.pendiente{ background:rgba(240,82,75,0.15); color:var(--r); }
+
+@media print{
+  body *{ visibility:hidden; }
+  #printArea, #printArea *{ visibility:visible; }
+  #printArea{ position:absolute; left:0; top:0; width:100%; }
+  .tabs, .btn-pdf, .hist-list{ display:none !important; }
+  body{ background:#fff; color:#111; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <p class="eyebrow">Capital Humano · Grupo Vanguardia · Servicios Centrales</p>
+  <h1 class="hero-title">Cobranza — Centro de Inteligencia del Desempeño</h1>
+  <p class="hero-sub">Jefe inmediato: Iván Oswaldo Orozco Meneses. No es un reporte de evaluaciones — está pensado para lo que un jefe hace después de verlo: a quién reconocer, a quién dar seguimiento y qué capacitación proponer.</p>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="resumen">🏠 Resumen Ejecutivo</button>
+    <button class="tab-btn" data-tab="equipo">👥 Mi Equipo</button>
+    <button class="tab-btn" data-tab="ia">🧠 Análisis IA</button>
+    <button class="tab-btn" data-tab="tendencias">📈 Tendencias</button>
+    <button class="tab-btn" data-tab="historial">📁 Historial</button>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ RESUMEN EJECUTIVO ============ -->
+<div class="panel active" id="panel-resumen">
+
+<section style="padding-top:30px;">
+  <div class="kpi-grid" id="kpiGrid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Vista clara</p><h2 class="section-title">Calificación promedio por indicador</h2></div>
+    <p class="section-note">Equipo, sin el gerente. Variación vs. promedio 2025.</p>
+  </div>
+  <div class="card" style="padding:26px;"><div id="circleRowTeam"></div></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Iván Oswaldo Orozco Meneses · jefe inmediato</p><h2 class="section-title">Cumplimiento de aplicación de evaluaciones</h2></div>
+    <p class="section-note">% de evaluaciones de su equipo que Iván aplicó realmente, no su propia calificación.</p>
+  </div>
+  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);" id="cumplimientoAplicacionGrid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Comparativo</p><h2 class="section-title">Calificación por agencia</h2></div>
+    <p class="section-note">Promedio 2026 vs. 2025 por agencia del equipo (sin el gerente).</p>
+  </div>
+  <div class="card" style="padding:6px 16px;"><table class="rtable" id="agenciaTable"></table></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Reconocimiento</p><h2 class="section-title">Lo mejor del equipo</h2></div>
+  </div>
+  <div class="highlight-grid" id="highlightGrid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Lectura automática</p><h2 class="section-title">¿Qué cambió este semestre?</h2></div>
+  </div>
+  <div class="card ai-box">
+    <div class="aihead">🧠 Generado a partir de los datos del periodo</div>
+    Este semestre el departamento mejoró <b>+1.4 puntos</b> respecto al promedio 2025.<br>
+    La mejora proviene principalmente de:<br>
+    ✓ Daniel Martín Robles Gómez (+4.33)<br>
+    ✓ Roberto Rocha Crow (+4.13)<br>
+    ✓ Luis Enrique Pérez González (+4.03)<br><br>
+    Las oportunidades siguen concentrándose en <b>Carlos Fernando Ávalos De La Torre</b> y <b>Santiago Villanueva Sánchez</b>, por tercer periodo consecutivo.
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Vista rápida</p><h2 class="section-title">Mapa de calor PAEI — 2026</h2></div>
+    <p class="section-note">En segundos, dónde falla cada quien.</p>
+  </div>
+  <div class="card" style="padding:14px 16px; overflow-x:auto;">
+    <table class="heat-table" id="heatTable"></table>
+  </div>
+</section>
+
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Priorización</p><h2 class="section-title">Matriz: desempeño vs. evolución</h2></div>
+    <p class="section-note">Ayuda a decidir a quién atender primero.</p>
+  </div>
+  <div class="card" style="padding:22px; display:flex; justify-content:center;">
+    <div id="quadWrap"></div>
+  </div>
+</section>
+
+</div>
+
+<!-- ============ MI EQUIPO ============ -->
+<div class="panel" id="panel-equipo">
+<section style="padding-top:30px; border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Equipo</p><h2 class="section-title">8 colaboradores</h2></div>
+    <p class="section-note">Da clic en una tarjeta para abrir su expediente completo.</p>
+  </div>
+  <div class="team-grid" id="teamGrid"></div>
+</section>
+</div>
+
+<!-- ============ TENDENCIAS ============ -->
+<div class="panel" id="panel-tendencias">
+
+<section style="padding-top:30px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Tendencia</p><h2 class="section-title">Del equipo</h2></div>
+    <p class="section-note">Ene–Jun 2025 · Jul–Dic 2025 · Ene–Jun 2026.</p>
+  </div>
+  <div class="card" style="padding:22px;"><div id="lineTeam" style="display:flex; justify-content:center;"></div></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Tendencia</p><h2 class="section-title">Por puesto</h2></div>
+  </div>
+  <div class="card" style="padding:22px;"><div id="linePuesto" style="display:flex; justify-content:center;"></div></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Tendencia</p><h2 class="section-title">Por indicador PAEI</h2></div>
+  </div>
+  <div class="filter-row" id="paeiFilterRow"></div>
+  <div class="card" style="padding:22px;"><div id="linePaei" style="display:flex; justify-content:center;"></div></div>
+</section>
+
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Tendencia</p><h2 class="section-title">Por agencia</h2></div>
+    <p class="section-note">No se incluye "por jefe": el departamento reporta casi en su totalidad a un mismo jefe inmediato (Iván), así que esa vista no aportaría comparación real todavía.</p>
+  </div>
+  <div class="card" style="padding:22px;"><div id="lineAgencia" style="display:flex; justify-content:center;"></div><div id="lineAgenciaLegend" style="display:flex; gap:16px; justify-content:center; margin-top:14px; flex-wrap:wrap;"></div></div>
+</section>
+
+</div>
+
+<!-- ============ ANÁLISIS IA ============ -->
+<div class="panel" id="panel-ia">
+
+<section style="padding-top:30px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Grupal</p><h2 class="section-title">Análisis del equipo</h2></div>
+    <p class="section-note">No solo promedios — considera también la dispersión entre colaboradores.</p>
+  </div>
+  <div class="card ai-box">
+    <div class="aihead">🧠 Fortalezas y brechas compartidas</div>
+    <b>Indicador más fuerte:</b> (P) Eficiencia / Flujo de efectivo, promedio 97.9 — el equipo cumple de forma consistente con el indicador de mayor peso (50% para Auxiliares de Carteras).<br><br>
+    <b>Indicador con más oportunidad:</b> (A) Administración / gestión de Cartera, promedio 95.3 — aunque sigue siendo alto, es donde se concentran los comentarios de seguimiento pendiente (Carlos, Santiago).<br><br>
+    <b>Brecha compartida:</b> la Bitácora de mejora de procesos (E) es el único indicador donde dos personas distintas (Santiago y, en menor medida, Luis) reciben el mismo señalamiento — "ideas que no se concluyen" — lo que sugiere que el proceso de documentar mejoras no está bien resuelto a nivel de equipo, no solo individual.<br><br>
+    <b>Riesgo de dependencia:</b> Daniel y Silvia concentran los resultados más altos y estables en Cartera (A) y Bitácora (E). Si alguno de los dos saliera del equipo, no hay una segunda persona con ese nivel documentado todavía — es una razón adicional para invertir en mentoría interna ahora.<br><br>
+    <b>Buena práctica a replicar:</b> el seguimiento a Cartera &gt;90 que ya domina Daniel podría convertirse en el procedimiento estándar del equipo, documentado en la Bitácora de mejora de procesos.
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Lo que ningún jefe obtiene normalmente</p><h2 class="section-title">Persistencia del problema</h2></div>
+  </div>
+  <div id="persistList" style="display:flex; flex-direction:column; gap:14px;"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Automático</p><h2 class="section-title">Personas listas para promoción</h2></div>
+  </div>
+  <div id="promoList" class="highlight-grid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Automático</p><h2 class="section-title">Personas que requieren coaching</h2></div>
+  </div>
+  <div id="coachList" class="highlight-grid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Fórmula: calificación baja + comentarios negativos + sin mejora</p><h2 class="section-title">Riesgo de desmotivación</h2></div>
+  </div>
+  <div class="card ai-box" id="riesgoBox"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Acciones, no comentarios</p><h2 class="section-title">Recomendaciones automáticas</h2></div>
+  </div>
+  <div class="card" style="padding:6px 16px;"><table class="rtable" id="recoTable"></table></div>
+</section>
+
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Para el jefe</p><h2 class="section-title">Plan de Acción Gerencial</h2></div>
+  </div>
+  <div class="card" style="padding:6px 16px;"><table class="rtable" id="planGerencialTable"></table></div>
+</section>
+
+</div>
+
+<!-- ============ HISTORIAL ============ -->
+<div class="panel" id="panel-historial">
+<section style="padding-top:30px; border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Expediente</p><h2 class="section-title">Historial por colaborador</h2></div>
+  </div>
+  <div class="hist-shell">
+    <div class="hist-list" id="histList"></div>
+    <div id="printArea">
+      <div class="card" id="expedienteCard"></div>
+    </div>
+  </div>
+</section>
+</div>
+
+</main>
+
+<script>
+const PAEI_LABEL = {P:'(P) Eficiencia', A:'(A) Administración', E:'(E) Proactividad', I:'(I) Colaboración'};
+const PAEI_COLOR = {P:'var(--paei-p)', A:'var(--paei-a)', E:'var(--paei-e)', I:'var(--paei-i)'};
+
+const PERSONAS = [
+{
+  id:'daniel', nombre:"Daniel Martín Robles Gómez", puesto:"Auxiliar de Carteras", agencia:"SERVIOPERA", jefe:"Iván Oswaldo Orozco Meneses", antiguedad:"3.2 años",
+  periods: [
+    {label:"Ene–Jun 2025", fecha:"25/10/2025", global:93.25, clasif:"ADECUADO", paei:{P:100,A:85,E:85,I:100}, comentarios:{P:"Reporte de Flujo Mensual.",A:"Reporte de carteras y Recuperación.",E:"Juntas de Trabajo.",I:"Participación en Juntas."}, acuerdos:"Excelente disposición siempre, mayor seguimiento a lo vencido, hagamos que las cosas sucedan."},
+    {label:"Jul–Dic 2025", fecha:"15/01/2026", global:96.0, clasif:"SOBRESALIENTE", paei:{P:100,A:92.9,E:85,I:100}, comentarios:{P:"Reporte de Flujo Mensual.",A:"Reporte de carteras y Recuperación.",E:"Juntas de Trabajo.",I:"Participación en Juntas."}, acuerdos:"Mayor seguimiento en casos puntuales hasta resolverse."},
+    {label:"Ene–Jun 2026", fecha:"24/06/2026", global:98.95, clasif:"SOBRESALIENTE", paei:{P:99,A:99,E:98,I:100}, comentarios:{P:"Tratar de cumplir con los objetivos de KIAQ LYP, entendiendo que no está del todo de nuestro lado.",A:"Seguimiento puntual a la cartera más de 90 que tenemos identificada con incidencias para su solución.",E:"Seguir implementado mejoras en los procesos.",I:"Seguir con esa proactividad positiva con los clientes internos y externos."}, acuerdos:null},
+  ],
+  atendido: "Sí — subió en cada periodo. El acuerdo de Ene-Jun 2025 (\"mayor seguimiento a lo vencido\") se refleja en el salto a 96 en Jul-Dic, y en 2026 ya trabaja con objetivos más exigentes.",
+  atendidoNivel: "total",
+  reco_full: [
+    {texto:"Ya domina Cartera >90 y la Bitácora de mejora de procesos (indicadores A y E de su puesto) con calificación consistente de 99 y 98. Asignarle formalmente la mentoría de Carlos y Santiago en gestión de cartera vencida — ambos tienen oportunidad en ese mismo indicador.", categoria:"Mentoría interna"},
+    {texto:"Encargarle liderar una iniciativa de mejora de procesos documentada en la Bitácora (indicador E), dado que es donde el equipo tiene más comentarios de \"ideas sin concluir\" — su ejemplo puede convertirse en el estándar del equipo.", categoria:"Experiencia de desarrollo"},
+  ],
+  reco_accion: "Mentor en gestión de cartera vencida",
+},
+{
+  id:'roberto', nombre:"Roberto Rocha Crow", puesto:"Auxiliar de Carteras", agencia:"SERVIOPERA", jefe:"Iván Oswaldo Orozco Meneses", antiguedad:"1.5 años",
+  periods: [
+    {label:"Ene–Jun 2025", fecha:"25/10/2025", global:93.25, clasif:"ADECUADO", paei:{P:100,A:85,E:85,I:100}, comentarios:{P:"Reporte de Flujo Mensual.",A:"Reporte de carteras y Recuperación.",E:"Juntas de Trabajo.",I:"Participación en Juntas."}, acuerdos:"Plasmar su día a día para ser más eficientes y propuesta de mejora en bancos."},
+    {label:"Jul–Dic 2025", fecha:"15/01/2026", global:96.0, clasif:"SOBRESALIENTE", paei:{P:100,A:92.9,E:85,I:100}, comentarios:{P:"Reporte de Flujo Mensual.",A:"Reporte de carteras y Recuperación.",E:"Juntas de Trabajo.",I:"Participación en Juntas."}, acuerdos:"Excelentes resultados, sigue construyendo tu futuro, en esta empresa hay mucho desarrollo."},
+    {label:"Ene–Jun 2026", fecha:"15/07/2026", global:98.75, clasif:"SOBRESALIENTE", paei:{P:99,A:99,E:98,I:96}, comentarios:{P:"Continuar con esa autogestión que te ha dado excelentes resultados, aprende a no tener tanto roce con la gente interna.",A:"Mejorar en la recuperación perfecta, tengo claridad que no todo depende de nosotros, haciendo alianzas internas lo podemos lograr.",E:"No frustrarnos cuando las cosas no nos salen, todo tiene solución menos la muerte.",I:"Mejorar la comunicación y aprender a poner pausas."}, acuerdos:null},
+  ],
+  atendido: "Sí. La propuesta de mejora en bancos de Ene-Jun 2025 se tradujo en resultados sobresalientes en Jul-Dic, y en 2026 mantiene el nivel más alto salvo un tema de relaciones interpersonales que se repite.",
+  atendidoNivel: "parcial",
+  reco_full: [
+    {texto:"El comentario de 2026 sobre \"roce con la gente interna\" y \"aprender a poner pausas\" corresponde al indicador (I) Colaboración de su puesto — Junta mensual y Validación de Experiencia Vanguardia — no a un tema de (P) Eficiencia. Se trabaja mejor en sesiones 1 a 1 que con un curso.", categoria:"Coaching del jefe"},
+    {texto:"Su iniciativa de alianzas internas para la recuperación de cartera (indicador A) ya fue reconocida en 2025 — invitarlo a documentarla en la Bitácora de mejora de procesos.", categoria:"Experiencia de desarrollo"},
+  ],
+  reco_accion: "Coaching 1 a 1 en relaciones internas",
+},
+{
+  id:'luis', nombre:"Luis Enrique Pérez González", puesto:"Auxiliar de Carteras", agencia:"SERVIOPERA", jefe:"Iván Oswaldo Orozco Meneses", antiguedad:"2.5 años",
+  periods: [
+    {label:"Ene–Jun 2025", fecha:"25/10/2025", global:93.25, clasif:"ADECUADO", paei:{P:100,A:85,E:85,I:100}, comentarios:{P:"Reporte de Flujo Mensual.",A:"Reporte de carteras y Recuperación.",E:"Juntas de Trabajo.",I:"Participación en Juntas."}, acuerdos:"Seguimiento a la cartera vencida, no dejarla al último."},
+    {label:"Jul–Dic 2025", fecha:"15/01/2026", global:96.0, clasif:"SOBRESALIENTE", paei:{P:100,A:92.9,E:85,I:100}, comentarios:{P:"Reporte de Flujo Mensual.",A:"Reporte de carteras y Recuperación.",E:"Juntas de Trabajo.",I:"Participación en Juntas."}, acuerdos:"No te pongas límites ni un techo, tienes demasiadas habilidades, explótalas."},
+    {label:"Ene–Jun 2026", fecha:"— (fecha inválida en el archivo)", global:98.65, clasif:"SOBRESALIENTE", paei:{P:99,A:99,E:95,I:100}, comentarios:{P:"Seguir de la manera que se está trabajando, mejorando los tiempos de aplicación.",A:"Seguir en la misma línea de comunicación con los responsables de área.",E:"Plasmar las ideas en procesos reales.",I:"(sin comentario capturado en el archivo)"}, acuerdos:null},
+  ],
+  atendido: "Sí. El acuerdo de Ene-Jun 2025 se refleja en la mejora sostenida. En 2026 el campo de (I) Colaboración quedó vacío en el Excel — vale la pena completarlo.",
+  atendidoNivel: "total",
+  reco_full: [
+    {texto:"\"Plasmar las ideas en procesos reales\" es exactamente la definición del indicador (E) Proactividad de su puesto: la Bitácora de mejora de procesos. Encargarle formalmente esa bitácora del equipo le da el vehículo que le falta.", categoria:"Experiencia de desarrollo"},
+    {texto:"El comentario de (I) Colaboración quedó vacío en el archivo 2026 — pedir al jefe completarlo antes de decidir si hay algo que atender ahí.", categoria:"Coaching del jefe"},
+  ],
+  reco_accion: "Encargar bitácora de mejora de procesos",
+},
+{
+  id:'silvia', nombre:"Silvia Bernal Guzmán", puesto:"Auxiliar de Carteras", agencia:"RENAULT AMERICAS", jefe:"Iván Oswaldo Orozco Meneses", antiguedad:"4.2 años",
+  periods: [
+    {label:"Ene–Jun 2025", fecha:"31/01/2025", global:94.75, clasif:"ADECUADO", paei:{P:100,A:85,E:100,I:100}, comentarios:{P:"Reporte de Flujo Mensual.",A:"Reporte de carteras y Recuperación.",E:"Juntas de Trabajo.",I:"Participación en Juntas."}, acuerdos:"Excelente resultados y trabajo en equipo, mayor seguimiento a lo vencido."},
+    {label:"Jul–Dic 2025", fecha:"09/02/2026", global:94.75, clasif:"ADECUADO", paei:{P:100,A:85,E:100,I:100}, comentarios:{P:"Reporte de Flujo Mensual.",A:"Reporte de carteras y Recuperación.",E:"Juntas de Trabajo.",I:"Participación en Juntas."}, acuerdos:"Magnífico trabajo con las aseguradoras, vamos por Planta."},
+    {label:"Ene–Jun 2026", fecha:"09/07/2026", global:98.25, clasif:"SOBRESALIENTE", paei:{P:100,A:95,E:100,I:100}, comentarios:{P:"Continuar con ese excelente seguimiento a la cartera que genera un flujo adecuado.",A:"Seguir insistiendo en Tema Planta.",E:"No dejar esa disposición de mejora y seguir aprendiendo.",I:"Continúa con ese ejemplo de que las cosas se pueden cumplir."}, acuerdos:null},
+  ],
+  atendido: "Estable en 2025 y salta en 2026. Su fortaleza en aseguradoras, mencionada desde Jul-Dic 2025, sigue siendo el eje de su reconocimiento.",
+  atendidoNivel: "total",
+  reco_full: [
+    {texto:"Su manejo de Cartera Planta (indicador A) y el trabajo con aseguradoras se mencionan de forma positiva en los tres periodos evaluados — es quien tiene el resultado más estable del equipo en ese indicador.", categoria:"Reconocimiento"},
+    {texto:"Formalizarla como referente interna en Cartera Planta para el resto del equipo, ya que ningún otro colaborador tiene ese tema mencionado de forma recurrente.", categoria:"Mentoría interna"},
+  ],
+  reco_accion: "Reconocer — referente en Cartera Planta",
+},
+{
+  id:'veronica', nombre:"Verónica Yasmín Carrillo Jiménez", puesto:"Cobranza Contados", agencia:"SERVIOPERA", jefe:"Iván Oswaldo Orozco Meneses (antes: Mario Alberto Ramírez García)", antiguedad:"4.3 años",
+  periods: [
+    {label:"Ene–Jun 2026", fecha:"16/07/2026", global:95.9, clasif:"SOBRESALIENTE", paei:{P:97,A:95,E:95,I:95}, comentarios:{P:"Aunque el camino se torne difícil, cada paso cuenta. Sigue avanzando.",A:"Lo difícil es lograr que las cosas sucedan, hagamos que eso pase.",E:"Siempre ir más allá de lo visible, respetando políticas.",I:"Constancia + Seguimiento = éxito; plasma tus ideas con mayor determinación y soporte."}, acuerdos:null},
+  ],
+  historico2025: {label:"Ene–Dic 2025 (anual) — otra agencia, no comparable", fecha:"29/10/2025", global:98, clasif:"SOBRESALIENTE", paei:{P:100,A:95,E:100,I:100}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:"Sin información."},
+  atendido: "Su primera evaluación considerada en este equipo es 2026 (95.9, Sobresaliente). Su registro 2025 no se incluye en comparativos porque pertenecía a otra agencia y reportaba a otro jefe en ese momento.",
+  atendidoNivel: "total",
+  reco_full: [
+    {texto:"A diferencia de sus compañeros, sus comentarios 2026 (\"sigue avanzando\", \"lograr que las cosas sucedan\") son motivacionales, no tan ligados a los indicadores oficiales de su puesto (Flujo de efectivo, Cartera contado, Reportes de contado). Vale la pena pedir al jefe comentarios más específicos el próximo periodo.", categoria:"Coaching del jefe"},
+    {texto:"\"Plasma tus ideas con determinación y soporte\" (I) Colaboración sugiere reforzar el hábito de documentar reportes de cartera de contado — el indicador (E) Proactividad de su puesto.", categoria:"Capacitación formal — Documentación de procesos"},
+  ],
+  reco_accion: "Pedir comentarios más específicos al jefe",
+},
+{
+  id:'carlos', nombre:"Carlos Fernando Ávalos De La Torre", puesto:"Auxiliar de Carteras", agencia:"RENAULT AMERICAS", jefe:"Iván Oswaldo Orozco Meneses", antiguedad:"1.5 años",
+  periods: [
+    {label:"Ene–Jun 2025", fecha:"25/10/2025", global:93.25, clasif:"ADECUADO", paei:{P:100,A:85,E:85,I:100}, comentarios:{P:"Reporte de Flujo Mensual.",A:"Reporte de carteras y Recuperación.",E:"Juntas de Trabajo.",I:"Participación en Juntas."}, acuerdos:"Empodérate del puesto, ten más empuje en lo que haces, seguimiento más constancia igual a éxito."},
+    {label:"Jul–Dic 2025", fecha:"15/01/2026", global:93.25, clasif:"ADECUADO", paei:{P:100,A:85,E:85,I:100}, comentarios:{P:"Reporte de Flujo Mensual.",A:"Reporte de carteras y Recuperación.",E:"Juntas de Trabajo.",I:"Participación en Juntas."}, acuerdos:"El resultado es la consecuencia de nuestra autoexigencia, concluye lo que inicias."},
+    {label:"Ene–Jun 2026", fecha:"06/07/2026", global:93.8, clasif:"ADECUADO", paei:{P:95,A:90,E:100,I:96}, comentarios:{P:"Seguimiento puntual con el cliente interno.",A:"Validar información que te dice la fuente, que sea real, e ir más contundente con el seguimiento.",E:"Continuar con esa proactividad de mejora y ganas de seguir aprendiendo.",I:"Mejorar la comunicación para elevar los éxitos en equipo."}, acuerdos:null},
+  ],
+  atendido: "Parcialmente. El tema de \"concluir lo que inicias\" aparece en ambos semestres de 2025 y sigue presente en 2026 (\"validar información e ir más contundente\"), aunque el tono en (E) Proactividad ya es positivo.",
+  atendidoNivel: "pendiente",
+  reco_full: [
+    {texto:"\"Validar información e ir más contundente con el seguimiento\" corresponde directamente a Cartera >90 y Recuperación perfecta (indicador A) — es el mismo tema en tres periodos consecutivos.", categoria:"Capacitación formal — Gestión de cartera vencida"},
+    {texto:"El tono en (E) Proactividad (Bitácora de mejora) ya es positivo en 2026 (\"continuar con esa proactividad\") — reforzarlo con seguimiento mensual breve, no con un curso.", categoria:"Coaching del jefe"},
+  ],
+  reco_accion: "Capacitación en gestión de cartera vencida",
+},
+{
+  id:'santiago', nombre:"Santiago Villanueva Sánchez", puesto:"Auxiliar de Carteras", agencia:"BMW VANGUARDIA MOTORS", jefe:"Iván Oswaldo Orozco Meneses", antiguedad:"2.5 años",
+  periods: [
+    {label:"Ene–Jun 2025", fecha:"25/10/2025", global:93.25, clasif:"ADECUADO", paei:{P:100,A:85,E:85,I:100}, comentarios:{P:"Reporte de Flujo Mensual.",A:"Reporte de carteras y Recuperación.",E:"Juntas de Trabajo.",I:"Participación en Juntas."}, acuerdos:"El esfuerzo no es negociable, aceptemos nuestros errores para poder solucionar de raíz."},
+    {label:"Jul–Dic 2025", fecha:"15/01/2026", global:93.25, clasif:"ADECUADO", paei:{P:100,A:85,E:85,I:100}, comentarios:{P:"Reporte de Flujo Mensual.",A:"Reporte de carteras y Recuperación.",E:"Juntas de Trabajo.",I:"Participación en Juntas."}, acuerdos:"Concluir las actividades que se inician, no cargues el mundo solo, tienes varios aliados."},
+    {label:"Ene–Jun 2026", fecha:"24/06/2026", global:93.0, clasif:"ADECUADO", paei:{P:96,A:90,E:90,I:90}, comentarios:{P:"Ser más detallista en la facturación, eso eleva el flujo.",A:"Cerrar los temas a más de 90 días y mayor involucramiento en asuntos de aseguradoras/refacciones.",E:"Tienes ideas pero no se concluyen.",I:"Comunicación asertiva e inteligencia emocional para el trabajo en equipo."}, acuerdos:null},
+  ],
+  atendido: "No del todo. El acuerdo de Jul-Dic 2025 (\"concluir las actividades que se inician\") se repite casi textual en 2026 (\"tienes ideas pero no se concluyen\") — el caso más claro del equipo de un punto sin resolver en tres periodos.",
+  atendidoNivel: "pendiente",
+  reco_full: [
+    {texto:"\"Cerrar los temas a más de 90 días\" es literalmente el indicador de Cartera >90 (A) de su puesto — capacitación específica en gestión de cartera vencida, no un curso genérico.", categoria:"Capacitación formal — Gestión de cartera vencida"},
+    {texto:"\"Tienes ideas pero no se concluyen\" corresponde a la Bitácora de mejora de procesos (E) — el mismo indicador donde Luis está mejorando; capacitación en documentación de procesos, con seguimiento mensual del jefe.", categoria:"Capacitación formal — Documentación de procesos"},
+  ],
+  reco_accion: "Capacitación en cartera vencida y documentación",
+},
+{
+  id:'ivan', nombre:"Iván Oswaldo Orozco Meneses", puesto:"Gerente de Cobranza", agencia:"SERVIOPERA", jefe:"Erika Paulina Godoy Haro", antiguedad:"4.2 años",
+  periods: [
+    {label:"Ene–Dic 2025 (anual, como Auditor Cobranza Sr)", fecha:"06/11/2025", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Presentaciones de resultados mensuales de VCC.",A:"Tener evidencias de minutas de reuniones gerenciales de agencias; provocar reunión con Seguridad Patrimonial y Administración.",E:"PIP's Facturación Intercompañías / Facturación y recuperación de Cartera otros ingresos.",I:"Notificar de manera oportuna."}, acuerdos:"Tener claridad de la metodología de trabajo con Seguridad Patrimonial; generar reporte mensual de minutas por agencias; notificar a Paulina cuando exista una acción de seguimiento sin resolver."},
+    {label:"Ene–Jun 2026", fecha:"— pendiente de captura", global:null, clasif:"PENDIENTE", paei:null, comentarios:null, acuerdos:null},
+  ],
+  atendido: "Sin datos 2026 para evaluar continuidad. En 2025 obtuvo el máximo puntaje, con acuerdos orientados a coordinación entre áreas.",
+  atendidoNivel: "pendiente",
+  reco_full: [
+    {texto:"Su evaluación 2025 ya está totalmente alineada con los indicadores de Gerente de Cobranza (VCC, tablero corporativo, proyectos especiales) — falta capturar 2026 para confirmar que se sostiene.", categoria:"Reconocimiento"},
+    {texto:"El indicador de Colaboración (I) de su puesto incluye \"ayuda a sus compañeros a mejorar y capacitar\" — formalizarlo como responsable de desarrollo interno del equipo, apoyándose en Daniel para mentoría de Carlos/Santiago.", categoria:"Experiencia de desarrollo"},
+  ],
+  reco_accion: "Capturar evaluación 2026 (urgente)",
+},
+];
+
+const PUESTO_DEF = {
+  'Auxiliar de Carteras': { P: 'Flujo de efectivo', A: 'Cartera planta, Cartera más de 90, Cartera legal, Recuperación perfecta', E: 'Bitácora de mejora de procesos', I: 'Junta mensual, Validación de Experiencia Vanguardia' },
+  'Cobranza Contados': { P: 'Flujo de efectivo', A: 'Cartera contado unidades', E: 'Reportes en base a la cartera de contado', I: 'Junta mensual, Validación de Experiencia Vanguardia' },
+  'Gerente de Cobranza': { P: 'VCC', A: 'Tablero corporativo de indicadores VCC', E: 'Ideas o propuestas de mejora, proyectos especiales, actualización de políticas y procedimientos', I: 'Participación activa en el equipo, apoyo y capacitación a compañeros, promotor de Grupo Vanguardia' },
+};
+function cleanDef(text){ return text; }
+// Todos los cálculos de equipo excluyen al Gerente de Cobranza (Iván) — su Historial sigue disponible aparte.
+const EQUIPO = PERSONAS.filter(p=>p.id!=='ivan');
+
+// ---------------- helpers ----------------
+function fmt(v){ return (v===null||v===undefined) ? '—' : (Number.isInteger(v) ? v.toString() : v.toFixed(2)); }
+function initials(name){ return name.split(' ').filter(w=>w.length>2||/[A-ZÁÉÍÓÚÑ]/.test(w[0])).slice(0,2).map(w=>w[0]).join('').toUpperCase().slice(0,2); }
+function tier(g){ if(g===null) return null; return g>=95?'SOBRESALIENTE':g>=85?'ADECUADO':'INSATISFACTORIO'; }
+function tierColor(t){ return t==='SOBRESALIENTE'?'var(--g)':t==='ADECUADO'?'var(--y)':'var(--r)'; }
+function stars(g){
+  if (g===null) return '—';
+  const n = g>=98?5:g>=95?5:g>=90?4:g>=85?3:g>=75?2:1;
+  return '★'.repeat(n) + '☆'.repeat(5-n);
+}
+function deltaSpan(d){
+  if (d===null||d===undefined) return '<span class="delta-flat">—</span>';
+  if (d > 0.05) return `<span class="delta-up">▲ +${d.toFixed(1)}</span>`;
+  if (d < -0.05) return `<span class="delta-down">▼ ${d.toFixed(1)}</span>`;
+  return `<span class="delta-flat">▬ 0.0</span>`;
+}
+// normalize each person's periods into 3 slots: [S1_25, S2_25, 2026]
+function series3(p){
+  if (p.periods.length===3) return p.periods;
+  if (p.periods.length===1) return [{global:null,paei:null}, {global:null,paei:null}, p.periods[0]];
+  return [p.periods[0], p.periods[0], p.periods[1]];
+}
+function personDelta(p){
+  const s = series3(p);
+  const base = s[0].global; // vs Ene-Jun 2025 baseline
+  const cur = s[2].global;
+  if (base===null||cur===null) return null;
+  return cur - base;
+}
+function personAvgPaei2026(p){
+  const s = series3(p);
+  const paei = s[2].paei;
+  if (!paei) return null;
+  return (paei.P+paei.A+paei.E+paei.I)/4;
+}
+
+// ---------------- Resumen Ejecutivo: KPIs ----------------
+function renderKpis(){
+  const withScore = EQUIPO.filter(p=>series3(p)[2].global!==null);
+  const n = EQUIPO.length;
+  const avg = withScore.reduce((s,p)=>s+series3(p)[2].global,0)/withScore.length;
+  const vals2025 = EQUIPO.map(p=>{ const s3=series3(p); return (s3[0].global!==null && s3[1].global!==null) ? (s3[0].global+s3[1].global)/2 : null; }).filter(v=>v!==null);
+  const avg2025 = vals2025.reduce((a,b)=>a+b,0)/vals2025.length;
+  const deltaTeam = avg - avg2025;
+  const sobresalientes = withScore.filter(p=>tier(series3(p)[2].global)==='SOBRESALIENTE').length;
+  const riesgos = EQUIPO.filter(p=>p.atendidoNivel==='pendiente' && series3(p)[2].global!==null).length;
+  const paeiAvg = {P:0,A:0,E:0,I:0};
+  withScore.forEach(p=>{ const pa=series3(p)[2].paei; ['P','A','E','I'].forEach(k=>paeiAvg[k]+=pa[k]); });
+  ['P','A','E','I'].forEach(k=>paeiAvg[k]/=withScore.length);
+
+  const tiles = [
+    {l:'Equipo (sin gerente)', n:n, sub:`${withScore.length} de ${n} evaluados`},
+    {l:'Promedio 2026', n:avg.toFixed(1), sub:'de los evaluados'},
+    {l:'vs. 2025', n:`${deltaTeam>=0?'+':''}${deltaTeam.toFixed(1)}`, sub:`promedio 2025: ${avg2025.toFixed(1)} (${vals2025.length} colaboradores)`, cls: deltaTeam>=0?'delta-up':'delta-down'},
+    {l:'Sobresalientes', n:`${sobresalientes}/${withScore.length}`, sub:`${Math.round(sobresalientes/withScore.length*100)}%`},
+    {l:'Riesgos (desarrollo)', n:riesgos, sub:'mismo tema sin resolver'},
+    {l:'Cumplimiento aplicación 2026', n:'100%', sub:'7 de 7 evaluaciones aplicadas'},
+  ];
+  document.getElementById('kpiGrid').innerHTML = tiles.map(t=>`
+    <div class="card kpi"><div class="l">${t.l}</div><div class="n ${t.cls||''}">${t.n}</div><div class="sub">${t.sub}</div></div>`).join('');
+}
+
+// ---------------- Lo mejor del equipo ----------------
+function renderHighlights(){
+  const items = [
+    {label:'Mayor crecimiento', nombre:'Daniel', valor:'+4.33', person:'daniel'},
+    {label:'Mayor potencial', nombre:'Silvia', valor:'93→98 (nuevo Sobresaliente)', person:'silvia'},
+    {label:'Mejor PAEI promedio', nombre:'Daniel', valor:'99.0', person:'daniel'},
+    {label:'Más consistente', nombre:'Roberto', valor:'rango 96–99 en PAEI', person:'roberto'},
+  ];
+  document.getElementById('highlightGrid').innerHTML = items.map(it=>`
+    <div class="card hl-card" onclick="openHistorial('${it.person}')">
+      <div class="stars">★★★</div>
+      <div class="hn">${it.nombre}</div>
+      <div class="hv">${it.valor}</div>
+      <div class="hl">${it.label}</div>
+    </div>`).join('');
+}
+
+// ---------------- Heatmap PAEI ----------------
+function heatColor(v){
+  if (v===null||v===undefined) return 'rgba(255,255,255,0.05)';
+  if (v>=95) return 'rgba(52,199,123,0.28)';
+  if (v>=85) return 'rgba(232,197,71,0.28)';
+  return 'rgba(240,82,75,0.28)';
+}
+function heatTextColor(v){
+  if (v===null||v===undefined) return 'var(--muted)';
+  if (v>=95) return 'var(--g)';
+  if (v>=85) return 'var(--y)';
+  return 'var(--r)';
+}
+function renderHeat(){
+  let html = '<thead><tr><th>Colaborador</th><th>P</th><th>A</th><th>E</th><th>I</th><th>Global</th></tr></thead><tbody>';
+  EQUIPO.forEach(p=>{
+    const s = series3(p)[2];
+    const paei = s.paei;
+    html += `<tr><td>${p.nombre.split(' ')[0]} ${p.nombre.split(' ')[1]||''}</td>`;
+    ['P','A','E','I'].forEach(k=>{
+      const v = paei ? paei[k] : null;
+      html += `<td><span class="heat-cell" style="background:${heatColor(v)};color:${heatTextColor(v)};">${v===null?'—':v}</span></td>`;
+    });
+    html += `<td><span class="heat-cell" style="background:${heatColor(s.global)};color:${heatTextColor(s.global)};">${fmt(s.global)}</span></td></tr>`;
+  });
+  html += '</tbody>';
+  document.getElementById('heatTable').innerHTML = html;
+}
+
+// ---------------- Quadrant matrix ----------------
+function renderQuadrant(){
+  const W=620, H=480, padL=76, padR=36, padT=34, padB=70;
+  const plotW=W-padL-padR, plotH=H-padT-padB;
+  const plotL=padL, plotR=W-padR, plotT=padT, plotB=H-padB;
+
+  const points = EQUIPO.map(p=>{
+    const d = personDelta(p);
+    const g = series3(p)[2].global;
+    return (d===null||g===null) ? null : {p,d,g};
+  }).filter(Boolean);
+
+  const deltas = points.map(pt=>pt.d);
+  const xMin=Math.min(-2,...deltas)-1, xMax=Math.max(2,...deltas)+1;
+  const yMin=90, yMax=100;
+  const xPos = d => plotL + ((d-xMin)/(xMax-xMin))*plotW;
+  const yPos = g => plotT + plotB-plotT - ((g-yMin)/(yMax-yMin))*(plotB-plotT);
+  const xZero = xPos(0);
+  const yMid = yPos(95);
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">`;
+
+  // shaded quadrant backgrounds
+  svg += `<rect x="${xZero}" y="${plotT}" width="${plotR-xZero}" height="${yMid-plotT}" fill="rgba(52,199,123,0.07)"/>`;      // top-right: alto + mejora
+  svg += `<rect x="${plotL}" y="${plotT}" width="${xZero-plotL}" height="${yMid-plotT}" fill="rgba(240,150,75,0.07)"/>`;      // top-left: alto + caída
+  svg += `<rect x="${xZero}" y="${yMid}" width="${plotR-xZero}" height="${plotB-yMid}" fill="rgba(127,209,240,0.06)"/>`;      // bottom-right: bajo + mejora
+  svg += `<rect x="${plotL}" y="${yMid}" width="${xZero-plotL}" height="${plotB-yMid}" fill="rgba(240,82,75,0.08)"/>`;        // bottom-left: bajo + caída
+  svg += `<rect x="${plotL}" y="${plotT}" width="${plotR-plotL}" height="${plotB-plotT}" fill="none" stroke="var(--line)" stroke-width="1"/>`;
+
+  // quadrant corner labels
+  svg += `<text x="${plotR-8}" y="${plotT+18}" text-anchor="end" font-family="IBM Plex Mono" font-weight="700" font-size="10.5" fill="var(--g)">⭐ ALTO + MEJORA</text>`;
+  svg += `<text x="${plotL+8}" y="${plotT+18}" text-anchor="start" font-family="IBM Plex Mono" font-weight="700" font-size="10.5" fill="var(--o)">⚠ ALTO + CAÍDA</text>`;
+  svg += `<text x="${plotR-8}" y="${plotB-8}" text-anchor="end" font-family="IBM Plex Mono" font-weight="700" font-size="10.5" fill="var(--blue-light)">📈 BAJO + MEJORA</text>`;
+  svg += `<text x="${plotL+8}" y="${plotB-8}" text-anchor="start" font-family="IBM Plex Mono" font-weight="700" font-size="10.5" fill="var(--r)">🔴 BAJO + CAÍDA</text>`;
+
+  // axis divider lines
+  svg += `<line x1="${xZero}" y1="${plotT}" x2="${xZero}" y2="${plotB}" stroke="rgba(255,255,255,0.18)" stroke-width="1.5" stroke-dasharray="4 4"/>`;
+  svg += `<line x1="${plotL}" y1="${yMid}" x2="${plotR}" y2="${yMid}" stroke="rgba(255,255,255,0.18)" stroke-width="1.5" stroke-dasharray="4 4"/>`;
+
+  // axis titles
+  svg += `<text x="${(plotL+plotR)/2}" y="${H-16}" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-weight="700" font-size="12" fill="var(--ink)">◀ Caída &nbsp;&nbsp;&nbsp; Evolución vs. 2025 &nbsp;&nbsp;&nbsp; Mejora ▶</text>`;
+  svg += `<text x="18" y="${(plotT+plotB)/2}" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-weight="700" font-size="12" fill="var(--ink)" transform="rotate(-90 18 ${(plotT+plotB)/2})">▲ Alto desempeño &nbsp;&nbsp;&nbsp; Bajo ▼</text>`;
+
+  // data points, with light collision offset for names close in x
+  const sorted = [...points].sort((a,b)=>a.d-b.d);
+  sorted.forEach((pt,i)=>{
+    const {p,d,g} = pt;
+    const icon = (g>=95 ? (d>=0?'⭐':'⚠️') : (d>=0?'📈':'🔴'));
+    const x = xPos(d), y = yPos(g);
+    const near = sorted.filter((o,j)=>j!==i && Math.abs(xPos(o.d)-x)<48 && Math.abs(yPos(o.g)-y)<26);
+    const stagger = near.length ? (i%2===0 ? -13 : 13) : 0;
+    svg += `<circle cx="${x}" cy="${y}" r="15" fill="var(--navy-2)" stroke="var(--line)" stroke-width="1"/>`;
+    svg += `<text x="${x}" y="${y+6}" text-anchor="middle" font-size="17" style="cursor:pointer;" onclick="openHistorial('${p.id}')">${icon}</text>`;
+    svg += `<text x="${x}" y="${y+24+stagger}" text-anchor="middle" font-family="Manrope" font-weight="700" font-size="11" fill="var(--ink)">${p.nombre.split(' ')[0]}</text>`;
+    svg += `<text x="${x}" y="${y+37+stagger}" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="9.5" fill="${d>=0?'var(--g)':'var(--r)'}">${d>=0?'+':''}${d.toFixed(1)}</text>`;
+  });
+
+  svg += `</svg>`;
+  document.getElementById('quadWrap').innerHTML = svg;
+}
+
+// ---------------- Mi Equipo cards ----------------
+function renderTeamCards(){
+  document.getElementById('teamGrid').innerHTML = EQUIPO.map(p=>{
+    const s = series3(p)[2];
+    const g = s.global;
+    const t = tier(g);
+    const arrow = g===null ? '<span class="pill-warn">Pendiente</span>' : (()=>{
+      const d = personDelta(p);
+      return d===null ? '' : (d>0.5?'<span class="delta-up">↑</span>':d<-0.5?'<span class="delta-down">↓</span>':'<span class="delta-flat">→</span>');
+    })();
+    return `<div class="card team-card" onclick="openHistorial('${p.id}')">
+      <div class="avatar">${initials(p.nombre)}</div>
+      <div class="tn">${p.nombre}</div>
+      <div class="tp">${p.puesto}</div>
+      <div class="tv">${fmt(g)} ${arrow}</div>
+      <div class="stars">${g!==null?stars(g):''}</div>
+      <div class="tlink">Ver expediente →</div>
+    </div>`;
+  }).join('');
+}
+
+// ---------------- Line chart generic ----------------
+function lineChartSvg(series, opts){
+  opts = opts || {};
+  const W = opts.w||620, H = opts.h||300, padL=44, padR = opts.endLabels? 54:18, padT=16, padB=36;
+  const plotW=W-padL-padR, plotH=H-padT-padB;
+  const yMin = opts.yMin!==undefined?opts.yMin:85, yMax = opts.yMax!==undefined?opts.yMax:100;
+  const n = 3;
+  const xPos = i => padL + (i/(n-1))*plotW;
+  const yPos = v => padT + plotH - ((v-yMin)/(yMax-yMin))*plotH;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">`;
+  const gridVals = opts.gridVals || [yMin, (yMin+yMax)/2, yMax];
+  gridVals.forEach(v=>{
+    const y = yPos(v);
+    svg += `<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="var(--line)" stroke-width="1"/>
+      <text x="${padL-8}" y="${y+4}" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="var(--muted)">${v.toFixed(0)}</text>`;
+  });
+  const xLabels = ['Ene–Jun 25','Jul–Dic 25','Ene–Jun 26'];
+  xLabels.forEach((lbl,i)=> svg += `<text x="${xPos(i)}" y="${H-12}" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="var(--muted)">${lbl}</text>`);
+  series.forEach(s=>{
+    const pts = s.values.map((v,i)=> v!==null ? `${xPos(i)},${yPos(v)}` : null).filter(Boolean);
+    svg += `<polyline points="${pts.join(' ')}" fill="none" stroke="${s.color}" stroke-width="${s.width||2.5}"/>`;
+    s.values.forEach((v,i)=>{ if(v!==null){
+      svg += `<circle cx="${xPos(i)}" cy="${yPos(v)}" r="4" fill="${s.color}"/>`;
+      if (s.showLabel) svg += `<text x="${xPos(i)}" y="${yPos(v)-11}" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="11" fill="var(--ink)">${v.toFixed(1)}</text>`;
+    }});
+  });
+  if (opts.endLabels){
+    let ends = series.map(s=>{
+      const lastIdx = s.values.map((v,i)=>v!==null?i:-1).filter(i=>i>=0).pop();
+      return lastIdx===undefined ? null : {y: yPos(s.values[lastIdx]), val:s.values[lastIdx], color:s.color, letter:s.letter};
+    }).filter(Boolean).sort((a,b)=>a.y-b.y);
+    for (let i=1;i<ends.length;i++){ if (ends[i].y-ends[i-1].y<16) ends[i].y = ends[i-1].y+16; }
+    ends.forEach(e=>{
+      svg += `<text x="${W-padR+8}" y="${e.y+4}" font-family="IBM Plex Mono" font-weight="700" font-size="11" fill="${e.color}">(${e.letter}) ${e.val.toFixed(1)}</text>`;
+    });
+  }
+  svg += `</svg>`;
+  return svg;
+}
+
+function renderTendenciaEquipo(){
+  const vals = [0,1,2].map(i=>{
+    const scores = EQUIPO.map(p=> series3(p)[i].global).filter(v=>v!==null);
+    return scores.reduce((a,b)=>a+b,0)/scores.length;
+  });
+  document.getElementById('lineTeam').innerHTML = lineChartSvg([{values:vals, color:'var(--blue-light)', width:3, showLabel:true}]);
+}
+
+function renderTendenciaPuesto(){
+  const puestos = [...new Set(EQUIPO.map(p=>p.puesto))];
+  const colors = ['#7FD1F0','#34C77B','#E8C547'];
+  const series = puestos.map((pu,idx)=>{
+    const miembros = EQUIPO.filter(p=>p.puesto===pu);
+    const values = [0,1,2].map(i=>{
+      const scores = miembros.map(p=>series3(p)[i].global).filter(v=>v!==null);
+      return scores.length ? scores.reduce((a,b)=>a+b,0)/scores.length : null;
+    });
+    return {values, color:colors[idx%colors.length], label:pu};
+  });
+  document.getElementById('linePuesto').innerHTML = lineChartSvg(series, {yMin:85,yMax:100});
+  const legend = series.map(s=>`<div style="display:flex;align-items:center;gap:6px;font-size:12px;"><span style="width:14px;height:3px;background:${s.color};display:inline-block;"></span>${s.label}</div>`).join('');
+  document.getElementById('linePuesto').insertAdjacentHTML('afterend', `<div style="display:flex;gap:16px;justify-content:center;margin-top:12px;flex-wrap:wrap;">${legend}</div>`);
+}
+
+let paeiFilterState = 'P';
+const PAEI_HEX = {P:'#2E8FE0', A:'#E8C547', E:'#34C77B', I:'#A6415A'};
+
+function paeiCircleSvg(letter, value, size){
+  size = size||130;
+  const r = size/2-13, cx=size/2, cy=size/2, circ=2*Math.PI*r;
+  const frac = Math.max(0, Math.min(1, (value||0)/100));
+  const dash = frac*circ;
+  const color = PAEI_HEX[letter];
+  return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--navy-3)" stroke-width="13"/>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="13" stroke-linecap="round"
+      stroke-dasharray="${dash} ${circ-dash}" transform="rotate(-90 ${cx} ${cy})"/>
+    <text x="${cx}" y="${cy-4}" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="25" fill="var(--ink)">${value!==null?value.toFixed(1):'—'}</text>
+    <text x="${cx}" y="${cy+20}" text-anchor="middle" font-family="IBM Plex Mono" font-weight="700" font-size="15" fill="${color}">(${letter})</text>
+  </svg>`;
+}
+function renderCircleRow(containerId, items, deltaLabel){
+  deltaLabel = deltaLabel || 'vs. 2025';
+  document.getElementById(containerId).innerHTML = `<div style="display:flex; gap:28px; justify-content:center; flex-wrap:wrap;">` +
+    items.map(it=>`<div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+      ${paeiCircleSvg(it.letter, it.value)}
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--muted); text-align:center; max-width:130px;">${PAEI_LABEL[it.letter]}</div>
+      <div style="font-size:12px;">${deltaSpan(it.delta)} <span style="color:var(--muted); font-size:10.5px;">${deltaLabel}</span></div>
+    </div>`).join('') + `</div>`;
+}
+function renderCumplimientoAplicacion(){
+  // Iván evaluó a 6 colaboradores en 2025 (Verónica reportaba a otro jefe entonces) y a 7 en 2026.
+  const equipo2025 = EQUIPO.filter(p=>p.id!=='veronica');
+  const aplicadas2025 = equipo2025.filter(p=>{ const s=series3(p); return s[0].global!==null && s[1].global!==null; }).length;
+  const esperadas2025 = equipo2025.length;
+  const aplicadas2026 = EQUIPO.filter(p=>series3(p)[2].global!==null).length;
+  const esperadas2026 = EQUIPO.length;
+  const aplicadasGeneral = aplicadas2025 + aplicadas2026;
+  const esperadasGeneral = esperadas2025 + esperadas2026;
+  const tiles = [
+    {l:'2025', n:`${Math.round(aplicadas2025/esperadas2025*100)}%`, sub:`${aplicadas2025} de ${esperadas2025} colaboradores evaluados (ambos semestres)`},
+    {l:'2026', n:`${Math.round(aplicadas2026/esperadas2026*100)}%`, sub:`${aplicadas2026} de ${esperadas2026} colaboradores evaluados`},
+    {l:'General', n:`${Math.round(aplicadasGeneral/esperadasGeneral*100)}%`, sub:`${aplicadasGeneral} de ${esperadasGeneral} evaluaciones aplicadas en total`},
+  ];
+  document.getElementById('cumplimientoAplicacionGrid').innerHTML = tiles.map(t=>`
+    <div class="card kpi"><div class="l">${t.l}</div><div class="n">${t.n}</div><div class="sub">${t.sub}</div></div>`).join('');
+}
+
+function renderAgenciaTable(){
+  const agencias = [...new Set(EQUIPO.map(p=>p.agencia))];
+  const rows = agencias.map(ag=>{
+    const miembros = EQUIPO.filter(p=>p.agencia===ag);
+    const v2026 = miembros.map(p=>series3(p)[2].global).filter(v=>v!==null);
+    const v2025 = miembros.map(p=>{ const s=series3(p); return (s[0].global!==null && s[1].global!==null) ? (s[0].global+s[1].global)/2 : null; }).filter(v=>v!==null);
+    const a26 = v2026.length ? v2026.reduce((a,b)=>a+b,0)/v2026.length : null;
+    const a25 = v2025.length ? v2025.reduce((a,b)=>a+b,0)/v2025.length : null;
+    const d = (a26!==null && a25!==null) ? a26-a25 : null;
+    return {agencia:ag, n:miembros.length, a25, a26, d};
+  }).sort((a,b)=>(b.a26||0)-(a.a26||0));
+  document.getElementById('agenciaTable').innerHTML =
+    `<thead><tr><th>Agencia</th><th style="text-align:right">Colaboradores</th><th style="text-align:right">Promedio 2025</th><th style="text-align:right">Promedio 2026</th><th style="text-align:right">Variación</th></tr></thead><tbody>` +
+    rows.map(r=>`<tr>
+      <td>${r.agencia}</td>
+      <td class="num">${r.n}</td>
+      <td class="num">${r.a25!==null?r.a25.toFixed(1):'—'}</td>
+      <td class="num">${r.a26!==null?r.a26.toFixed(1):'—'}</td>
+      <td class="num">${deltaSpan(r.d)}</td>
+    </tr>`).join('') + `</tbody>`;
+}
+
+function renderTeamCircles(){
+  const withScore = EQUIPO.filter(p=>series3(p)[2].global!==null);
+  const with2025 = EQUIPO.filter(p=>{ const s=series3(p); return s[0].paei!==null && s[1].paei!==null; });
+  const cur = {P:0,A:0,E:0,I:0}, prev = {P:0,A:0,E:0,I:0};
+  withScore.forEach(p=>{ const s = series3(p); ['P','A','E','I'].forEach(k=>{ cur[k]+=s[2].paei[k]; }); });
+  with2025.forEach(p=>{ const s = series3(p); ['P','A','E','I'].forEach(k=>{ prev[k]+=(s[0].paei[k]+s[1].paei[k])/2; }); });
+  ['P','A','E','I'].forEach(k=>{ cur[k]/=withScore.length; prev[k]/=with2025.length; });
+  const items = ['P','A','E','I'].map(k=>({letter:k, value:cur[k], delta:cur[k]-prev[k]}));
+  renderCircleRow('circleRowTeam', items, 'vs. 2025');
+}
+function renderTendenciaPaei(){
+  const series = ['P','A','E','I'].map(k=>{
+    const values = [0,1,2].map(i=>{
+      const scores = EQUIPO.map(p=>{ const pa = series3(p)[i].paei; return pa ? pa[k] : null; }).filter(v=>v!==null);
+      return scores.length ? scores.reduce((a,b)=>a+b,0)/scores.length : null;
+    });
+    return {values, color:PAEI_HEX[k], width:2.75, letter:k};
+  });
+  document.getElementById('linePaei').innerHTML = lineChartSvg(series, {endLabels:true});
+  document.getElementById('paeiFilterRow').innerHTML = ['P','A','E','I'].map(k=>`
+    <div style="display:flex; align-items:center; gap:6px; font-size:12px;">
+      <span style="width:16px; height:3px; background:${PAEI_HEX[k]}; display:inline-block; border-radius:2px;"></span>${PAEI_LABEL[k]}
+    </div>`).join('');
+}
+
+function renderTendenciaAgencia(){
+  const agencias = [...new Set(EQUIPO.map(p=>p.agencia))];
+  const colors = ['#7FD1F0','#34C77B','#E8C547','#F0964B'];
+  const series = agencias.map((ag,idx)=>{
+    const miembros = EQUIPO.filter(p=>p.agencia===ag);
+    const values = [0,1,2].map(i=>{
+      const scores = miembros.map(p=>series3(p)[i].global).filter(v=>v!==null);
+      return scores.length ? scores.reduce((a,b)=>a+b,0)/scores.length : null;
+    });
+    return {values, color:colors[idx%colors.length], label:ag+` (${miembros.length})`};
+  });
+  document.getElementById('lineAgencia').innerHTML = lineChartSvg(series, {yMin:85,yMax:100});
+  document.getElementById('lineAgenciaLegend').innerHTML = series.map(s=>`<div style="display:flex;align-items:center;gap:6px;font-size:12px;"><span style="width:14px;height:3px;background:${s.color};display:inline-block;"></span>${s.label}</div>`).join('');
+}
+
+// ---------------- Análisis IA ----------------
+function renderPersistencia(){
+  const casos = [
+    {p:EQUIPO.find(x=>x.id==='santiago'), temas:['Comunicación / cierre de tareas','Comunicación / cierre de tareas','Comunicación asertiva']},
+    {p:EQUIPO.find(x=>x.id==='carlos'), temas:['Seguimiento / autoexigencia','Seguimiento / concluir tareas','Validar información / seguimiento']},
+  ];
+  document.getElementById('persistList').innerHTML = casos.map(c=>`
+    <div class="card persist-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <b style="font-size:14px;">${c.p.nombre}</b>
+        <span class="pill-warn">⚠ 3 periodos sin resolver</span>
+      </div>
+      <div class="persist-steps">
+        <div class="persist-step"><div class="pl">2025 S1</div>${c.temas[0]}</div>
+        <div class="persist-arrow">→</div>
+        <div class="persist-step"><div class="pl">2025 S2</div>${c.temas[1]}</div>
+        <div class="persist-arrow">→</div>
+        <div class="persist-step"><div class="pl">2026</div>${c.temas[2]}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderPromoCoach(){
+  const promo = EQUIPO.filter(p=>['daniel','roberto','luis'].includes(p.id));
+  document.getElementById('promoList').innerHTML = promo.map(p=>{
+    const g = series3(p)[2].global;
+    return `<div class="card hl-card" onclick="openHistorial('${p.id}')">
+      <div class="stars">${stars(g)}</div>
+      <div class="hn">${p.nombre.split(' ')[0]} ${p.nombre.split(' ')[1]||''}</div>
+      <div class="hv">${fmt(g)}</div>
+      <div class="hl">3 periodos creciendo</div>
+    </div>`;
+  }).join('');
+
+  const coach = EQUIPO.filter(p=>['carlos','santiago'].includes(p.id));
+  document.getElementById('coachList').innerHTML = coach.map(p=>{
+    return `<div class="card hl-card" onclick="openHistorial('${p.id}')">
+      <div class="stars" style="color:var(--o);">↓</div>
+      <div class="hn">${p.nombre.split(' ')[0]} ${p.nombre.split(' ')[1]||''}</div>
+      <div class="hv">Sin crecimiento</div>
+      <div class="hl">3 periodos</div>
+    </div>`;
+  }).join('');
+}
+
+function renderRiesgo(){
+  // formula: calificación baja (<85) + comentarios negativos recurrentes + sin mejora
+  const candidatos = EQUIPO.map(p=>{
+    const g = series3(p)[2].global;
+    const calBaja = g!==null && g<85;
+    const sinMejora = p.atendidoNivel==='pendiente';
+    const comentNeg = p.atendidoNivel!=='total';
+    let nivel = 'Bajo';
+    let count = [calBaja,sinMejora,comentNeg].filter(Boolean).length;
+    if (calBaja && sinMejora && comentNeg) nivel = 'Alto';
+    else if (count>=2) nivel = 'Medio';
+    return {p, calBaja, sinMejora, comentNeg, nivel};
+  });
+  const alto = candidatos.filter(c=>c.nivel==='Alto');
+  const medio = candidatos.filter(c=>c.nivel==='Medio');
+  let html = `<div class="aihead">🧠 Calificación baja + comentarios negativos + sin mejora = Riesgo Alto</div>`;
+  if (!alto.length){
+    html += `Aplicando la fórmula a los datos reales del equipo, <b>nadie califica como Riesgo Alto</b> — ninguno tiene calificación por debajo de 85. `;
+  }
+  if (medio.length){
+    html += `<br><br>En <b>Riesgo Medio</b> (cumplen 2 de 3 condiciones — sin calificación baja, pero con comentarios recurrentes y sin mejora):<br>`;
+    html += medio.map(c=>`• <b>${c.p.nombre}</b> — mismo punto de mejora repetido, sin avance claro entre periodos.`).join('<br>');
+  } else {
+    html += `Tampoco hay casos de Riesgo Medio en este periodo.`;
+  }
+  document.getElementById('riesgoBox').innerHTML = html;
+}
+
+function renderRecoTable(){
+  document.getElementById('recoTable').innerHTML = `<thead><tr><th>Colaborador</th><th>Acción recomendada</th></tr></thead><tbody>` +
+    EQUIPO.map(p=>`<tr><td>${p.nombre}</td><td><span class="pill-action">${p.reco_accion}</span></td></tr>`).join('') +
+    `</tbody>`;
+}
+
+function renderPlanGerencial(){
+  const PRIORIDAD = {
+    ivan:'Alta', santiago:'Alta', carlos:'Alta',
+    roberto:'Media', veronica:'Media',
+    daniel:'Baja', luis:'Baja', silvia:'Baja',
+  };
+  const TIPO = {
+    ivan:'Riesgo de cumplimiento', santiago:'Requiere capacitación', carlos:'Requiere capacitación',
+    roberto:'Requiere coaching', veronica:'Requiere coaching',
+    daniel:'Listo para nuevos retos', luis:'Listo para nuevos retos', silvia:'Reconocer',
+  };
+  const prioColor = {Alta:'var(--r)', Media:'var(--o)', Baja:'var(--g)'};
+  document.getElementById('planGerencialTable').innerHTML =
+    `<thead><tr><th>Colaborador</th><th>Situación</th><th>Acción sugerida</th><th>Prioridad</th></tr></thead><tbody>` +
+    EQUIPO.map(p=>`<tr>
+      <td>${p.nombre}</td>
+      <td>${TIPO[p.id]}</td>
+      <td><span class="pill-action">${p.reco_accion}</span></td>
+      <td><span style="color:${prioColor[PRIORIDAD[p.id]]}; font-weight:700; font-family:'IBM Plex Mono',monospace; font-size:11px;">${PRIORIDAD[p.id]}</span></td>
+    </tr>`).join('') + `</tbody>`;
+}
+
+// ---------------- Historial / Expediente ----------------
+let currentHistId = PERSONAS[0].id;
+function renderHistList(){
+  document.getElementById('histList').innerHTML = EQUIPO.map(p=>`
+    <div class="hist-item ${p.id===currentHistId?'active':''}" data-id="${p.id}">
+      <span>${p.nombre}</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;">${fmt(series3(p)[2].global)}</span>
+    </div>`).join('');
+  document.getElementById('histList').querySelectorAll('.hist-item').forEach(el=>{
+    el.addEventListener('click', ()=>{ currentHistId = el.dataset.id; renderHistList(); renderExpediente(); });
+  });
+}
+function openHistorial(id){
+  currentHistId = id;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelector('.tab-btn[data-tab="historial"]').classList.add('active');
+  document.getElementById('panel-historial').classList.add('active');
+  renderHistList();
+  renderExpediente();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function renderExpediente(){
+  const p = PERSONAS.find(x=>x.id===currentHistId);
+  const s = series3(p);
+  const cur = s[2];
+  const g = cur.global;
+  const t = tier(g);
+  const ranking = [...EQUIPO].filter(x=>series3(x)[2].global!==null).sort((a,b)=>series3(b)[2].global-series3(a)[2].global);
+  const rankPos = ranking.findIndex(x=>x.id===p.id)+1;
+  const potencial = p.atendidoNivel==='total' ? 'Alto' : p.atendidoNivel==='parcial' ? 'Medio' : 'Por confirmar';
+  const riesgo = p.atendidoNivel==='pendiente' ? 'Desarrollo' : 'Bajo';
+
+  const lineHtml = lineChartSvg([{values:s.map(x=>x.global), color:'var(--blue-light)', width:3, showLabel:true}]);
+
+  const prevPaei = s[1].paei;
+  const circleItems = cur.paei ? ['P','A','E','I'].map(k=>({
+    letter:k, value:cur.paei[k], delta: prevPaei ? cur.paei[k]-prevPaei[k] : null
+  })) : null;
+
+  const periodsTableHtml = `
+    <div class="table-scroll" style="overflow-x:auto;">
+    <table class="rtable" style="min-width:760px;">
+      <thead><tr>
+        <th>Periodo</th><th style="text-align:right">General</th>
+        <th style="text-align:right">(P)</th><th style="text-align:right">(A)</th><th style="text-align:right">(E)</th><th style="text-align:right">(I)</th>
+        <th style="min-width:340px;">Comentarios por indicador</th>
+      </tr></thead>
+      <tbody>
+        ${p.historico2025 ? `<tr style="opacity:0.55;">
+          <td><b>${p.historico2025.label}</b><br><span class="pill-warn" style="margin-top:4px;">No comparable</span></td>
+          <td class="num">${fmt(p.historico2025.global)}</td>
+          <td class="num">${p.historico2025.paei.P}</td><td class="num">${p.historico2025.paei.A}</td><td class="num">${p.historico2025.paei.E}</td><td class="num">${p.historico2025.paei.I}</td>
+          <td style="font-size:12px; line-height:1.55; color:var(--muted);">Registro histórico de referencia — no se usa en promedios ni comparativos porque pertenecía a otra agencia y jefe en ese periodo.</td>
+        </tr>` : ''}
+        ${p.periods.map(per=>{
+          if (per.global===null){
+            return `<tr><td>${per.label}</td><td class="num" colspan="5" style="text-align:center;color:var(--muted);">Sin datos capturados</td><td style="color:var(--muted);">—</td></tr>`;
+          }
+          const com = per.comentarios ? `<b style="color:var(--blue-light);">(P)</b> ${per.comentarios.P}<br><b style="color:var(--blue-light);">(A)</b> ${per.comentarios.A}<br><b style="color:var(--blue-light);">(E)</b> ${per.comentarios.E}<br><b style="color:var(--blue-light);">(I)</b> ${per.comentarios.I}${per.acuerdos?`<br><b style="color:var(--blue-light);">Acuerdo:</b> ${per.acuerdos}`:''}` : '—';
+          return `<tr>
+            <td><b>${per.label}</b><br><span class="tier-pill ${per.clasif}" style="margin-top:4px;display:inline-block;">${per.clasif.charAt(0)+per.clasif.slice(1).toLowerCase()}</span></td>
+            <td class="num" style="font-weight:800;">${fmt(per.global)}</td>
+            <td class="num">${per.paei.P}</td><td class="num">${per.paei.A}</td><td class="num">${per.paei.E}</td><td class="num">${per.paei.I}</td>
+            <td style="font-size:12px; line-height:1.55;">${com}</td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+    </div>`;
+
+  const atendidoBadge = p.atendidoNivel==='total' ? '<span class="badge-atendido total">Atendido</span>' : p.atendidoNivel==='parcial' ? '<span class="badge-atendido parcial">Parcial</span>' : '<span class="badge-atendido pendiente">Pendiente</span>';
+
+  document.getElementById('expedienteCard').innerHTML = `
+    <div class="expediente-header">
+      <div style="display:flex; gap:14px; align-items:center;">
+        <div class="av-lg">${initials(p.nombre)}</div>
+        <div>
+          <div style="font-weight:800; font-size:18px;">${p.nombre}</div>
+          <div style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted);">${p.puesto} · ${p.agencia}</div>
+        </div>
+      </div>
+      <button class="btn-pdf" onclick="window.print()">⬇ Descargar PDF</button>
+    </div>
+    <div class="exp-meta">
+      <div class="em"><div class="ek">Antigüedad</div><div class="ev">${p.antiguedad}</div></div>
+      <div class="em"><div class="ek">Jefe</div><div class="ev" style="font-size:11.5px;">${p.jefe}</div></div>
+      <div class="em"><div class="ek">Calificación actual</div><div class="ev">${fmt(g)} ${t?`<span class="tier-pill ${t}">${t.charAt(0)+t.slice(1).toLowerCase()}</span>`:''}</div></div>
+      <div class="em"><div class="ek">Ranking equipo</div><div class="ev">${p.id==='ivan'?'No aplica (gerente)':(g!==null?`#${rankPos} de ${ranking.length}`:'—')}</div></div>
+      <div class="em"><div class="ek">Potencial</div><div class="ev">${potencial}</div></div>
+      <div class="em"><div class="ek">Riesgo</div><div class="ev">${riesgo}</div></div>
+      <div class="em"><div class="ek">Tendencia</div><div class="ev">${deltaSpan(personDelta(p))}</div></div>
+      <div class="em"><div class="ek">Acuerdos atendidos</div><div class="ev">${atendidoBadge}</div></div>
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">Evolución de calificación</div>
+      <div style="display:flex; justify-content:center;">${lineHtml}</div>
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">Calificación promedio por indicador (vs. periodo anterior)</div>
+      <div id="circleRowPerson"></div>
+      ${!circleItems ? '<p style="color:var(--muted);font-size:12.5px;">Sin datos 2026 aún.</p>' : ''}
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">¿Se atendieron los puntos?</div>
+      <p style="font-size:13px; line-height:1.65; margin:0 0 14px;">${p.atendido}</p>
+      <div class="section-kicker" style="margin-bottom:10px;">Concentrado general — calificación general, por indicador y comentarios</div>
+      ${periodsTableHtml}
+    </div>
+    <div style="padding:0 22px 24px;">
+      <div class="card ai-box">
+        <div class="aihead">🧠 Recomendación IA</div>
+        <ul style="margin:0; padding-left:18px;">${p.reco_full.map(r=>`<li style="margin-bottom:8px;"><span class="pill-action" style="margin-bottom:4px;display:inline-block;">${r.categoria}</span><br>${r.texto}</li>`).join('')}</ul>
+      </div>
+    </div>
+    <div style="padding:0 22px 24px;">
+      <div class="section-kicker" style="margin-bottom:10px;">Qué mide cada indicador en su puesto</div>
+      <div class="doc-block"><p><b>P</b> — ${cleanDef(PUESTO_DEF[p.puesto].P)}<br><b>A</b> — ${cleanDef(PUESTO_DEF[p.puesto].A)}<br><b>E</b> — ${cleanDef(PUESTO_DEF[p.puesto].E)}<br><b>I</b> — ${cleanDef(PUESTO_DEF[p.puesto].I)}</p><p style="margin-top:8px; color:var(--muted); font-size:11px;">Fuente: Matriz de Ponderación oficial, plantillas PAEI Grupo Vanguardia.</p></div>
+    </div>
+  `;
+  if (circleItems) renderCircleRow('circleRowPerson', circleItems, 'vs. periodo anterior');
+}
+
+// ---------------- init ----------------
+function initAll(){
+  renderKpis();
+  renderTeamCircles();
+  renderCumplimientoAplicacion();
+  renderAgenciaTable();
+  renderHighlights();
+  renderHeat();
+  renderQuadrant();
+  renderTeamCards();
+  renderTendenciaEquipo();
+  renderTendenciaPuesto();
+  renderTendenciaPaei();
+  renderTendenciaAgencia();
+  renderPersistencia();
+  renderPromoCoach();
+  renderRiesgo();
+  renderRecoTable();
+  renderPlanGerencial();
+  renderHistList();
+  renderExpediente();
+}
+initAll();
+
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+
+</script>
+</body>
+</html>
