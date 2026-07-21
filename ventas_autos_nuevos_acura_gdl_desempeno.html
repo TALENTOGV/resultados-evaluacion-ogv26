@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Ventas Autos Nuevos ACURA · Acura Guadalajara · Vanguardia</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+:root{
+  --navy:#060B1F; --navy-2:#0B1330; --navy-3:#121B42;
+  --line:rgba(255,255,255,0.09); --ink:#F4F6FA; --muted:rgba(244,246,250,0.55);
+  --blue-light:#7FD1F0; --blue:#2E8FE0;
+  --g:#34C77B; --y:#E8C547; --r:#F0524B; --o:#F0964B;
+  --paei-p:#2E8FE0; --paei-a:#E8C547; --paei-e:#34C77B; --paei-i:#A6415A;
+  --shadow:0 1px 2px rgba(0,0,0,0.2), 0 12px 32px -16px rgba(0,0,0,0.55);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--navy);color:var(--ink);font-family:'Manrope',sans-serif;-webkit-font-smoothing:antialiased;}
+main{max-width:1100px;margin:0 auto;padding:0 5vw 90px;}
+header.top{ background:radial-gradient(ellipse at 75% -10%, rgba(46,143,224,0.22), transparent 55%), var(--navy); padding:40px 5vw 0; border-bottom:1px solid var(--line); }
+.eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--blue-light); margin:0 0 10px; }
+.hero-title{ font-weight:800; font-size:clamp(24px,3vw,34px); margin:0 0 8px; letter-spacing:-.01em; }
+.hero-sub{ font-size:13.5px; color:var(--muted); max-width:660px; line-height:1.6; margin:0 0 26px; }
+.tabs{ display:flex; gap:4px; flex-wrap:wrap; }
+.tab-btn{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.03em; text-transform:uppercase; color:var(--muted); background:none; border:none; padding:14px 16px; cursor:pointer; border-bottom:3px solid transparent; transition:color .15s,border-color .15s; white-space:nowrap; }
+.tab-btn:hover{ color:var(--blue-light); }
+.tab-btn.active{ color:var(--ink); border-bottom-color:var(--blue); font-weight:700; }
+.panel{ display:none; } .panel.active{ display:block; }
+section{ padding:34px 0 8px; border-bottom:1px solid var(--line); }
+section:last-of-type{ border-bottom:none; }
+.section-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; margin-bottom:18px; }
+.section-kicker{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--blue-light); margin:0 0 6px; }
+.section-title{ font-weight:800; font-size:clamp(18px,2vw,22px); margin:0; }
+.section-note{ font-size:12.5px; color:var(--muted); max-width:360px; line-height:1.5; text-align:right; }
+.card{ background:var(--navy-2); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); }
+.kpi-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+@media(max-width:800px){ .kpi-grid{ grid-template-columns:1fr 1fr; } }
+.kpi{ padding:18px; }
+.kpi .l{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.kpi .n{ font-weight:800; font-size:24px; }
+.kpi .sub{ margin-top:6px; font-size:11px; color:var(--muted); }
+.delta-up{ color:var(--g); font-weight:700; } .delta-down{ color:var(--r); font-weight:700; } .delta-flat{ color:var(--muted); font-weight:700; }
+.tier-pill{ font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.05em; text-transform:uppercase; padding:3px 9px; border-radius:20px; display:inline-block; }
+.tier-pill.SOBRESALIENTE{ background:rgba(52,199,123,0.15); color:var(--g); }
+.tier-pill.ADECUADO{ background:rgba(232,197,71,0.15); color:var(--y); }
+.tier-pill.INSATISFACTORIO{ background:rgba(240,82,75,0.15); color:var(--r); }
+.pill-warn{ font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.05em; text-transform:uppercase; padding:2px 8px; border-radius:20px; background:rgba(240,150,75,0.13); color:var(--o); display:inline-block; }
+.pill-action{ font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.03em; padding:5px 11px; border-radius:8px; background:var(--navy-3); border:1px solid var(--line); color:var(--ink); display:inline-block; }
+table.rtable{ width:100%; border-collapse:collapse; font-size:12.5px; }
+table.rtable th{ text-align:left; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); padding:9px 10px; border-bottom:1px solid var(--line); }
+table.rtable td{ padding:10px 10px; border-bottom:1px solid var(--line); vertical-align:middle; }
+table.rtable td.num{ font-family:'IBM Plex Mono',monospace; text-align:right; }
+table.rtable tr:last-child td{ border-bottom:none; }
+.comment-box{ padding:20px 22px; font-size:13.5px; line-height:1.7; }
+.comment-box b{ color:var(--blue-light); }
+.ai-box{ padding:20px 22px; font-size:13.5px; line-height:1.75; border-left:3px solid var(--blue-light); background:rgba(127,209,240,0.05); }
+.ai-box .aihead{ display:flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--blue-light); margin-bottom:10px; }
+.note-box{ padding:16px 20px; font-size:12.5px; color:var(--muted); line-height:1.6; border-left:3px solid var(--o); background:rgba(240,150,75,0.05); border-radius:0 10px 10px 0; }
+.doc-block{ background:var(--navy-3); border-radius:10px; padding:12px 14px; margin-bottom:8px; }
+.doc-block .dk{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--blue-light); margin-bottom:5px; }
+.doc-block p{ margin:0; font-size:12.5px; line-height:1.6; white-space:pre-line; color:var(--ink); }
+.highlight-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+@media(max-width:800px){ .highlight-grid{ grid-template-columns:1fr 1fr; } }
+.hl-card{ padding:18px; text-align:center; }
+.hl-card .stars{ color:var(--y); font-size:13px; margin-bottom:8px; }
+.hl-card .hn{ font-weight:800; font-size:15px; margin-bottom:4px; }
+.hl-card .hv{ font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--blue-light); margin-bottom:6px; }
+.hl-card .hl{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+.team-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+@media(max-width:900px){ .team-grid{ grid-template-columns:1fr 1fr; } }
+.team-card{ padding:18px; cursor:pointer; transition:border-color .15s, transform .15s; }
+.team-card:hover{ border-color:rgba(127,209,240,0.35); transform:translateY(-2px); }
+.avatar{ width:42px; height:42px; border-radius:50%; background:var(--navy-3); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; color:var(--blue-light); margin-bottom:10px; }
+.team-card .tn{ font-weight:700; font-size:13.5px; margin-bottom:2px; }
+.team-card .tp{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--muted); margin-bottom:10px; }
+.team-card .tv{ font-weight:800; font-size:22px; }
+.team-card .stars{ color:var(--y); font-size:11px; margin:4px 0 8px; }
+.team-card .tlink{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--blue-light); text-transform:uppercase; letter-spacing:.05em; }
+.heat-table{ width:100%; border-collapse:collapse; font-size:12.5px; }
+.heat-table th{ font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; color:var(--muted); padding:8px 10px; text-align:center; }
+.heat-table th:first-child{ text-align:left; }
+.heat-table td{ padding:8px 10px; text-align:center; border-bottom:1px solid var(--line); }
+.heat-table td:first-child{ text-align:left; font-weight:600; }
+.heat-cell{ display:inline-block; min-width:40px; padding:5px 8px; border-radius:6px; font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:12px; }
+.persist-card{ padding:18px 20px; }
+.persist-steps{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:10px 0; }
+.persist-step{ background:var(--navy-3); border-radius:8px; padding:8px 12px; font-size:12px; }
+.persist-step .pl{ font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--muted); text-transform:uppercase; }
+.hist-shell{ display:grid; grid-template-columns:230px 1fr; gap:24px; }
+@media(max-width:800px){ .hist-shell{ grid-template-columns:1fr; } }
+.hist-list{ display:flex; flex-direction:column; gap:4px; }
+.hist-item{ padding:10px 14px; border-radius:9px; cursor:pointer; font-size:13px; display:flex; justify-content:space-between; align-items:center; }
+.hist-item:hover{ background:var(--navy-3); }
+.hist-item.active{ background:rgba(127,209,240,0.1); color:var(--blue-light); font-weight:700; }
+.expediente-header{ display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:14px; padding:20px 22px; }
+.expediente-header .av-lg{ width:56px; height:56px; border-radius:50%; background:var(--navy-3); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:19px; color:var(--blue-light); }
+.exp-meta{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; padding:0 22px 20px; }
+@media(max-width:650px){ .exp-meta{ grid-template-columns:1fr 1fr; } }
+.exp-meta .em{ background:var(--navy-3); border-radius:9px; padding:10px 12px; }
+.exp-meta .ek{ font-family:'IBM Plex Mono',monospace; font-size:9px; text-transform:uppercase; color:var(--muted); margin-bottom:3px; }
+.exp-meta .ev{ font-weight:700; font-size:13px; }
+.btn-pdf{ font-family:'Manrope',sans-serif; font-weight:700; font-size:12.5px; color:#06101F; background:var(--blue-light); border:none; border-radius:9px; padding:10px 16px; cursor:pointer; }
+@media print{
+  body *{ visibility:hidden; }
+  #printArea, #printArea *{ visibility:visible; }
+  #printArea{ position:absolute; left:0; top:0; width:100%; }
+  .tabs, .btn-pdf, .hist-list{ display:none !important; }
+  body{ background:#fff; color:#111; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <p class="eyebrow">Capital Humano · Grupo Vanguardia · División Automotriz</p>
+  <h1 class="hero-title">Ventas Autos Nuevos ACURA — Centro de Inteligencia del Desempeño</h1>
+  <p class="hero-sub">Acura Guadalajara. Reporte para Adriana Margarita Pérez Álvarez, jefa inmediata. Su equipo a cargo: 4 colaboradores.</p>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="resumen">🏠 Resumen Ejecutivo</button>
+    <button class="tab-btn" data-tab="equipo">👥 Mi Equipo</button>
+    <button class="tab-btn" data-tab="ia">🧠 Análisis IA</button>
+    <button class="tab-btn" data-tab="tendencias">📈 Tendencias</button>
+    <button class="tab-btn" data-tab="historial">📁 Historial</button>
+  </div>
+</header>
+
+<main>
+
+<div class="panel active" id="panel-resumen">
+
+<section style="padding-top:30px;">
+  <div class="note-box">
+    <b style="color:var(--o);">Contexto importante.</b> Este equipo venía de un primer semestre 2025 muy difícil — dos colaboradores (Antonio y Luis) estuvieron en Insatisfactorio (32 y 64 puntos). Ambos se recuperaron fuerte en el segundo semestre y hoy están estables en Adecuado. Denisse Andrea reportaba a otro jefe en 2025 (Wosbaldo Javier Garza de la Rosa) antes de unirse a este equipo. José Abraham es de ingreso muy reciente (enero 2026), sin antecedente 2025.
+  </div>
+</section>
+
+<section>
+  <div class="kpi-grid" id="kpiGrid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Vista clara</p><h2 class="section-title">Calificación promedio por indicador</h2></div>
+    <p class="section-note">Equipo completo. Variación vs. promedio de semestres 2025 disponibles.</p>
+  </div>
+  <div class="card" style="padding:26px;"><div id="circleRowTeam"></div></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Adriana Margarita Pérez Álvarez · jefa inmediata</p><h2 class="section-title">Cumplimiento de aplicación de evaluaciones</h2></div>
+  </div>
+  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);" id="cumplimientoAplicacionGrid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Reconocimiento</p><h2 class="section-title">Lo mejor del equipo</h2></div>
+  </div>
+  <div class="highlight-grid" id="highlightGrid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Vista rápida</p><h2 class="section-title">Mapa de calor PAEI — 2026</h2></div>
+  </div>
+  <div class="card" style="padding:14px 16px; overflow-x:auto;">
+    <table class="heat-table" id="heatTable"></table>
+  </div>
+</section>
+
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Lectura automática</p><h2 class="section-title">Comentario ejecutivo</h2></div>
+  </div>
+  <div class="card ai-box" id="comentarioBox"></div>
+</section>
+
+</div>
+
+<div class="panel" id="panel-equipo">
+<section style="padding-top:30px; border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Equipo</p><h2 class="section-title">4 colaboradores</h2></div>
+    <p class="section-note">Da clic en una tarjeta para abrir su expediente completo.</p>
+  </div>
+  <div class="team-grid" id="teamGrid"></div>
+</section>
+</div>
+
+<div class="panel" id="panel-ia">
+<section style="padding-top:30px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Lo que ningún jefe obtiene normalmente</p><h2 class="section-title">Persistencia y recuperación</h2></div>
+  </div>
+  <div id="persistList" style="display:flex; flex-direction:column; gap:14px;"></div>
+</section>
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Automático</p><h2 class="section-title">Colaboradores con potencial para desarrollo</h2></div>
+  </div>
+  <div id="promoList" class="highlight-grid"></div>
+</section>
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Fórmula: calificación baja + comentarios negativos + sin mejora</p><h2 class="section-title">Riesgo de desmotivación</h2></div>
+  </div>
+  <div class="card ai-box" id="riesgoBox"></div>
+</section>
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Para la jefa</p><h2 class="section-title">Plan de Acción Gerencial</h2></div>
+  </div>
+  <div class="card" style="padding:6px 16px;"><table class="rtable" id="planGerencialTable"></table></div>
+</section>
+</div>
+
+<div class="panel" id="panel-tendencias">
+<section style="padding-top:30px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Tendencia</p><h2 class="section-title">Del equipo — por semestre</h2></div>
+    <p class="section-note">Ene–Jun 2025 · Jul–Dic 2025 · Ene–Jun 2026.</p>
+  </div>
+  <div class="card" style="padding:22px;"><div id="lineTeam" style="display:flex; justify-content:center;"></div></div>
+</section>
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Tendencia</p><h2 class="section-title">Por indicador PAEI — (P) (A) (E) (I) juntas</h2></div>
+  </div>
+  <div class="card" style="padding:22px;"><div id="linePaei" style="display:flex; justify-content:center;"></div><div id="paeiLegend" style="display:flex; gap:16px; justify-content:center; margin-top:14px; flex-wrap:wrap;"></div></div>
+</section>
+</div>
+
+<div class="panel" id="panel-historial">
+<section style="padding-top:30px; border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Expediente</p><h2 class="section-title">Historial por colaborador</h2></div>
+  </div>
+  <div class="hist-shell">
+    <div class="hist-list" id="histList"></div>
+    <div id="printArea"><div class="card" id="expedienteCard"></div></div>
+  </div>
+</section>
+</div>
+
+</main>
+
+<script>
+const PAEI_LABEL = {P:'(P) Eficiencia', A:'(A) Administración', E:'(E) Proactividad', I:'(I) Colaboración'};
+const PAEI_HEX = {P:'#2E8FE0', A:'#E8C547', E:'#34C77B', I:'#A6415A'};
+
+const PUESTO_DEF = {
+  'Vendedor Comisionista': { P:'Plan de trabajo; plan de negocios.', A:'Orden y cumplimiento de políticas y procesos; llenado de SalesForce; aprobación de Mystery Shopper; puntualidad y permisos.', E:'Propuestas de exhibición y prospección externa; iniciativas de contenido digital; reporte de errores en Todos Somos Auditores; propuestas de automatización o mejora.', I:'Participación activa en el equipo; ayuda a compañeros; actitud propositiva; busca soluciones; reconoce a compañeros y líderes; promotor de Grupo Vanguardia.' },
+  'Coordinador de Piso': { P:'Control de piso y llamadas al día; preciadores actualizados; stock de insumos; atención al 100% de clientes/proveedores/colaboradores en recepción.', A:'Seguimiento a facturas de proveedores; aprobación de Mystery Shopper; espacios según estándares de marca; protocolos de atención; puntualidad.', E:'Participa en eventos de marca; propone mejoras demostrables; apoya otras áreas.', I:'Validación de Experiencia Vanguardia; proactiva en atención al cliente y a otras áreas, busca soluciones hasta el final.' },
+};
+
+const PERSONAS = [
+{
+  id:'antonio', nombre:"Antonio de Jesús Rogelio Martínez", puesto:"Vendedor Comisionista", agencia:"ACURA GUADALAJARA", jefe:"Adriana Margarita Pérez Álvarez", antiguedad:"2.7 años",
+  periods: [
+    {label:"Ene–Jun 2025", fecha:"06/10/2025", global:32, clasif:"INSATISFACTORIO", paei:{P:0,A:0,E:46.7,I:100}, comentarios:{P:"Resultado del plan del trabajo.",A:"Todos los días utilizar SalesForce, ser puntual y generar citas.",E:"Buscar prospectos de manera externa.",I:"Sumar mis comentarios y buscar el cómo sí, lograr participación de todo el equipo."}, acuerdos:"Generar las ventas que me solicitan en mi plan de trabajo y enfocarme en el plan de negocios."},
+    {label:"Jul–Dic 2025", fecha:"12/01/2026", global:91, clasif:"ADECUADO", paei:{P:85,A:85,E:100,I:100}, comentarios:{P:"Se compromete a seguir haciendo citas, dar seguimiento y plasmar en el SalesForce.",A:"Estuvo a muy poco de lograr el objetivo anual, se le valora muchísimo su desempeño y él lo sabe.",E:"Apoya haciendo sus videos y con material para compartir en redes sociales.",I:"Colabora con sus compañeros, es fiable y hace más de lo que le corresponde."}, acuerdos:"Excelente desempeño, ha tomado mucho mejor su papel de asesor, cree que puede hacer las cosas y lo está demostrando."},
+    {label:"Ene–Jun 2026", fecha:"27/06/2025 (fecha inconsistente en el archivo)", global:88, clasif:"ADECUADO", paei:{P:85,A:80,E:90,I:100}, comentarios:{P:"Plan de trabajo mensual en Excel.",A:"Apegado a procesos y políticas, MS aprobatorio y puntual; SalesForce estamos creando el hábito todos los días.",E:"Apoya, participa, no tiene propuestas; es muy buen trabajador en equipo.",I:"Es promotor de Grupo Vanguardia, apoya, genera ambiente positivo."}, acuerdos:null},
+  ],
+  atendido: "Recuperación real y sostenida: de Insatisfactorio (32) a Adecuado (91, luego 88). El acuerdo de Jul-Dic 2025 (\"generar ventas, enfocarse en plan de negocios\") sí se atendió — subió P y A de 0 a 85. La ligera baja de 91 a 88 en 2026 coincide con que el comentario de Emprendimiento ya no menciona iniciativa propia (\"no tiene propuestas\").",
+  atendidoNivel: "total",
+  reco_full: [
+    {texto:"Su indicador de Eficiencia (A) — orden, procesos, SalesForce, puntualidad — pasó de 0 a 85 en menos de un año; ya está apegado al hábito. Reforzar con seguimiento breve, no capacitación formal.", categoria:"Coaching del jefe"},
+    {texto:"El comentario 2026 señala que \"apoya, participa, no tiene propuestas\" en Proactividad (E) — invitarlo a presentar una propuesta de exhibición o prospección externa, que es justo lo que mide ese indicador en su puesto.", categoria:"Experiencia de desarrollo"},
+  ],
+  reco_accion: "Invitar a proponer iniciativa de prospección",
+},
+{
+  id:'luis', nombre:"Luis Fidel López Rodríguez", puesto:"Vendedor Comisionista", agencia:"ACURA GUADALAJARA", jefe:"Adriana Margarita Pérez Álvarez", antiguedad:"15.2 años",
+  periods: [
+    {label:"Ene–Jun 2025", fecha:"06/10/2025", global:64, clasif:"INSATISFACTORIO", paei:{P:50,A:50,E:60,I:100}, comentarios:{P:"Su objetivo de ventas se ha visto bajo en promedio.",A:"SalesForce requiere mayor interacción.",E:"Comercialización digital requiere más apoyo.",I:"Apoya y promueve valores Vanguardia."}, acuerdos:"Interactuando diario con el CRM, comercialmente enfocarse en el resto del portafolio como es productos VGD."},
+    {label:"Jul–Dic 2025", fecha:"12/01/2026", global:95.5, clasif:"SOBRESALIENTE", paei:{P:100,A:85,E:100,I:100}, comentarios:{P:"Ha logrado superar las expectativas.",A:"Se compromete a seguir los procesos de SalesForce al 100% para lograr su desempeño adecuado.",E:"Sigue trabajando en eso.",I:"Es parte fundamental del equipo."}, acuerdos:"Excelente desempeño, ha madurado mucho en su puesto, carácter y responsabilidades; es un elemento que se le tiene que valorar."},
+    {label:"Ene–Jun 2026", fecha:"27/06/2025 (fecha inconsistente en el archivo)", global:94.75, clasif:"ADECUADO", paei:{P:95,A:90,E:95,I:100}, comentarios:{P:"Plan de trabajo, avance semanal en Excel.",A:"Está trabajando en el hábito de ingresar avances al SalesForce, el resto OK.",E:"Apoya, propone exhibiciones, crea contenido digital, busca la mejora continua.",I:"En este punto está al 100."}, acuerdos:null},
+  ],
+  atendido: "El colaborador con la recuperación más dramática del equipo: de Insatisfactorio (64) a Sobresaliente (95.5) en un semestre, con 15.2 años de antigüedad. Se mantiene alto en 2026 (94.75, a solo 0.25 de Sobresaliente). El acuerdo de \"interactuar diario con el CRM\" se atendió — pasó de 50 a 85-90 en Administración.",
+  atendidoNivel: "total",
+  reco_full: [
+    {texto:"Con 15.2 años de antigüedad y una recuperación de este nivel, es un caso de referencia para el equipo — vale la pena que comparta qué cambió con Antonio, quien tuvo una caída similar.", categoria:"Mentoría interna"},
+    {texto:"Está a 0.25 puntos de Sobresaliente; el hábito de SalesForce (A) es el último punto pendiente según su propio comentario 2026.", categoria:"Coaching del jefe"},
+  ],
+  reco_accion: "Formalizar como mentor de recuperación",
+},
+{
+  id:'denisse', nombre:"Denisse Andrea Fernández Pelayo", puesto:"Coordinador de Piso", agencia:"ACURA GUADALAJARA", jefe:"Adriana Margarita Pérez Álvarez (antes: Wosbaldo Javier Garza de la Rosa)", antiguedad:"1.5 años",
+  periods: [
+    {label:"Ene–Dic 2025 (anual, otro jefe)", fecha:"04/01/2026", global:85.05, clasif:"ADECUADO", paei:{P:85,A:85,E:85.3,I:85}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:"Mejorar en el acompañamiento del cliente durante su estancia o visita para garantizar Experiencia Vanguardia."},
+    {label:"Ene–Jun 2026", fecha:"27/06/2025 (fecha inconsistente en el archivo)", global:91.5, clasif:"ADECUADO", paei:{P:90,A:95,E:90,I:90}, comentarios:{P:"Lleva su control al día, está pendiente de los preciadores y la atención al cliente, proveedor y compañerismo.",A:"Le falta poquito de puntualidad, no es recurrente pero existen ocasiones, que a bien me notifica cuando está retrasada.",E:"Apoya en actividades de otras áreas y otros puestos sobre esto el puntaje de este indicador.",I:"Es amable, transmite escuela Vanguardia, solo le falta creer que sí puede, duda de ella y sus capacidades."}, acuerdos:null},
+  ],
+  atendido: "Mejora (+6.45) en su primer periodo bajo Adriana. El acuerdo 2025 sobre acompañamiento al cliente parece atendido — Producción e Integración subieron. El comentario más notable de 2026 es sobre confianza en sí misma, no sobre habilidad técnica.",
+  atendidoNivel: "total",
+  reco_full: [
+    {texto:"El comentario de Integración señala textualmente que \"duda de ella y sus capacidades\" — es un tema de confianza, no de competencia. Mejor abordarlo con retroalimentación directa de la jefa que con capacitación formal.", categoria:"Coaching del jefe"},
+    {texto:"Su indicador de Administración (puntualidad) tiene una oportunidad menor y ya reconocida por ella misma (avisa cuando se retrasa) — seguimiento ligero, no plan formal.", categoria:"Coaching del jefe"},
+  ],
+  reco_accion: "Retroalimentación directa sobre autoconfianza",
+},
+{
+  id:'jose', nombre:"José Abraham Ruelas Esquivel", puesto:"Vendedor Comisionista", agencia:"ACURA GUADALAJARA", jefe:"Adriana Margarita Pérez Álvarez", antiguedad:"0.5 años",
+  periods: [
+    {label:"Ene–Jun 2026", fecha:"27/06/2025 (fecha inconsistente en el archivo)", global:85.5, clasif:"ADECUADO", paei:{P:85,A:80,E:90,I:90}, comentarios:{P:"Debe apegarse al cumplimiento del plan de trabajo.",A:"Tiene una gran área de oportunidad en apegarse a las políticas y procesos; por querer hacer todo rápido omite temas como firmas de salida de demos, comida debe ser en el comedor; ya lo platicamos y está dispuesto a hacerlo.",E:"Está pendiente de los autos de exhibición y de los demos, de que todo funcione; se siente su apoyo.",I:"Le gusta solucionar aunque no pide autorización, brincando los procesos; se le explica cómo se debe hacer."}, acuerdos:null},
+  ],
+  atendido: "Primer registro (ingresó enero 2026), sin antecedente 2025. El patrón de sus tres comentarios (P, A, I) es el mismo: quiere resolver rápido y por su cuenta, saltándose procesos — ya se le explicó pero es su primera evaluación, así que aún no hay forma de saber si se corrige.",
+  atendidoNivel: "pendiente",
+  reco_full: [
+    {texto:"Los tres indicadores con oportunidad (P, A, I) apuntan al mismo patrón: apegarse a procesos establecidos en vez de resolver por su cuenta. Es un solo tema de fondo, no tres separados.", categoria:"Coaching del jefe"},
+    {texto:"Dar seguimiento cercano en el próximo ciclo — es su arranque, y el patrón de saltarse procesos vale la pena corregirlo temprano antes de que se vuelva hábito.", categoria:"Coaching del jefe"},
+  ],
+  reco_accion: "Reforzar apego a procesos y políticas",
+},
+];
+
+function fmt(v){ return (v===null||v===undefined) ? '—' : (Number.isInteger(v) ? v.toString() : v.toFixed(2)); }
+function initials(name){ return name.split(' ').filter(w=>w.length>2||/[A-ZÁÉÍÓÚÑ]/.test(w[0])).slice(0,2).map(w=>w[0]).join('').toUpperCase().slice(0,2); }
+function tier(g){ if(g===null) return null; return g>=95?'SOBRESALIENTE':g>=85?'ADECUADO':'INSATISFACTORIO'; }
+function stars(g){ if (g===null) return '—'; const n = g>=98?5:g>=95?5:g>=90?4:g>=85?3:g>=75?2:1; return '★'.repeat(n) + '☆'.repeat(5-n); }
+function deltaSpan(d){
+  if (d===null||d===undefined) return '<span class="delta-flat">—</span>';
+  if (d > 0.05) return `<span class="delta-up">▲ +${d.toFixed(1)}</span>`;
+  if (d < -0.05) return `<span class="delta-down">▼ ${d.toFixed(1)}</span>`;
+  return `<span class="delta-flat">▬ 0.0</span>`;
+}
+function series3(p){
+  if (p.periods.length===3) return p.periods;
+  if (p.periods.length===1) return [{global:null,paei:null}, {global:null,paei:null}, p.periods[0]];
+  return [p.periods[0], p.periods[0], p.periods[1]];
+}
+function personDelta(p){
+  const s = series3(p);
+  const base = s[0].global, cur = s[2].global;
+  if (base===null||cur===null) return null;
+  return cur - base;
+}
+
+function paeiCircleSvg(letter, value, size){
+  size = size||130;
+  const r = size/2-13, cx=size/2, cy=size/2, circ=2*Math.PI*r;
+  const frac = Math.max(0, Math.min(1, (value||0)/100));
+  const dash = frac*circ;
+  const color = PAEI_HEX[letter];
+  return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--navy-3)" stroke-width="13"/>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="13" stroke-linecap="round"
+      stroke-dasharray="${dash} ${circ-dash}" transform="rotate(-90 ${cx} ${cy})"/>
+    <text x="${cx}" y="${cy-4}" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="25" fill="var(--ink)">${value!==null?value.toFixed(1):'—'}</text>
+    <text x="${cx}" y="${cy+20}" text-anchor="middle" font-family="IBM Plex Mono" font-weight="700" font-size="15" fill="${color}">(${letter})</text>
+  </svg>`;
+}
+function renderCircleRow(containerId, items, deltaLabel){
+  deltaLabel = deltaLabel || 'vs. 2025';
+  document.getElementById(containerId).innerHTML = `<div style="display:flex; gap:28px; justify-content:center; flex-wrap:wrap;">` +
+    items.map(it=>`<div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+      ${paeiCircleSvg(it.letter, it.value)}
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--muted); text-align:center; max-width:130px;">${PAEI_LABEL[it.letter]}</div>
+      <div style="font-size:12px;">${deltaSpan(it.delta)} <span style="color:var(--muted); font-size:10.5px;">${deltaLabel}</span></div>
+    </div>`).join('') + `</div>`;
+}
+
+function lineChartSvg(series, opts){
+  opts = opts || {};
+  const W = opts.w||620, H = opts.h||300, padL=44, padR = opts.endLabels? 54:18, padT=16, padB=36;
+  const plotW=W-padL-padR, plotH=H-padT-padB;
+  const yMin = opts.yMin!==undefined?opts.yMin:0, yMax = opts.yMax!==undefined?opts.yMax:100;
+  const n = 3;
+  const xPos = i => padL + (i/(n-1))*plotW;
+  const yPos = v => padT + plotH - ((v-yMin)/(yMax-yMin))*plotH;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">`;
+  const gridVals = opts.gridVals || [yMin, (yMin+yMax)/2, yMax];
+  gridVals.forEach(v=>{
+    const y = yPos(v);
+    svg += `<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="var(--line)" stroke-width="1"/>
+      <text x="${padL-8}" y="${y+4}" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="var(--muted)">${v.toFixed(0)}</text>`;
+  });
+  const xLabels = ['Ene–Jun 25','Jul–Dic 25','Ene–Jun 26'];
+  xLabels.forEach((lbl,i)=> svg += `<text x="${xPos(i)}" y="${H-12}" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="var(--muted)">${lbl}</text>`);
+  series.forEach(s=>{
+    const pts = s.values.map((v,i)=> v!==null ? `${xPos(i)},${yPos(v)}` : null).filter(Boolean);
+    svg += `<polyline points="${pts.join(' ')}" fill="none" stroke="${s.color}" stroke-width="${s.width||2.5}"/>`;
+    s.values.forEach((v,i)=>{ if(v!==null){
+      svg += `<circle cx="${xPos(i)}" cy="${yPos(v)}" r="4" fill="${s.color}"/>`;
+      if (s.showLabel) svg += `<text x="${xPos(i)}" y="${yPos(v)-11}" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="11" fill="var(--ink)">${v.toFixed(1)}</text>`;
+    }});
+  });
+  if (opts.endLabels){
+    let ends = series.map(s=>{
+      const lastIdx = s.values.map((v,i)=>v!==null?i:-1).filter(i=>i>=0).pop();
+      return lastIdx===undefined ? null : {y: yPos(s.values[lastIdx]), val:s.values[lastIdx], color:s.color, letter:s.letter};
+    }).filter(Boolean).sort((a,b)=>a.y-b.y);
+    for (let i=1;i<ends.length;i++){ if (ends[i].y-ends[i-1].y<16) ends[i].y = ends[i-1].y+16; }
+    ends.forEach(e=>{
+      svg += `<text x="${W-padR+8}" y="${e.y+4}" font-family="IBM Plex Mono" font-weight="700" font-size="11" fill="${e.color}">(${e.letter}) ${e.val.toFixed(1)}</text>`;
+    });
+  }
+  svg += `</svg>`;
+  return svg;
+}
+
+function renderKpis(){
+  const avg2026 = PERSONAS.reduce((s,p)=>s+series3(p)[2].global,0)/PERSONAS.length;
+  const vals2025 = PERSONAS.map(p=>{
+    const s=series3(p);
+    if (s[0].global!==null && s[1].global!==null) return (s[0].global+s[1].global)/2;
+    if (s[1].global!==null) return s[1].global;
+    return null;
+  }).filter(v=>v!==null);
+  const avg2025 = vals2025.reduce((a,b)=>a+b,0)/vals2025.length;
+  const delta = avg2026-avg2025;
+  const sobresalientes = PERSONAS.filter(p=>tier(series3(p)[2].global)==='SOBRESALIENTE').length;
+  const tiles = [
+    {l:'Equipo', n:PERSONAS.length, sub:'100% evaluado 2026'},
+    {l:'Promedio 2026', n:avg2026.toFixed(1), sub:'los 4 colaboradores'},
+    {l:'vs. 2025', n:`${delta>=0?'+':''}${delta.toFixed(1)}`, sub:`promedio 2025: ${avg2025.toFixed(1)} (${vals2025.length} con dato)`, cls: delta>=0?'delta-up':'delta-down'},
+    {l:'Sobresalientes', n:`${sobresalientes}/${PERSONAS.length}`, sub:`${Math.round(sobresalientes/PERSONAS.length*100)}%`},
+  ];
+  document.getElementById('kpiGrid').innerHTML = tiles.map(t=>`
+    <div class="card kpi"><div class="l">${t.l}</div><div class="n ${t.cls||''}">${t.n}</div><div class="sub">${t.sub}</div></div>`).join('');
+}
+
+function renderTeamCircles(){
+  const cur={P:0,A:0,E:0,I:0}, prev={P:0,A:0,E:0,I:0};
+  PERSONAS.forEach(p=>{ const s=series3(p); ['P','A','E','I'].forEach(k=>{ cur[k]+=s[2].paei[k]; }); });
+  ['P','A','E','I'].forEach(k=>cur[k]/=PERSONAS.length);
+  const with2025 = PERSONAS.filter(p=>{ const s=series3(p); return s[0].paei!==null || s[1].paei!==null; });
+  with2025.forEach(p=>{
+    const s=series3(p);
+    ['P','A','E','I'].forEach(k=>{
+      const vals=[s[0].paei?s[0].paei[k]:null, s[1].paei?s[1].paei[k]:null].filter(v=>v!==null);
+      prev[k]+= vals.reduce((a,b)=>a+b,0)/vals.length;
+    });
+  });
+  ['P','A','E','I'].forEach(k=>prev[k]/=with2025.length);
+  const items = ['P','A','E','I'].map(k=>({letter:k, value:cur[k], delta:cur[k]-prev[k]}));
+  renderCircleRow('circleRowTeam', items, 'vs. 2025');
+}
+
+function renderCumplimientoAplicacion(){
+  const tiles = [
+    {l:'2025', n:'75%', sub:'3 de 4 (José sin antecedente, ingreso 2026)'},
+    {l:'2026', n:'100%', sub:'4 de 4 colaboradores evaluados'},
+    {l:'General', n:'88%', sub:'7 de 8 evaluaciones aplicadas'},
+  ];
+  document.getElementById('cumplimientoAplicacionGrid').innerHTML = tiles.map(t=>`
+    <div class="card kpi"><div class="l">${t.l}</div><div class="n">${t.n}</div><div class="sub">${t.sub}</div></div>`).join('');
+}
+
+function renderHighlights(){
+  const items = [
+    {label:'Mayor recuperación', nombre:'Luis', valor:'64 → 95.5', person:'luis'},
+    {label:'Segunda mayor recuperación', nombre:'Antonio', valor:'32 → 91', person:'antonio'},
+    {label:'Mejor arranque bajo Adriana', nombre:'Denisse', valor:'+6.45', person:'denisse'},
+    {label:'Antigüedad + estabilidad', nombre:'Luis', valor:'15.2 años', person:'luis'},
+  ];
+  document.getElementById('highlightGrid').innerHTML = items.map(it=>`
+    <div class="card hl-card" onclick="openHistorial('${it.person}')">
+      <div class="stars">★★★</div>
+      <div class="hn">${it.nombre}</div>
+      <div class="hv">${it.valor}</div>
+      <div class="hl">${it.label}</div>
+    </div>`).join('');
+}
+
+function heatColor(v){ if(v===null) return 'rgba(255,255,255,0.05)'; if(v>=95) return 'rgba(52,199,123,0.28)'; if(v>=85) return 'rgba(232,197,71,0.28)'; return 'rgba(240,82,75,0.28)'; }
+function heatTextColor(v){ if(v===null) return 'var(--muted)'; if(v>=95) return 'var(--g)'; if(v>=85) return 'var(--y)'; return 'var(--r)'; }
+function renderHeat(){
+  let html = '<thead><tr><th>Colaborador</th><th>P</th><th>A</th><th>E</th><th>I</th><th>Global</th></tr></thead><tbody>';
+  PERSONAS.forEach(p=>{
+    const s = series3(p)[2];
+    html += `<tr><td>${p.nombre.split(' ')[0]} ${p.nombre.split(' ')[1]||''}</td>`;
+    ['P','A','E','I'].forEach(k=>{ const v=s.paei[k]; html += `<td><span class="heat-cell" style="background:${heatColor(v)};color:${heatTextColor(v)};">${v}</span></td>`; });
+    html += `<td><span class="heat-cell" style="background:${heatColor(s.global)};color:${heatTextColor(s.global)};">${fmt(s.global)}</span></td></tr>`;
+  });
+  document.getElementById('heatTable').innerHTML = html + '</tbody>';
+}
+
+function renderTeamCards(){
+  document.getElementById('teamGrid').innerHTML = PERSONAS.map(p=>{
+    const s = series3(p)[2]; const g = s.global; const d = personDelta(p);
+    const arrow = d===null?'':(d>0.5?'<span class="delta-up">↑</span>':d<-0.5?'<span class="delta-down">↓</span>':'<span class="delta-flat">→</span>');
+    return `<div class="card team-card" onclick="openHistorial('${p.id}')">
+      <div class="avatar">${initials(p.nombre)}</div>
+      <div class="tn">${p.nombre}</div>
+      <div class="tp">${p.puesto}</div>
+      <div class="tv">${fmt(g)} ${arrow}</div>
+      <div class="stars">${stars(g)}</div>
+      <div class="tlink">Ver expediente →</div>
+    </div>`;
+  }).join('');
+}
+
+function renderComentario(){
+  const avg2026 = PERSONAS.reduce((s,p)=>s+series3(p)[2].global,0)/PERSONAS.length;
+  document.getElementById('comentarioBox').innerHTML = `<div class="aihead">🧠 Generado a partir de los datos del periodo</div>
+    Este equipo pasó de tener a <b>dos colaboradores en Insatisfactorio</b> en el primer semestre de 2025 (Antonio en 32 y Luis en 64) a los <b>cuatro en Adecuado</b> en 2026, con un promedio de <b>${avg2026.toFixed(1)}</b>. La recuperación de Luis (64→95.5, alcanzando Sobresaliente en Jul-Dic) y de Antonio (32→91) son las historias más fuertes del equipo — ambas coinciden con acuerdos concretos sobre uso diario de SalesForce y enfoque en el plan de ventas, que sí se atendieron.<br><br>
+    Ningún colaborador está hoy en Sobresaliente en el corte 2026, aunque Luis está a solo 0.25 puntos. José Abraham, de ingreso muy reciente, muestra un patrón que vale la pena atender pronto: en tres de sus cuatro indicadores el comentario apunta a lo mismo — resolver rápido saltándose procesos establecidos.`;
+}
+
+function renderPersistList(){
+  document.getElementById('persistList').innerHTML = `
+    <div class="card persist-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <b style="font-size:14px;">Luis Fidel López Rodríguez</b><span class="tier-pill SOBRESALIENTE">Recuperación sostenida</span>
+      </div>
+      <div class="persist-steps">
+        <div class="persist-step"><div class="pl">2025 S1</div>Insatisfactorio (64)</div>
+        <div style="color:var(--muted);">→</div>
+        <div class="persist-step"><div class="pl">2025 S2</div>Sobresaliente (95.5)</div>
+        <div style="color:var(--muted);">→</div>
+        <div class="persist-step"><div class="pl">2026</div>Adecuado (94.75)</div>
+      </div>
+      <p style="font-size:12.5px; color:var(--muted); margin:8px 0 0;">El acuerdo de "interactuar diario con el CRM" se cumplió y se sostiene un año después.</p>
+    </div>
+    <div class="card persist-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <b style="font-size:14px;">Antonio de Jesús Rogelio Martínez</b><span class="tier-pill ADECUADO">Recuperación con ligera baja</span>
+      </div>
+      <div class="persist-steps">
+        <div class="persist-step"><div class="pl">2025 S1</div>Insatisfactorio (32)</div>
+        <div style="color:var(--muted);">→</div>
+        <div class="persist-step"><div class="pl">2025 S2</div>Adecuado (91)</div>
+        <div style="color:var(--muted);">→</div>
+        <div class="persist-step"><div class="pl">2026</div>Adecuado (88)</div>
+      </div>
+      <p style="font-size:12.5px; color:var(--muted); margin:8px 0 0;">Se recuperó y se mantiene, aunque bajó 3 puntos — vale la pena confirmar que no sea el inicio de una tendencia.</p>
+    </div>
+    <div class="card persist-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <b style="font-size:14px;">José Abraham Ruelas Esquivel</b><span class="pill-warn">Patrón desde su primer registro</span>
+      </div>
+      <p style="font-size:13px; margin:8px 0 0;">Sus tres comentarios con oportunidad — Producción, Administración e Integración — apuntan al mismo tema: resuelve rápido, saltándose procesos establecidos. Es un solo patrón de fondo, no tres problemas distintos.</p>
+    </div>`;
+}
+
+function renderPromoCoach(){
+  const promo = PERSONAS.filter(p=>['luis','antonio'].includes(p.id));
+  document.getElementById('promoList').innerHTML = promo.map(p=>{
+    const g = series3(p)[2].global;
+    return `<div class="card hl-card" onclick="openHistorial('${p.id}')">
+      <div class="stars">${stars(g)}</div>
+      <div class="hn">${p.nombre.split(' ')[0]} ${p.nombre.split(' ')[1]||''}</div>
+      <div class="hv">${fmt(g)}</div>
+      <div class="hl">Recuperación sostenida</div>
+    </div>`;
+  }).join('');
+}
+
+function renderRiesgo(){
+  document.getElementById('riesgoBox').innerHTML = `<div class="aihead">🧠 Calificación baja + comentarios negativos + sin mejora = Riesgo Alto</div>
+    Nadie en el corte 2026 tiene calificación baja (todos ≥85). Antonio y Luis tuvieron calificación baja en Ene-Jun 2025, pero <b>sí mostraron mejora</b> desde entonces — no cumplen la condición de "sin mejora", así que no califican como Riesgo Alto hoy. La alerta real de este equipo es distinta: <b>José Abraham</b> muestra un patrón de saltarse procesos desde su primer registro — no es riesgo de desmotivación, pero sí de hábito temprano que conviene corregir antes de que se consolide.`;
+}
+
+function renderPlanGerencial(){
+  const PRIORIDAD = {jose:'Alta', antonio:'Media', denisse:'Media', luis:'Baja'};
+  const TIPO = {jose:'Corregir patrón temprano', antonio:'Confirmar que la baja no continúe', denisse:'Coaching de confianza', luis:'Reconocer y formalizar mentoría'};
+  const prioColor = {Alta:'var(--r)', Media:'var(--o)', Baja:'var(--g)'};
+  document.getElementById('planGerencialTable').innerHTML =
+    `<thead><tr><th>Colaborador</th><th>Situación</th><th>Acción sugerida</th><th>Prioridad</th></tr></thead><tbody>` +
+    PERSONAS.map(p=>`<tr>
+      <td>${p.nombre}</td><td>${TIPO[p.id]}</td>
+      <td><span class="pill-action">${p.reco_accion}</span></td>
+      <td><span style="color:${prioColor[PRIORIDAD[p.id]]}; font-weight:700; font-family:'IBM Plex Mono',monospace; font-size:11px;">${PRIORIDAD[p.id]}</span></td>
+    </tr>`).join('') + `</tbody>`;
+}
+
+function renderTendenciaEquipo(){
+  const vals = [0,1,2].map(i=>{
+    const scores = PERSONAS.map(p=>series3(p)[i].global).filter(v=>v!==null);
+    return scores.length ? scores.reduce((a,b)=>a+b,0)/scores.length : null;
+  });
+  document.getElementById('lineTeam').innerHTML = lineChartSvg([{values:vals, color:'var(--blue-light)', width:3, showLabel:true}], {yMin:0, yMax:100});
+}
+
+function renderTendenciaPaei(){
+  const series = ['P','A','E','I'].map(k=>{
+    const values = [0,1,2].map(i=>{
+      const scores = PERSONAS.map(p=>{ const pa = series3(p)[i].paei; return pa ? pa[k] : null; }).filter(v=>v!==null);
+      return scores.length ? scores.reduce((a,b)=>a+b,0)/scores.length : null;
+    });
+    return {values, color:PAEI_HEX[k], width:2.75, letter:k};
+  });
+  document.getElementById('linePaei').innerHTML = lineChartSvg(series, {endLabels:true, yMin:0, yMax:100});
+  document.getElementById('paeiLegend').innerHTML = ['P','A','E','I'].map(k=>`
+    <div style="display:flex; align-items:center; gap:6px; font-size:12px;">
+      <span style="width:16px; height:3px; background:${PAEI_HEX[k]}; display:inline-block; border-radius:2px;"></span>${PAEI_LABEL[k]}
+    </div>`).join('');
+}
+
+let currentHistId = PERSONAS[0].id;
+function renderHistList(){
+  document.getElementById('histList').innerHTML = PERSONAS.map(p=>`
+    <div class="hist-item ${p.id===currentHistId?'active':''}" data-id="${p.id}">
+      <span>${p.nombre}</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;">${fmt(series3(p)[2].global)}</span>
+    </div>`).join('');
+  document.getElementById('histList').querySelectorAll('.hist-item').forEach(el=>{
+    el.addEventListener('click', ()=>{ currentHistId = el.dataset.id; renderHistList(); renderExpediente(); });
+  });
+}
+function openHistorial(id){
+  currentHistId = id;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelector('.tab-btn[data-tab="historial"]').classList.add('active');
+  document.getElementById('panel-historial').classList.add('active');
+  renderHistList(); renderExpediente();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function renderExpediente(){
+  const p = PERSONAS.find(x=>x.id===currentHistId);
+  const s = series3(p);
+  const cur = s[2]; const g = cur.global; const t = tier(g);
+  const ranking = [...PERSONAS].filter(x=>series3(x)[2].global!==null).sort((a,b)=>series3(b)[2].global-series3(a)[2].global);
+  const rankPos = ranking.findIndex(x=>x.id===p.id)+1;
+
+  const lineHtml = lineChartSvg([{values:s.map(x=>x.global), color:'var(--blue-light)', width:3, showLabel:true}], {yMin:0, yMax:100});
+  const prevPaei = s[1].paei;
+  const circleItems = ['P','A','E','I'].map(k=>({letter:k, value:cur.paei[k], delta: prevPaei ? cur.paei[k]-prevPaei[k] : null}));
+
+  const periodsTableHtml = `<div style="overflow-x:auto;"><table class="rtable" style="min-width:760px;">
+    <thead><tr><th>Periodo</th><th style="text-align:right">General</th><th style="text-align:right">(P)</th><th style="text-align:right">(A)</th><th style="text-align:right">(E)</th><th style="text-align:right">(I)</th><th style="min-width:300px;">Comentarios</th></tr></thead>
+    <tbody>${p.periods.map(per=>{
+      const com = `<b style="color:var(--blue-light);">(P)</b> ${per.comentarios.P}<br><b style="color:var(--blue-light);">(A)</b> ${per.comentarios.A}<br><b style="color:var(--blue-light);">(E)</b> ${per.comentarios.E}<br><b style="color:var(--blue-light);">(I)</b> ${per.comentarios.I}${per.acuerdos?`<br><b style="color:var(--blue-light);">Acuerdo:</b> ${per.acuerdos}`:''}`;
+      return `<tr>
+        <td><b>${per.label}</b><br><span class="tier-pill ${per.clasif}" style="margin-top:4px;display:inline-block;">${per.clasif.charAt(0)+per.clasif.slice(1).toLowerCase()}</span></td>
+        <td class="num" style="font-weight:800;">${fmt(per.global)}</td>
+        <td class="num">${per.paei.P}</td><td class="num">${per.paei.A}</td><td class="num">${per.paei.E}</td><td class="num">${per.paei.I}</td>
+        <td style="font-size:12px; line-height:1.55;">${com}</td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table></div>`;
+
+  document.getElementById('expedienteCard').innerHTML = `
+    <div class="expediente-header">
+      <div style="display:flex; gap:14px; align-items:center;">
+        <div class="av-lg">${initials(p.nombre)}</div>
+        <div><div style="font-weight:800; font-size:18px;">${p.nombre}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted);">${p.puesto} · ${p.agencia}</div></div>
+      </div>
+      <button class="btn-pdf" onclick="window.print()">⬇ Descargar PDF</button>
+    </div>
+    <div class="exp-meta">
+      <div class="em"><div class="ek">Antigüedad</div><div class="ev">${p.antiguedad}</div></div>
+      <div class="em"><div class="ek">Jefe</div><div class="ev" style="font-size:11px;">${p.jefe}</div></div>
+      <div class="em"><div class="ek">Calificación actual</div><div class="ev">${fmt(g)} <span class="tier-pill ${t}">${t.charAt(0)+t.slice(1).toLowerCase()}</span></div></div>
+      <div class="em"><div class="ek">Ranking equipo</div><div class="ev">#${rankPos} de ${ranking.length}</div></div>
+      <div class="em"><div class="ek">Tendencia</div><div class="ev">${deltaSpan(personDelta(p))}</div></div>
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">Calificación promedio por indicador (vs. periodo anterior)</div>
+      <div id="circleRowPerson"></div>
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">Evolución de calificación — por semestre</div>
+      <div style="display:flex; justify-content:center;">${lineHtml}</div>
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">¿Se atendieron los puntos?</div>
+      <p style="font-size:13px; line-height:1.65; margin:0 0 14px;">${p.atendido}</p>
+      <div class="section-kicker" style="margin-bottom:10px;">Concentrado general</div>
+      ${periodsTableHtml}
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">Qué mide cada indicador en su puesto</div>
+      <div class="doc-block"><p><b>P</b> — ${PUESTO_DEF[p.puesto].P}<br><b>A</b> — ${PUESTO_DEF[p.puesto].A}<br><b>E</b> — ${PUESTO_DEF[p.puesto].E}<br><b>I</b> — ${PUESTO_DEF[p.puesto].I}</p><p style="margin-top:8px; color:var(--muted); font-size:11px;">Fuente: Matriz de Ponderación oficial, plantillas PAEI Grupo Vanguardia.</p></div>
+    </div>
+    <div style="padding:0 22px 24px;">
+      <div class="card ai-box"><div class="aihead">🧠 Recomendación IA</div>
+        <ul style="margin:0; padding-left:18px;">${p.reco_full.map(r=>`<li style="margin-bottom:8px;"><span class="pill-action" style="margin-bottom:4px;display:inline-block;">${r.categoria}</span><br>${r.texto}</li>`).join('')}</ul>
+      </div>
+    </div>
+  `;
+  renderCircleRow('circleRowPerson', circleItems, 'vs. periodo anterior');
+}
+
+function initAll(){
+  renderKpis();
+  renderTeamCircles();
+  renderCumplimientoAplicacion();
+  renderHighlights();
+  renderHeat();
+  renderComentario();
+  renderTeamCards();
+  renderPersistList();
+  renderPromoCoach();
+  renderRiesgo();
+  renderPlanGerencial();
+  renderTendenciaEquipo();
+  renderTendenciaPaei();
+  renderHistList();
+  renderExpediente();
+}
+initAll();
+
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>
