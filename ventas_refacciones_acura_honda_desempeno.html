@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Ventas Refacciones · Honda Vanguardia Galerías · Vanguardia</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+:root{
+  --navy:#060B1F; --navy-2:#0B1330; --navy-3:#121B42;
+  --line:rgba(255,255,255,0.09); --ink:#F4F6FA; --muted:rgba(244,246,250,0.55);
+  --blue-light:#7FD1F0; --blue:#2E8FE0;
+  --g:#34C77B; --y:#E8C547; --r:#F0524B; --o:#F0964B;
+  --paei-p:#2E8FE0; --paei-a:#E8C547; --paei-e:#34C77B; --paei-i:#A6415A;
+  --shadow:0 1px 2px rgba(0,0,0,0.2), 0 12px 32px -16px rgba(0,0,0,0.55);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--navy);color:var(--ink);font-family:'Manrope',sans-serif;-webkit-font-smoothing:antialiased;}
+main{max-width:1100px;margin:0 auto;padding:0 5vw 90px;}
+header.top{ background:radial-gradient(ellipse at 75% -10%, rgba(46,143,224,0.22), transparent 55%), var(--navy); padding:40px 5vw 0; border-bottom:1px solid var(--line); }
+.eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--blue-light); margin:0 0 10px; }
+.hero-title{ font-weight:800; font-size:clamp(24px,3vw,34px); margin:0 0 8px; letter-spacing:-.01em; }
+.hero-sub{ font-size:13.5px; color:var(--muted); max-width:660px; line-height:1.6; margin:0 0 26px; }
+.tabs{ display:flex; gap:4px; flex-wrap:wrap; }
+.tab-btn{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.03em; text-transform:uppercase; color:var(--muted); background:none; border:none; padding:14px 16px; cursor:pointer; border-bottom:3px solid transparent; transition:color .15s,border-color .15s; white-space:nowrap; }
+.tab-btn:hover{ color:var(--blue-light); }
+.tab-btn.active{ color:var(--ink); border-bottom-color:var(--blue); font-weight:700; }
+.panel{ display:none; } .panel.active{ display:block; }
+section{ padding:34px 0 8px; border-bottom:1px solid var(--line); }
+section:last-of-type{ border-bottom:none; }
+.section-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; margin-bottom:18px; }
+.section-kicker{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--blue-light); margin:0 0 6px; }
+.section-title{ font-weight:800; font-size:clamp(18px,2vw,22px); margin:0; }
+.section-note{ font-size:12.5px; color:var(--muted); max-width:360px; line-height:1.5; text-align:right; }
+.card{ background:var(--navy-2); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); }
+.kpi-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+@media(max-width:800px){ .kpi-grid{ grid-template-columns:1fr 1fr; } }
+.kpi{ padding:18px; }
+.kpi .l{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.kpi .n{ font-weight:800; font-size:24px; }
+.kpi .sub{ margin-top:6px; font-size:11px; color:var(--muted); }
+.delta-up{ color:var(--g); font-weight:700; } .delta-down{ color:var(--r); font-weight:700; } .delta-flat{ color:var(--muted); font-weight:700; }
+.tier-pill{ font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.05em; text-transform:uppercase; padding:3px 9px; border-radius:20px; display:inline-block; }
+.tier-pill.SOBRESALIENTE{ background:rgba(52,199,123,0.15); color:var(--g); }
+.tier-pill.ADECUADO{ background:rgba(232,197,71,0.15); color:var(--y); }
+.tier-pill.INSATISFACTORIO{ background:rgba(240,82,75,0.15); color:var(--r); }
+.pill-warn{ font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.05em; text-transform:uppercase; padding:2px 8px; border-radius:20px; background:rgba(240,150,75,0.13); color:var(--o); display:inline-block; }
+.pill-action{ font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.03em; padding:5px 11px; border-radius:8px; background:var(--navy-3); border:1px solid var(--line); color:var(--ink); display:inline-block; }
+table.rtable{ width:100%; border-collapse:collapse; font-size:12.5px; }
+table.rtable th{ text-align:left; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); padding:9px 10px; border-bottom:1px solid var(--line); }
+table.rtable td{ padding:10px 10px; border-bottom:1px solid var(--line); vertical-align:middle; }
+table.rtable td.num{ font-family:'IBM Plex Mono',monospace; text-align:right; }
+table.rtable tr:last-child td{ border-bottom:none; }
+.comment-box{ padding:20px 22px; font-size:13.5px; line-height:1.7; }
+.comment-box b{ color:var(--blue-light); }
+.ai-box{ padding:20px 22px; font-size:13.5px; line-height:1.75; border-left:3px solid var(--blue-light); background:rgba(127,209,240,0.05); }
+.ai-box .aihead{ display:flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--blue-light); margin-bottom:10px; }
+.note-box{ padding:16px 20px; font-size:12.5px; color:var(--muted); line-height:1.6; border-left:3px solid var(--o); background:rgba(240,150,75,0.05); border-radius:0 10px 10px 0; }
+.doc-block{ background:var(--navy-3); border-radius:10px; padding:12px 14px; margin-bottom:8px; }
+.doc-block .dk{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--blue-light); margin-bottom:5px; }
+.doc-block p{ margin:0; font-size:12.5px; line-height:1.6; white-space:pre-line; color:var(--ink); }
+.doc-block.missing p{ color:var(--muted); font-style:italic; }
+.highlight-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+@media(max-width:800px){ .highlight-grid{ grid-template-columns:1fr 1fr; } }
+.hl-card{ padding:18px; text-align:center; }
+.hl-card .stars{ color:var(--y); font-size:13px; margin-bottom:8px; }
+.hl-card .hn{ font-weight:800; font-size:15px; margin-bottom:4px; }
+.hl-card .hv{ font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--blue-light); margin-bottom:6px; }
+.hl-card .hl{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+.team-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+@media(max-width:900px){ .team-grid{ grid-template-columns:1fr 1fr; } }
+.team-card{ padding:18px; cursor:pointer; transition:border-color .15s, transform .15s; }
+.team-card:hover{ border-color:rgba(127,209,240,0.35); transform:translateY(-2px); }
+.avatar{ width:42px; height:42px; border-radius:50%; background:var(--navy-3); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; color:var(--blue-light); margin-bottom:10px; }
+.team-card .tn{ font-weight:700; font-size:13.5px; margin-bottom:2px; }
+.team-card .tp{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--muted); margin-bottom:10px; }
+.team-card .tv{ font-weight:800; font-size:22px; }
+.team-card .stars{ color:var(--y); font-size:11px; margin:4px 0 8px; }
+.team-card .tlink{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--blue-light); text-transform:uppercase; letter-spacing:.05em; }
+.heat-table{ width:100%; border-collapse:collapse; font-size:12.5px; }
+.heat-table th{ font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; color:var(--muted); padding:8px 10px; text-align:center; }
+.heat-table th:first-child{ text-align:left; }
+.heat-table td{ padding:8px 10px; text-align:center; border-bottom:1px solid var(--line); }
+.heat-table td:first-child{ text-align:left; font-weight:600; }
+.heat-cell{ display:inline-block; min-width:40px; padding:5px 8px; border-radius:6px; font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:12px; }
+.reco-box{ background:var(--navy-3); border-radius:10px; padding:14px 16px; border-left:3px solid var(--blue); }
+.reco-box ul{ margin:6px 0 0; padding-left:18px; font-size:12.5px; line-height:1.6; }
+.hist-shell{ display:grid; grid-template-columns:230px 1fr; gap:24px; }
+@media(max-width:800px){ .hist-shell{ grid-template-columns:1fr; } }
+.hist-list{ display:flex; flex-direction:column; gap:4px; }
+.hist-item{ padding:10px 14px; border-radius:9px; cursor:pointer; font-size:13px; display:flex; justify-content:space-between; align-items:center; }
+.hist-item:hover{ background:var(--navy-3); }
+.hist-item.active{ background:rgba(127,209,240,0.1); color:var(--blue-light); font-weight:700; }
+.expediente-header{ display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:14px; padding:20px 22px; }
+.expediente-header .av-lg{ width:56px; height:56px; border-radius:50%; background:var(--navy-3); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:19px; color:var(--blue-light); }
+.exp-meta{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; padding:0 22px 20px; }
+@media(max-width:650px){ .exp-meta{ grid-template-columns:1fr 1fr; } }
+.exp-meta .em{ background:var(--navy-3); border-radius:9px; padding:10px 12px; }
+.exp-meta .ek{ font-family:'IBM Plex Mono',monospace; font-size:9px; text-transform:uppercase; color:var(--muted); margin-bottom:3px; }
+.exp-meta .ev{ font-weight:700; font-size:13px; }
+.btn-pdf{ font-family:'Manrope',sans-serif; font-weight:700; font-size:12.5px; color:#06101F; background:var(--blue-light); border:none; border-radius:9px; padding:10px 16px; cursor:pointer; }
+@media print{
+  body *{ visibility:hidden; }
+  #printArea, #printArea *{ visibility:visible; }
+  #printArea{ position:absolute; left:0; top:0; width:100%; }
+  .tabs, .btn-pdf, .hist-list{ display:none !important; }
+  body{ background:#fff; color:#111; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <p class="eyebrow">Capital Humano · Grupo Vanguardia · División Automotriz</p>
+  <h1 class="hero-title">Ventas Refacciones — Honda Vanguardia Galerías</h1>
+  <p class="hero-sub">Reporte para Alexis Hernández García, Gerente de Refacciones. Su equipo a cargo: 4 colaboradores.</p>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="resumen">🏠 Resumen Ejecutivo</button>
+    <button class="tab-btn" data-tab="equipo">👥 Mi Equipo</button>
+    <button class="tab-btn" data-tab="ia">🧠 Análisis IA</button>
+    <button class="tab-btn" data-tab="tendencias">📈 Tendencias</button>
+    <button class="tab-btn" data-tab="historial">📁 Historial</button>
+  </div>
+</header>
+
+<main>
+
+<div class="panel active" id="panel-resumen">
+
+<section style="padding-top:30px;">
+  <div class="note-box">
+    <b style="color:var(--o);">Alcance de los datos.</b> Las evaluaciones 2026 de este equipo tienen calificación pero <b>ningún comentario capturado</b> (los campos de evidencia están vacíos en el archivo fuente). Los comentarios que sí existen son de 2025, y en su mayoría dicen "Sin información" salvo para Producción en dos casos. José Guadalupe reportaba a otro jefe (Juan Carlos Melgoza García) en su registro 2025 — mismo puesto y agencia, solo cambió de jefe.
+  </div>
+</section>
+
+<section>
+  <div class="kpi-grid" id="kpiGrid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Vista clara</p><h2 class="section-title">Calificación promedio por indicador</h2></div>
+    <p class="section-note">Equipo completo. Variación vs. 2025.</p>
+  </div>
+  <div class="card" style="padding:26px;"><div id="circleRowTeam"></div></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Alexis Hernández García · jefe inmediato</p><h2 class="section-title">Cumplimiento de aplicación de evaluaciones</h2></div>
+  </div>
+  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);" id="cumplimientoAplicacionGrid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Reconocimiento</p><h2 class="section-title">Lo mejor del equipo</h2></div>
+  </div>
+  <div class="highlight-grid" id="highlightGrid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Vista rápida</p><h2 class="section-title">Mapa de calor PAEI — 2026</h2></div>
+  </div>
+  <div class="card" style="padding:14px 16px; overflow-x:auto;">
+    <table class="heat-table" id="heatTable"></table>
+  </div>
+</section>
+
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Lectura automática</p><h2 class="section-title">Comentario ejecutivo</h2></div>
+  </div>
+  <div class="card ai-box" id="comentarioBox"></div>
+</section>
+
+</div>
+
+<div class="panel" id="panel-equipo">
+<section style="padding-top:30px; border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Equipo</p><h2 class="section-title">4 colaboradores</h2></div>
+    <p class="section-note">Da clic en una tarjeta para abrir su expediente completo.</p>
+  </div>
+  <div class="team-grid" id="teamGrid"></div>
+</section>
+</div>
+
+<div class="panel" id="panel-ia">
+<section style="padding-top:30px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Automático</p><h2 class="section-title">Personas listas para promoción</h2></div>
+  </div>
+  <div id="promoList" class="highlight-grid"></div>
+</section>
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Fórmula: calificación baja + comentarios negativos + sin mejora</p><h2 class="section-title">Riesgo de desmotivación</h2></div>
+  </div>
+  <div class="card ai-box" id="riesgoBox"></div>
+</section>
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Acciones, no comentarios</p><h2 class="section-title">Recomendaciones automáticas</h2></div>
+  </div>
+  <div class="card" style="padding:6px 16px;"><table class="rtable" id="recoTable"></table></div>
+</section>
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Para el jefe</p><h2 class="section-title">Plan de Acción Gerencial</h2></div>
+  </div>
+  <div class="card" style="padding:6px 16px;"><table class="rtable" id="planGerencialTable"></table></div>
+</section>
+</div>
+
+<div class="panel" id="panel-tendencias">
+<section style="padding-top:30px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Tendencia</p><h2 class="section-title">Del equipo</h2></div>
+    <p class="section-note">2025 → 2026 (sin semestres divididos para este equipo).</p>
+  </div>
+  <div class="card" style="padding:22px;"><div id="lineTeam" style="display:flex; justify-content:center;"></div></div>
+</section>
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Tendencia</p><h2 class="section-title">Por indicador PAEI — (P) (A) (E) (I) juntas</h2></div>
+  </div>
+  <div class="card" style="padding:22px;"><div id="linePaei" style="display:flex; justify-content:center;"></div><div id="paeiLegend" style="display:flex; gap:16px; justify-content:center; margin-top:14px; flex-wrap:wrap;"></div></div>
+</section>
+</div>
+
+<div class="panel" id="panel-historial">
+<section style="padding-top:30px; border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Expediente</p><h2 class="section-title">Historial por colaborador</h2></div>
+  </div>
+  <div class="hist-shell">
+    <div class="hist-list" id="histList"></div>
+    <div id="printArea"><div class="card" id="expedienteCard"></div></div>
+  </div>
+</section>
+</div>
+
+</main>
+
+<script>
+const PAEI_LABEL = {P:'(P) Eficiencia', A:'(A) Administración', E:'(E) Proactividad', I:'(I) Colaboración'};
+const PAEI_HEX = {P:'#2E8FE0', A:'#E8C547', E:'#34C77B', I:'#A6415A'};
+
+const PUESTO_DEF = {
+  'Vendedor de Refacciones Taller': { P:'Objetivo de venta de refacciones por taller de servicio; asegurar stock; 0 errores en cotizaciones; disminuir y cuidar obsoleto; cobro de piezas; acomodo de material por orden de servicio.', A:'Auditoría de estándares de refacciones e imagen; envío diario de bitácora de pedidos; seguimiento a back order; 0 piezas solicitadas a planta que ya existan en inventario.', E:'Apoyo a canales de venta; propuestas de mejora; participación activa en actividades de marca/departamento/grupo; cumplimiento de capacitación; control de inventarios cíclicos.', I:'Cumplimiento de 5\'s en su lugar de trabajo y almacén; comunicación efectiva con su equipo; Validación de Experiencia Vanguardia.' },
+  'Vendedor de Refacciones Mayoreo': { P:'Objetivo de venta mayoreo; seguimiento a cotizaciones y clientes; prospección de talleres; seguimiento puntual a pedidos.', A:'Margen de utilidad bruta; efectividad de contacto digital; cartera de clientes nuevos; control de pedidos abiertos.', E:'Apoyo a canales de venta; paquetes de refacciones de lento movimiento; propuestas de mejora; inventarios cíclicos; promoción del mes.', I:'Puntualidad de apertura con clientes; estándares de refacciones; 5\'s; Validación de Experiencia Vanguardia.' },
+  'Vendedor de Accesorios': { P:'Objetivo de venta de accesorios en presupuesto; seguimiento a cotizaciones y clientes; seguimiento a facturas de proveedores.', A:'Ticket de venta por unidad; paquetes de accesorios; catálogos de accesorios; control y precios de accesorios exhibidos.', E:'Apoyo a canales de venta; propuestas de mejora; plantillas de contacto estacional; publicación de promoción del mes.', I:'Estándares de refacciones; 5\'s en su área de exhibición; Validación de Experiencia Vanguardia.' },
+  'Instalador de Accesorios': { P:'Autos en showroom accesorizados; instalación de accesorios en unidades nuevas vendidas.', A:'Control de inventario de accesorios; instalación sin daños; optimización de materiales; estándares de refacciones.', E:'Propuestas de mejora en su departamento; participación en inventarios cíclicos.', I:'Cumplimiento de 5\'s en su lugar de trabajo y exhibición; Validación de Experiencia Vanguardia.' },
+};
+
+const PERSONAS = [
+{
+  id:'jose', nombre:"José Guadalupe Aguilar Aguilar", puesto:"Vendedor de Refacciones Taller", agencia:"HONDA VANGUARDIA GALERIAS", jefe:"Alexis Hernández García", antiguedad:"9.9 años",
+  periods: [
+    {label:"Ene–Jun 2025 (jefe: Juan Carlos Melgoza García)", fecha:"08/10/2025", global:97, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:86.7,I:80}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Ene–Jun 2026", fecha:"10/07/2026", global:98, clasif:"SOBRESALIENTE", paei:{P:95,A:100,E:100,I:100}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ],
+  atendido: "Mejora leve (+1). Sin comentarios en ningún periodo que permitan evaluar si hay puntos de seguimiento pendientes — es una limitación del registro, no del colaborador.",
+  atendidoNivel: "total",
+  reco_full: [
+    {texto:"Su indicador de Integración bajó a 80 en 2025 sin explicación documentada; en 2026 ya se ve en 100. Pedir al jefe que capture evidencia en el próximo ciclo para poder dar seguimiento real.", categoria:"Coaching del jefe"},
+  ],
+  reco_accion: "Solicitar evidencia documentada al jefe",
+},
+{
+  id:'miroslava', nombre:"Miroslava Verdugo Castellanos", puesto:"Vendedor de Refacciones Mayoreo", agencia:"HONDA VANGUARDIA GALERIAS", jefe:"Alexis Hernández García", antiguedad:"3.3 años",
+  periods: [
+    {label:"Ene–Dic 2025 (anual)", fecha:"08/10/2025", global:93.25, clasif:"ADECUADO", paei:{P:85,A:100,E:100,I:85}, comentarios:{P:"Resultados de ventas.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:"Sin información."},
+    {label:"Ene–Jun 2026", fecha:"10/07/2026", global:96, clasif:"SOBRESALIENTE", paei:{P:95,A:95,E:100,I:100}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ],
+  atendido: "Mejora sólida (+2.75), ya en Sobresaliente. El único dato cualitativo que existe (\"Resultados de ventas\" en Producción 2025) es consistente con la subida.",
+  atendidoNivel: "total",
+  reco_full: [
+    {texto:"Pedir al jefe documentar Administración, Emprendimiento e Integración en el próximo ciclo — hoy solo Producción tiene evidencia real detrás del número.", categoria:"Coaching del jefe"},
+  ],
+  reco_accion: "Solicitar evidencia documentada al jefe",
+},
+{
+  id:'oscar', nombre:"Oscar Ricardo Trujillo Carrisales", puesto:"Vendedor de Accesorios", agencia:"HONDA VANGUARDIA GALERIAS", jefe:"Alexis Hernández García", antiguedad:"9.1 años",
+  periods: [
+    {label:"Ene–Dic 2025 (anual)", fecha:"08/10/2025", global:94, clasif:"ADECUADO", paei:{P:85,A:100,E:100,I:100}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:"Sin información."},
+    {label:"Ene–Jun 2026", fecha:"— (fecha no capturada)", global:98, clasif:"SOBRESALIENTE", paei:{P:100,A:95,E:100,I:100}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ],
+  atendido: "Mejora la más alta del equipo (+4), de Adecuado a Sobresaliente. Sin comentarios en ningún periodo — no hay forma de saber qué cambió específicamente.",
+  atendidoNivel: "total",
+  reco_full: [
+    {texto:"Reconocer el salto de +4 puntos. Sería valioso que el jefe documente qué impulsó la mejora, para replicarlo con el resto del equipo.", categoria:"Reconocimiento"},
+  ],
+  reco_accion: "Reconocer mejora y documentar causas",
+},
+{
+  id:'silvestre', nombre:"Silvestre Guzmán Guzmán", puesto:"Instalador de Accesorios", agencia:"HONDA VANGUARDIA GALERIAS", jefe:"Alexis Hernández García", antiguedad:"20.8 años",
+  periods: [
+    {label:"Ene–Dic 2025 (anual)", fecha:"08/10/2025", global:98, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:86.7,I:100}, comentarios:{P:"Resultados de ventas.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:"Sin información."},
+    {label:"Ene–Jun 2026", fecha:"16/07/2026", global:98, clasif:"SOBRESALIENTE", paei:{P:100,A:95,E:100,I:100}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ],
+  atendido: "Sostiene el nivel más alto del equipo (98→98) con 20.8 años de antigüedad — el colaborador más senior y estable del grupo.",
+  atendidoNivel: "total",
+  reco_full: [
+    {texto:"Con más de 20 años de antigüedad y el resultado más consistente del equipo, es el candidato natural para mentoría interna de los demás vendedores.", categoria:"Mentoría interna"},
+  ],
+  reco_accion: "Formalizar como mentor del equipo",
+},
+];
+
+function fmt(v){ return (v===null||v===undefined) ? '—' : (Number.isInteger(v) ? v.toString() : v.toFixed(2)); }
+function initials(name){ return name.split(' ').filter(w=>w.length>2||/[A-ZÁÉÍÓÚÑ]/.test(w[0])).slice(0,2).map(w=>w[0]).join('').toUpperCase().slice(0,2); }
+function tier(g){ if(g===null) return null; return g>=95?'SOBRESALIENTE':g>=85?'ADECUADO':'INSATISFACTORIO'; }
+function stars(g){ if (g===null) return '—'; const n = g>=98?5:g>=95?5:g>=90?4:g>=85?3:g>=75?2:1; return '★'.repeat(n) + '☆'.repeat(5-n); }
+function deltaSpan(d){
+  if (d===null||d===undefined) return '<span class="delta-flat">—</span>';
+  if (d > 0.05) return `<span class="delta-up">▲ +${d.toFixed(1)}</span>`;
+  if (d < -0.05) return `<span class="delta-down">▼ ${d.toFixed(1)}</span>`;
+  return `<span class="delta-flat">▬ 0.0</span>`;
+}
+function series2(p){ return p.periods; } // [2025, 2026] para todos en este equipo
+function personDelta(p){ const s=series2(p); return s[1].global - s[0].global; }
+
+function paeiCircleSvg(letter, value, size){
+  size = size||130;
+  const r = size/2-13, cx=size/2, cy=size/2, circ=2*Math.PI*r;
+  const frac = Math.max(0, Math.min(1, (value||0)/100));
+  const dash = frac*circ;
+  const color = PAEI_HEX[letter];
+  return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--navy-3)" stroke-width="13"/>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="13" stroke-linecap="round"
+      stroke-dasharray="${dash} ${circ-dash}" transform="rotate(-90 ${cx} ${cy})"/>
+    <text x="${cx}" y="${cy-4}" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="25" fill="var(--ink)">${value!==null?value.toFixed(1):'—'}</text>
+    <text x="${cx}" y="${cy+20}" text-anchor="middle" font-family="IBM Plex Mono" font-weight="700" font-size="15" fill="${color}">(${letter})</text>
+  </svg>`;
+}
+function renderCircleRow(containerId, items, deltaLabel){
+  deltaLabel = deltaLabel || 'vs. 2025';
+  document.getElementById(containerId).innerHTML = `<div style="display:flex; gap:28px; justify-content:center; flex-wrap:wrap;">` +
+    items.map(it=>`<div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+      ${paeiCircleSvg(it.letter, it.value)}
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--muted); text-align:center; max-width:130px;">${PAEI_LABEL[it.letter]}</div>
+      <div style="font-size:12px;">${deltaSpan(it.delta)} <span style="color:var(--muted); font-size:10.5px;">${deltaLabel}</span></div>
+    </div>`).join('') + `</div>`;
+}
+
+function lineChartSvg(series, opts){
+  opts = opts || {};
+  const n = opts.n || 3;
+  const W = opts.w||620, H = opts.h||300, padL=44, padR = opts.endLabels? 54:18, padT=16, padB=36;
+  const plotW=W-padL-padR, plotH=H-padT-padB;
+  const yMin = opts.yMin!==undefined?opts.yMin:85, yMax = opts.yMax!==undefined?opts.yMax:100;
+  const xPos = i => padL + (i/(n-1))*plotW;
+  const yPos = v => padT + plotH - ((v-yMin)/(yMax-yMin))*plotH;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">`;
+  const gridVals = opts.gridVals || [yMin, (yMin+yMax)/2, yMax];
+  gridVals.forEach(v=>{
+    const y = yPos(v);
+    svg += `<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="var(--line)" stroke-width="1"/>
+      <text x="${padL-8}" y="${y+4}" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="var(--muted)">${v.toFixed(0)}</text>`;
+  });
+  const xLabels = opts.xLabels || ['2025','2026'];
+  xLabels.forEach((lbl,i)=> svg += `<text x="${xPos(i)}" y="${H-12}" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="var(--muted)">${lbl}</text>`);
+  series.forEach(s=>{
+    const pts = s.values.map((v,i)=> v!==null ? `${xPos(i)},${yPos(v)}` : null).filter(Boolean);
+    svg += `<polyline points="${pts.join(' ')}" fill="none" stroke="${s.color}" stroke-width="${s.width||2.5}"/>`;
+    s.values.forEach((v,i)=>{ if(v!==null){
+      svg += `<circle cx="${xPos(i)}" cy="${yPos(v)}" r="4" fill="${s.color}"/>`;
+      if (s.showLabel) svg += `<text x="${xPos(i)}" y="${yPos(v)-11}" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="11" fill="var(--ink)">${v.toFixed(1)}</text>`;
+    }});
+  });
+  if (opts.endLabels){
+    let ends = series.map(s=>{
+      const lastIdx = s.values.map((v,i)=>v!==null?i:-1).filter(i=>i>=0).pop();
+      return lastIdx===undefined ? null : {y: yPos(s.values[lastIdx]), val:s.values[lastIdx], color:s.color, letter:s.letter};
+    }).filter(Boolean).sort((a,b)=>a.y-b.y);
+    for (let i=1;i<ends.length;i++){ if (ends[i].y-ends[i-1].y<16) ends[i].y = ends[i-1].y+16; }
+    ends.forEach(e=>{
+      svg += `<text x="${W-padR+8}" y="${e.y+4}" font-family="IBM Plex Mono" font-weight="700" font-size="11" fill="${e.color}">(${e.letter}) ${e.val.toFixed(1)}</text>`;
+    });
+  }
+  svg += `</svg>`;
+  return svg;
+}
+
+function renderKpis(){
+  const avg2026 = PERSONAS.reduce((s,p)=>s+series2(p)[1].global,0)/PERSONAS.length;
+  const avg2025 = PERSONAS.reduce((s,p)=>s+series2(p)[0].global,0)/PERSONAS.length;
+  const delta = avg2026-avg2025;
+  const sobresalientes = PERSONAS.filter(p=>tier(series2(p)[1].global)==='SOBRESALIENTE').length;
+  const tiles = [
+    {l:'Equipo', n:PERSONAS.length, sub:'100% evaluado 2026'},
+    {l:'Promedio 2026', n:avg2026.toFixed(1), sub:'los 4 colaboradores'},
+    {l:'vs. 2025', n:`${delta>=0?'+':''}${delta.toFixed(1)}`, sub:`promedio 2025: ${avg2025.toFixed(1)}`, cls: delta>=0?'delta-up':'delta-down'},
+    {l:'Sobresalientes', n:`${sobresalientes}/${PERSONAS.length}`, sub:`${Math.round(sobresalientes/PERSONAS.length*100)}%`},
+  ];
+  document.getElementById('kpiGrid').innerHTML = tiles.map(t=>`
+    <div class="card kpi"><div class="l">${t.l}</div><div class="n ${t.cls||''}">${t.n}</div><div class="sub">${t.sub}</div></div>`).join('');
+}
+
+function renderTeamCircles(){
+  const cur={P:0,A:0,E:0,I:0}, prev={P:0,A:0,E:0,I:0};
+  PERSONAS.forEach(p=>{ const s=series2(p); ['P','A','E','I'].forEach(k=>{ cur[k]+=s[1].paei[k]; prev[k]+=s[0].paei[k]; }); });
+  ['P','A','E','I'].forEach(k=>{ cur[k]/=PERSONAS.length; prev[k]/=PERSONAS.length; });
+  const items = ['P','A','E','I'].map(k=>({letter:k, value:cur[k], delta:cur[k]-prev[k]}));
+  renderCircleRow('circleRowTeam', items, 'vs. 2025');
+}
+
+function renderCumplimientoAplicacion(){
+  const tiles = [
+    {l:'2025', n:'100%', sub:'4 de 4 colaboradores evaluados'},
+    {l:'2026', n:'100%', sub:'4 de 4 colaboradores evaluados'},
+    {l:'General', n:'100%', sub:'8 de 8 evaluaciones aplicadas'},
+  ];
+  document.getElementById('cumplimientoAplicacionGrid').innerHTML = tiles.map(t=>`
+    <div class="card kpi"><div class="l">${t.l}</div><div class="n">${t.n}</div><div class="sub">${t.sub}</div></div>`).join('');
+}
+
+function renderHighlights(){
+  const items = [
+    {label:'Mayor crecimiento', nombre:'Oscar', valor:'+4.0', person:'oscar'},
+    {label:'Más estable / senior', nombre:'Silvestre', valor:'98 → 98 (20.8 años)', person:'silvestre'},
+    {label:'Mejor PAEI promedio 2026', nombre:'José / Oscar / Silvestre', valor:'98.75', person:'silvestre'},
+    {label:'Mayor mejora relativa', nombre:'Miroslava', valor:'Adecuado → Sobresaliente', person:'miroslava'},
+  ];
+  document.getElementById('highlightGrid').innerHTML = items.map(it=>`
+    <div class="card hl-card" onclick="openHistorial('${it.person}')">
+      <div class="stars">★★★</div>
+      <div class="hn">${it.nombre}</div>
+      <div class="hv">${it.valor}</div>
+      <div class="hl">${it.label}</div>
+    </div>`).join('');
+}
+
+function heatColor(v){ if(v===null) return 'rgba(255,255,255,0.05)'; if(v>=95) return 'rgba(52,199,123,0.28)'; if(v>=85) return 'rgba(232,197,71,0.28)'; return 'rgba(240,82,75,0.28)'; }
+function heatTextColor(v){ if(v===null) return 'var(--muted)'; if(v>=95) return 'var(--g)'; if(v>=85) return 'var(--y)'; return 'var(--r)'; }
+function renderHeat(){
+  let html = '<thead><tr><th>Colaborador</th><th>P</th><th>A</th><th>E</th><th>I</th><th>Global</th></tr></thead><tbody>';
+  PERSONAS.forEach(p=>{
+    const s = series2(p)[1];
+    html += `<tr><td>${p.nombre.split(' ')[0]} ${p.nombre.split(' ')[1]||''}</td>`;
+    ['P','A','E','I'].forEach(k=>{ const v=s.paei[k]; html += `<td><span class="heat-cell" style="background:${heatColor(v)};color:${heatTextColor(v)};">${v}</span></td>`; });
+    html += `<td><span class="heat-cell" style="background:${heatColor(s.global)};color:${heatTextColor(s.global)};">${fmt(s.global)}</span></td></tr>`;
+  });
+  document.getElementById('heatTable').innerHTML = html + '</tbody>';
+}
+
+function renderTeamCards(){
+  document.getElementById('teamGrid').innerHTML = PERSONAS.map(p=>{
+    const s = series2(p)[1]; const g = s.global; const d = personDelta(p);
+    const arrow = d>0.5?'<span class="delta-up">↑</span>':d<-0.5?'<span class="delta-down">↓</span>':'<span class="delta-flat">→</span>';
+    return `<div class="card team-card" onclick="openHistorial('${p.id}')">
+      <div class="avatar">${initials(p.nombre)}</div>
+      <div class="tn">${p.nombre}</div>
+      <div class="tp">${p.puesto}</div>
+      <div class="tv">${fmt(g)} ${arrow}</div>
+      <div class="stars">${stars(g)}</div>
+      <div class="tlink">Ver expediente →</div>
+    </div>`;
+  }).join('');
+}
+
+function renderComentario(){
+  const avg2026 = PERSONAS.reduce((s,p)=>s+series2(p)[1].global,0)/PERSONAS.length;
+  document.getElementById('comentarioBox').innerHTML = `<div class="aihead">🧠 Generado a partir de los datos del periodo</div>
+    El equipo de Ventas Refacciones en Honda Vanguardia Galerías cerró el semestre con un promedio de <b>${avg2026.toFixed(1)}</b> y los 4 colaboradores en <b>Sobresaliente</b>. Oscar Ricardo Trujillo Carrisales tuvo la mejora más grande (+4.0, de Adecuado a Sobresaliente) y Miroslava Verdugo Castellanos también subió de nivel (+2.75). Silvestre Guzmán Guzmán, con 20.8 años de antigüedad, sostiene el resultado más alto y estable del grupo.<br><br>
+    La limitación más importante no es de desempeño sino de <b>documentación</b>: ninguna de las 4 evaluaciones 2026 tiene comentarios capturados, así que no hay forma de saber qué impulsó las mejoras ni qué replicar. Pedirle al jefe documentar evidencia en el próximo ciclo sería el cambio de mayor impacto para este reporte.`;
+}
+
+function renderPromoCoach(){
+  const promo = PERSONAS.filter(p=>['oscar','silvestre'].includes(p.id));
+  document.getElementById('promoList').innerHTML = promo.map(p=>{
+    const g = series2(p)[1].global;
+    return `<div class="card hl-card" onclick="openHistorial('${p.id}')">
+      <div class="stars">${stars(g)}</div>
+      <div class="hn">${p.nombre.split(' ')[0]} ${p.nombre.split(' ')[1]||''}</div>
+      <div class="hv">${fmt(g)}</div>
+      <div class="hl">${p.id==='silvestre'?'Consistencia y antigüedad':'Mejora de +4.0'}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderRiesgo(){
+  document.getElementById('riesgoBox').innerHTML = `<div class="aihead">🧠 Calificación baja + comentarios negativos + sin mejora = Riesgo Alto</div>
+    Aplicando la fórmula a los datos reales del equipo, <b>nadie califica como Riesgo Alto ni Riesgo Medio</b> — los 4 colaboradores están en Sobresaliente o Adecuado alto (mínimo 96 en 2026), y todos muestran mejora o estabilidad, no caída. La única alerta real de este equipo no es de riesgo de desempeño sino de <b>documentación faltante</b> (ver nota al inicio del reporte).`;
+}
+
+function renderRecoTable(){
+  document.getElementById('recoTable').innerHTML = `<thead><tr><th>Colaborador</th><th>Acción recomendada</th></tr></thead><tbody>` +
+    PERSONAS.map(p=>`<tr><td>${p.nombre}</td><td><span class="pill-action">${p.reco_accion}</span></td></tr>`).join('') + `</tbody>`;
+}
+
+function renderPlanGerencial(){
+  const PRIORIDAD = {jose:'Media', miroslava:'Media', oscar:'Alta', silvestre:'Baja'};
+  const TIPO = {jose:'Requiere coaching del jefe', miroslava:'Requiere coaching del jefe', oscar:'Reconocer y documentar', silvestre:'Formalizar como mentor'};
+  const prioColor = {Alta:'var(--r)', Media:'var(--o)', Baja:'var(--g)'};
+  document.getElementById('planGerencialTable').innerHTML =
+    `<thead><tr><th>Colaborador</th><th>Situación</th><th>Acción sugerida</th><th>Prioridad</th></tr></thead><tbody>` +
+    PERSONAS.map(p=>`<tr>
+      <td>${p.nombre}</td><td>${TIPO[p.id]}</td>
+      <td><span class="pill-action">${p.reco_accion}</span></td>
+      <td><span style="color:${prioColor[PRIORIDAD[p.id]]}; font-weight:700; font-family:'IBM Plex Mono',monospace; font-size:11px;">${PRIORIDAD[p.id]}</span></td>
+    </tr>`).join('') + `</tbody>`;
+}
+
+function renderTendenciaEquipo(){
+  const vals = [0,1].map(i=>{
+    const scores = PERSONAS.map(p=>series2(p)[i].global);
+    return scores.reduce((a,b)=>a+b,0)/scores.length;
+  });
+  document.getElementById('lineTeam').innerHTML = lineChartSvg([{values:vals, color:'var(--blue-light)', width:3, showLabel:true}], {n:2, xLabels:['2025','2026']});
+}
+
+function renderTendenciaPaei(){
+  const series = ['P','A','E','I'].map(k=>{
+    const values = [0,1].map(i=>{
+      const scores = PERSONAS.map(p=>series2(p)[i].paei[k]);
+      return scores.reduce((a,b)=>a+b,0)/scores.length;
+    });
+    return {values, color:PAEI_HEX[k], width:2.75, letter:k};
+  });
+  document.getElementById('linePaei').innerHTML = lineChartSvg(series, {n:2, xLabels:['2025','2026'], endLabels:true});
+  document.getElementById('paeiLegend').innerHTML = ['P','A','E','I'].map(k=>`
+    <div style="display:flex; align-items:center; gap:6px; font-size:12px;">
+      <span style="width:16px; height:3px; background:${PAEI_HEX[k]}; display:inline-block; border-radius:2px;"></span>${PAEI_LABEL[k]}
+    </div>`).join('');
+}
+
+let currentHistId = PERSONAS[0].id;
+function renderHistList(){
+  document.getElementById('histList').innerHTML = PERSONAS.map(p=>`
+    <div class="hist-item ${p.id===currentHistId?'active':''}" data-id="${p.id}">
+      <span>${p.nombre}</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;">${fmt(series2(p)[1].global)}</span>
+    </div>`).join('');
+  document.getElementById('histList').querySelectorAll('.hist-item').forEach(el=>{
+    el.addEventListener('click', ()=>{ currentHistId = el.dataset.id; renderHistList(); renderExpediente(); });
+  });
+}
+function openHistorial(id){
+  currentHistId = id;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelector('.tab-btn[data-tab="historial"]').classList.add('active');
+  document.getElementById('panel-historial').classList.add('active');
+  renderHistList(); renderExpediente();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function renderExpediente(){
+  const p = PERSONAS.find(x=>x.id===currentHistId);
+  const s = series2(p);
+  const cur = s[1]; const g = cur.global; const t = tier(g);
+  const ranking = [...PERSONAS].sort((a,b)=>series2(b)[1].global-series2(a)[1].global);
+  const rankPos = ranking.findIndex(x=>x.id===p.id)+1;
+
+  const lineHtml = lineChartSvg([{values:s.map(x=>x.global), color:'var(--blue-light)', width:3, showLabel:true}], {n:2, xLabels:['2025','2026']});
+  const prevPaei = s[0].paei;
+  const circleItems = ['P','A','E','I'].map(k=>({letter:k, value:cur.paei[k], delta: cur.paei[k]-prevPaei[k]}));
+
+  const periodsTableHtml = `<div style="overflow-x:auto;"><table class="rtable" style="min-width:760px;">
+    <thead><tr><th>Periodo</th><th style="text-align:right">General</th><th style="text-align:right">(P)</th><th style="text-align:right">(A)</th><th style="text-align:right">(E)</th><th style="text-align:right">(I)</th><th style="min-width:300px;">Comentarios</th></tr></thead>
+    <tbody>${p.periods.map(per=>{
+      const com = `<b style="color:var(--blue-light);">(P)</b> ${per.comentarios.P}<br><b style="color:var(--blue-light);">(A)</b> ${per.comentarios.A}<br><b style="color:var(--blue-light);">(E)</b> ${per.comentarios.E}<br><b style="color:var(--blue-light);">(I)</b> ${per.comentarios.I}${per.acuerdos?`<br><b style="color:var(--blue-light);">Acuerdo:</b> ${per.acuerdos}`:''}`;
+      return `<tr>
+        <td><b>${per.label}</b><br><span class="tier-pill ${per.clasif}" style="margin-top:4px;display:inline-block;">${per.clasif.charAt(0)+per.clasif.slice(1).toLowerCase()}</span></td>
+        <td class="num" style="font-weight:800;">${fmt(per.global)}</td>
+        <td class="num">${per.paei.P}</td><td class="num">${per.paei.A}</td><td class="num">${per.paei.E}</td><td class="num">${per.paei.I}</td>
+        <td style="font-size:12px; line-height:1.55;">${com}</td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table></div>`;
+
+  document.getElementById('expedienteCard').innerHTML = `
+    <div class="expediente-header">
+      <div style="display:flex; gap:14px; align-items:center;">
+        <div class="av-lg">${initials(p.nombre)}</div>
+        <div><div style="font-weight:800; font-size:18px;">${p.nombre}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted);">${p.puesto} · ${p.agencia}</div></div>
+      </div>
+      <button class="btn-pdf" onclick="window.print()">⬇ Descargar PDF</button>
+    </div>
+    <div class="exp-meta">
+      <div class="em"><div class="ek">Antigüedad</div><div class="ev">${p.antiguedad}</div></div>
+      <div class="em"><div class="ek">Jefe</div><div class="ev" style="font-size:11.5px;">${p.jefe}</div></div>
+      <div class="em"><div class="ek">Calificación actual</div><div class="ev">${fmt(g)} <span class="tier-pill ${t}">${t.charAt(0)+t.slice(1).toLowerCase()}</span></div></div>
+      <div class="em"><div class="ek">Ranking equipo</div><div class="ev">#${rankPos} de ${ranking.length}</div></div>
+      <div class="em"><div class="ek">Tendencia</div><div class="ev">${deltaSpan(personDelta(p))}</div></div>
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">Calificación promedio por indicador (vs. 2025)</div>
+      <div id="circleRowPerson"></div>
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">Evolución de calificación</div>
+      <div style="display:flex; justify-content:center;">${lineHtml}</div>
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">¿Se atendieron los puntos?</div>
+      <p style="font-size:13px; line-height:1.65; margin:0 0 14px;">${p.atendido}</p>
+      <div class="section-kicker" style="margin-bottom:10px;">Concentrado general</div>
+      ${periodsTableHtml}
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">Qué mide cada indicador en su puesto</div>
+      <div class="doc-block"><p><b>P</b> — ${PUESTO_DEF[p.puesto].P}<br><b>A</b> — ${PUESTO_DEF[p.puesto].A}<br><b>E</b> — ${PUESTO_DEF[p.puesto].E}<br><b>I</b> — ${PUESTO_DEF[p.puesto].I}</p><p style="margin-top:8px; color:var(--muted); font-size:11px;">Fuente: Matriz de Ponderación oficial, plantillas PAEI Grupo Vanguardia.</p></div>
+    </div>
+    <div style="padding:0 22px 24px;">
+      <div class="card ai-box"><div class="aihead">🧠 Recomendación IA</div>
+        <ul style="margin:0; padding-left:18px;">${p.reco_full.map(r=>`<li style="margin-bottom:8px;"><span class="pill-action" style="margin-bottom:4px;display:inline-block;">${r.categoria}</span><br>${r.texto}</li>`).join('')}</ul>
+      </div>
+    </div>
+  `;
+  renderCircleRow('circleRowPerson', circleItems, 'vs. 2025');
+}
+
+function initAll(){
+  renderKpis();
+  renderTeamCircles();
+  renderCumplimientoAplicacion();
+  renderHighlights();
+  renderHeat();
+  renderComentario();
+  renderTeamCards();
+  renderPromoCoach();
+  renderRiesgo();
+  renderRecoTable();
+  renderPlanGerencial();
+  renderTendenciaEquipo();
+  renderTendenciaPaei();
+  renderHistList();
+  renderExpediente();
+}
+initAll();
+
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>
