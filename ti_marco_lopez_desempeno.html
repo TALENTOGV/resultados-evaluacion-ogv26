@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>TI Corporativo / Soporte de TI · Centro de Inteligencia del Desempeño · Vanguardia</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+:root{
+  --navy:#060B1F; --navy-2:#0B1330; --navy-3:#121B42;
+  --line:rgba(255,255,255,0.09); --ink:#F4F6FA; --muted:rgba(244,246,250,0.55);
+  --blue-light:#7FD1F0; --blue:#2E8FE0;
+  --g:#34C77B; --y:#E8C547; --r:#F0524B; --o:#F0964B;
+  --paei-p:#2E8FE0; --paei-a:#E8C547; --paei-e:#34C77B; --paei-i:#A6415A;
+  --shadow:0 1px 2px rgba(0,0,0,0.2), 0 12px 32px -16px rgba(0,0,0,0.55);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--navy);color:var(--ink);font-family:'Manrope',sans-serif;-webkit-font-smoothing:antialiased;}
+main{max-width:1100px;margin:0 auto;padding:0 5vw 90px;}
+header.top{ background:radial-gradient(ellipse at 75% -10%, rgba(46,143,224,0.22), transparent 55%), var(--navy); padding:40px 5vw 0; border-bottom:1px solid var(--line); }
+.eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--blue-light); margin:0 0 10px; }
+.hero-title{ font-weight:800; font-size:clamp(24px,3vw,34px); margin:0 0 8px; letter-spacing:-.01em; }
+.hero-sub{ font-size:13.5px; color:var(--muted); max-width:660px; line-height:1.6; margin:0 0 26px; }
+.tabs{ display:flex; gap:4px; flex-wrap:wrap; }
+.tab-btn{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.03em; text-transform:uppercase; color:var(--muted); background:none; border:none; padding:14px 16px; cursor:pointer; border-bottom:3px solid transparent; transition:color .15s,border-color .15s; white-space:nowrap; }
+.tab-btn:hover{ color:var(--blue-light); }
+.tab-btn.active{ color:var(--ink); border-bottom-color:var(--blue); font-weight:700; }
+.panel{ display:none; } .panel.active{ display:block; }
+section{ padding:34px 0 8px; border-bottom:1px solid var(--line); }
+section:last-of-type{ border-bottom:none; }
+.section-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; margin-bottom:18px; }
+.section-kicker{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--blue-light); margin:0 0 6px; }
+.section-title{ font-weight:800; font-size:clamp(18px,2vw,22px); margin:0; }
+.section-note{ font-size:12.5px; color:var(--muted); max-width:360px; line-height:1.5; text-align:right; }
+.card{ background:var(--navy-2); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); }
+.kpi-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+@media(max-width:800px){ .kpi-grid{ grid-template-columns:1fr 1fr; } }
+.kpi{ padding:18px; }
+.kpi .l{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.kpi .n{ font-weight:800; font-size:24px; }
+.kpi .sub{ margin-top:6px; font-size:11px; color:var(--muted); }
+.delta-up{ color:var(--g); font-weight:700; } .delta-down{ color:var(--r); font-weight:700; } .delta-flat{ color:var(--muted); font-weight:700; }
+.tier-pill{ font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.05em; text-transform:uppercase; padding:3px 9px; border-radius:20px; display:inline-block; }
+.tier-pill.SOBRESALIENTE{ background:rgba(52,199,123,0.15); color:var(--g); }
+.tier-pill.ADECUADO{ background:rgba(232,197,71,0.15); color:var(--y); }
+.tier-pill.INSATISFACTORIO{ background:rgba(240,82,75,0.15); color:var(--r); }
+.pill-warn{ font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.05em; text-transform:uppercase; padding:2px 8px; border-radius:20px; background:rgba(240,150,75,0.13); color:var(--o); display:inline-block; }
+.pill-action{ font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.03em; padding:5px 11px; border-radius:8px; background:var(--navy-3); border:1px solid var(--line); color:var(--ink); display:inline-block; }
+table.rtable{ width:100%; border-collapse:collapse; font-size:12.5px; }
+table.rtable th{ text-align:left; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); padding:9px 10px; border-bottom:1px solid var(--line); }
+table.rtable td{ padding:10px 10px; border-bottom:1px solid var(--line); vertical-align:middle; }
+table.rtable td.num{ font-family:'IBM Plex Mono',monospace; text-align:right; }
+table.rtable tr:last-child td{ border-bottom:none; }
+.comment-box{ padding:20px 22px; font-size:13.5px; line-height:1.7; }
+.comment-box b{ color:var(--blue-light); }
+.ai-box{ padding:20px 22px; font-size:13.5px; line-height:1.75; border-left:3px solid var(--blue-light); background:rgba(127,209,240,0.05); }
+.ai-box .aihead{ display:flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--blue-light); margin-bottom:10px; }
+.note-box{ padding:16px 20px; font-size:12.5px; color:var(--muted); line-height:1.6; border-left:3px solid var(--o); background:rgba(240,150,75,0.05); border-radius:0 10px 10px 0; }
+.doc-block{ background:var(--navy-3); border-radius:10px; padding:12px 14px; margin-bottom:8px; }
+.doc-block .dk{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--blue-light); margin-bottom:5px; }
+.doc-block p{ margin:0; font-size:12.5px; line-height:1.6; white-space:pre-line; color:var(--ink); }
+.highlight-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+@media(max-width:800px){ .highlight-grid{ grid-template-columns:1fr 1fr; } }
+.hl-card{ padding:18px; text-align:center; }
+.hl-card .stars{ color:var(--y); font-size:13px; margin-bottom:8px; }
+.hl-card .hn{ font-weight:800; font-size:15px; margin-bottom:4px; }
+.hl-card .hv{ font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--blue-light); margin-bottom:6px; }
+.hl-card .hl{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+.team-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+@media(max-width:800px){ .team-grid{ grid-template-columns:1fr 1fr; } }
+.team-card{ padding:18px; cursor:pointer; transition:border-color .15s, transform .15s; }
+.team-card:hover{ border-color:rgba(127,209,240,0.35); transform:translateY(-2px); }
+.avatar{ width:42px; height:42px; border-radius:50%; background:var(--navy-3); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; color:var(--blue-light); margin-bottom:10px; }
+.team-card .tn{ font-weight:700; font-size:13.5px; margin-bottom:2px; }
+.team-card .tp{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--muted); margin-bottom:10px; }
+.team-card .tv{ font-weight:800; font-size:22px; }
+.team-card .stars{ color:var(--y); font-size:11px; margin:4px 0 8px; }
+.team-card .tlink{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--blue-light); text-transform:uppercase; letter-spacing:.05em; }
+.heat-table{ width:100%; border-collapse:collapse; font-size:12.5px; }
+.heat-table th{ font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; color:var(--muted); padding:8px 10px; text-align:center; }
+.heat-table th:first-child{ text-align:left; }
+.heat-table td{ padding:8px 10px; text-align:center; border-bottom:1px solid var(--line); }
+.heat-table td:first-child{ text-align:left; font-weight:600; }
+.heat-cell{ display:inline-block; min-width:40px; padding:5px 8px; border-radius:6px; font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:12px; }
+.persist-card{ padding:18px 20px; }
+.persist-steps{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:10px 0; }
+.persist-step{ background:var(--navy-3); border-radius:8px; padding:8px 12px; font-size:12px; max-width:240px; }
+.persist-step .pl{ font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--muted); text-transform:uppercase; }
+.subgroup-label{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--blue-light); margin:26px 0 12px; }
+.subgroup-label:first-child{ margin-top:0; }
+.hist-shell{ display:grid; grid-template-columns:230px 1fr; gap:24px; }
+@media(max-width:800px){ .hist-shell{ grid-template-columns:1fr; } }
+.hist-list{ display:flex; flex-direction:column; gap:4px; }
+.hist-item{ padding:10px 14px; border-radius:9px; cursor:pointer; font-size:13px; display:flex; justify-content:space-between; align-items:center; }
+.hist-item:hover{ background:var(--navy-3); }
+.hist-item.active{ background:rgba(127,209,240,0.1); color:var(--blue-light); font-weight:700; }
+.expediente-header{ display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:14px; padding:20px 22px; }
+.expediente-header .av-lg{ width:56px; height:56px; border-radius:50%; background:var(--navy-3); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:19px; color:var(--blue-light); }
+.exp-meta{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; padding:0 22px 20px; }
+@media(max-width:650px){ .exp-meta{ grid-template-columns:1fr 1fr; } }
+.exp-meta .em{ background:var(--navy-3); border-radius:9px; padding:10px 12px; }
+.exp-meta .ek{ font-family:'IBM Plex Mono',monospace; font-size:9px; text-transform:uppercase; color:var(--muted); margin-bottom:3px; }
+.exp-meta .ev{ font-weight:700; font-size:13px; }
+.btn-pdf{ font-family:'Manrope',sans-serif; font-weight:700; font-size:12.5px; color:#06101F; background:var(--blue-light); border:none; border-radius:9px; padding:10px 16px; cursor:pointer; }
+@media print{
+  body *{ visibility:hidden; }
+  #printArea, #printArea *{ visibility:visible; }
+  #printArea{ position:absolute; left:0; top:0; width:100%; }
+  .tabs, .btn-pdf, .hist-list{ display:none !important; }
+  body{ background:#fff; color:#111; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <p class="eyebrow">Capital Humano · Grupo Vanguardia · División Financiera</p>
+  <h1 class="hero-title">TI Corporativo / Soporte de TI — Centro de Inteligencia del Desempeño</h1>
+  <p class="hero-sub">Reporte para Marco Antonio López Avelar, jefe inmediato. 11 colaboradores en tres niveles: 5 reportan directo a Marco; Miguel Armando Rojas (Jefe de Sistemas) y Pablo Guillén (Técnico de Soporte) tienen su propio equipo a cargo.</p>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="resumen">🏠 Resumen Ejecutivo</button>
+    <button class="tab-btn" data-tab="equipo">👥 Mi Equipo</button>
+    <button class="tab-btn" data-tab="ia">🧠 Análisis IA</button>
+    <button class="tab-btn" data-tab="tendencias">📈 Tendencias</button>
+    <button class="tab-btn" data-tab="historial">📁 Historial</button>
+  </div>
+</header>
+
+<main>
+
+<div class="panel active" id="panel-resumen">
+
+<section style="padding-top:30px;">
+  <div class="note-box">
+    <b style="color:var(--o);">Estructura y datos.</b> Este equipo tiene 3 niveles: Marco → Miguel Armando / Pablo → sus técnicos. También hay una inconsistencia de ponderación: los 5 reportes directos de Marco usan pesos 20/20/30/30 (igual que Jefe de Sistemas), mientras los 6 técnicos de segundo nivel usan 30/25/25/20 (el catálogo estándar de "Técnico de Soporte TI"). Ambos son legítimos según el archivo fuente, solo distintos.
+  </div>
+</section>
+
+<section>
+  <div class="kpi-grid" id="kpiGrid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Vista clara</p><h2 class="section-title">Calificación promedio por indicador</h2></div>
+    <p class="section-note">Equipo completo (11). Variación vs. 2025.</p>
+  </div>
+  <div class="card" style="padding:26px;"><div id="circleRowTeam"></div></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Marco Antonio López Avelar · jefe inmediato</p><h2 class="section-title">Cumplimiento de aplicación de evaluaciones</h2></div>
+  </div>
+  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);" id="cumplimientoAplicacionGrid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Reconocimiento</p><h2 class="section-title">Lo mejor del equipo</h2></div>
+  </div>
+  <div class="highlight-grid" id="highlightGrid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Vista rápida</p><h2 class="section-title">Mapa de calor PAEI — 2026</h2></div>
+  </div>
+  <div class="card" style="padding:14px 16px; overflow-x:auto;">
+    <table class="heat-table" id="heatTable"></table>
+  </div>
+</section>
+
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Lectura automática</p><h2 class="section-title">Comentario ejecutivo</h2></div>
+  </div>
+  <div class="card ai-box" id="comentarioBox"></div>
+</section>
+
+</div>
+
+<div class="panel" id="panel-equipo">
+<section style="padding-top:30px; border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Estructura</p><h2 class="section-title">11 colaboradores</h2></div>
+    <p class="section-note">Da clic en una tarjeta para abrir su expediente completo.</p>
+  </div>
+  <div class="subgroup-label">Reportes directos de Marco</div>
+  <div class="team-grid" id="teamGridDirecto"></div>
+  <div class="subgroup-label">Equipo de Miguel Armando Rojas (Jefe de Sistemas)</div>
+  <div class="team-grid" id="teamGridMA"></div>
+  <div class="subgroup-label">Equipo de Pablo Guillén Medina (Técnico de Soporte)</div>
+  <div class="team-grid" id="teamGridPablo"></div>
+</section>
+</div>
+
+<div class="panel" id="panel-ia">
+<section style="padding-top:30px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Lo que ningún jefe obtiene normalmente</p><h2 class="section-title">Persistencia del problema</h2></div>
+  </div>
+  <div id="persistList" style="display:flex; flex-direction:column; gap:14px;"></div>
+</section>
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Automático</p><h2 class="section-title">Colaboradores con potencial para desarrollo</h2></div>
+  </div>
+  <div id="promoList" class="highlight-grid"></div>
+</section>
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Fórmula: calificación baja + comentarios negativos + sin mejora</p><h2 class="section-title">Riesgo de desmotivación</h2></div>
+  </div>
+  <div class="card ai-box" id="riesgoBox"></div>
+</section>
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Para el jefe</p><h2 class="section-title">Plan de Acción Gerencial</h2></div>
+  </div>
+  <div class="card" style="padding:6px 16px;"><table class="rtable" id="planGerencialTable"></table></div>
+</section>
+</div>
+
+<div class="panel" id="panel-tendencias">
+<section style="padding-top:30px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Tendencia</p><h2 class="section-title">Del equipo — 2025 vs. 2026</h2></div>
+  </div>
+  <div class="card" style="padding:22px;"><div id="lineTeam" style="display:flex; justify-content:center;"></div></div>
+</section>
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Tendencia</p><h2 class="section-title">Por indicador PAEI — (P) (A) (E) (I) juntas</h2></div>
+  </div>
+  <div class="card" style="padding:22px;"><div id="linePaei" style="display:flex; justify-content:center;"></div><div id="paeiLegend" style="display:flex; gap:16px; justify-content:center; margin-top:14px; flex-wrap:wrap;"></div></div>
+</section>
+</div>
+
+<div class="panel" id="panel-historial">
+<section style="padding-top:30px; border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Expediente</p><h2 class="section-title">Historial por colaborador</h2></div>
+  </div>
+  <div class="hist-shell">
+    <div class="hist-list" id="histList"></div>
+    <div id="printArea"><div class="card" id="expedienteCard"></div></div>
+  </div>
+</section>
+</div>
+
+</main>
+
+<script>
+const PAEI_LABEL = {P:'(P) Eficacia', A:'(A) Eficiencia', E:'(E) Proactividad', I:'(I) Colaboración'};
+const PAEI_HEX = {P:'#2E8FE0', A:'#E8C547', E:'#34C77B', I:'#A6415A'};
+
+const PUESTO_DEF = {
+  'Jefe de Sistemas': { P:'90% de tickets atendidos en el mes en Ticket Center.', A:'No reapertura de tickets (máx. 2/mes); Back Log (máx. 5 tickets imputables al colaborador).', E:'Planeación de trabajo del mes próximo; participación en proyectos especiales (cascadeo de Adizes, syndag, poc, apertura o remodelación de agencias).', I:'Coordina el cumplimiento del plan de trabajo de su equipo.' },
+  'Técnico de Soporte': { P:'90% de tickets atendidos en el mes en Ticket Center.', A:'No reapertura de tickets (máx. 2/mes); Back Log (máx. 5 tickets imputables al colaborador).', E:'Planeación de trabajo del mes próximo; participación en proyectos especiales.', I:'Coordina el cumplimiento del plan de trabajo de su equipo.' },
+  'Técnico de Soporte TI': { P:'90% de tickets atendidos en el mes en Ticket Center; mínimo 120 tickets asignados al mes.', A:'No reapertura de tickets (máx. 2/mes); Back Log (máx. 5 tickets imputables al colaborador).', E:'Implementación de lineamientos TI.', I:'Validación de Experiencia Vanguardia; gestión de la relación con proveedores; cubrir vacaciones, ausencias e incapacidades.' },
+};
+
+const PERSONAS = [
+{
+  id:'victor', nombre:"Víctor Aurelio Ríos Velasco", puesto:"Técnico de Soporte", agencia:"SERVIOPERA", jefe:"Marco Antonio López Avelar", antiguedad:"10.6 años", grupo:"directo",
+  periods: [
+    {label:"Ene–Dic 2025 (anual)", fecha:"19/01/2026", global:96.25, clasif:"SOBRESALIENTE", paei:{P:85,A:100,E:100,I:100}, comentarios:{P:"Dashboard de ticketcenter.",A:"Dashboard de ticketcenter.",E:"Migración y actualización de servidores; implementación del MDR y actualización de consola; instalación de Fortinets y migración con Infinia; control de dispositivos LAN.",I:"Reportes y entregables de servicios contratados de proveedores."}, acuerdos:"Mejorar en las formas de gestionar la relación de proveedores para evitar el desgaste interno; ver posibilidad de capacitación en redes y firewalls."},
+    {label:"Ene–Jun 2026", fecha:"22/06/2026", global:97.5, clasif:"SOBRESALIENTE", paei:{P:90,A:100,E:100,I:100}, comentarios:{P:"Promedio 88% de tickets atendidos al corte del mes. VR: reforzar la documentación de los tickets.",A:"Sin comentarios.",E:"Sin comentarios.",I:"Sin comentarios."}, acuerdos:null},
+  ],
+  atendido: "Parcialmente. El acuerdo de 2025 sobre gestión de proveedores no se vuelve a mencionar en 2026, pero el nuevo punto de mejora (documentación de tickets) coincide con el mismo indicador de Eficacia. Su calificación mejoró (96.25→97.5).",
+  reco_full: [
+    {texto:"Reforzar la documentación de tickets, señalado explícitamente en 2026 — es un hábito, no un tema de conocimiento técnico.", categoria:"Coaching del jefe"},
+  ],
+  reco_accion: "Reforzar documentación de tickets",
+},
+{
+  id:'miguelangel', nombre:"Miguel Ángel Delgado Moreno", puesto:"Técnico de Soporte", agencia:"SERVIOPERA", jefe:"Marco Antonio López Avelar", antiguedad:"7.7 años", grupo:"directo",
+  periods: [
+    {label:"Ene–Dic 2025 (anual)", fecha:"19/01/2026", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Cronogramas y planes de obras de la constructora; planes de trabajo internos.",A:"Actas de entrega, memorias técnicas y reporte de presupuesto.",E:"Implementaciones en múltiples agencias (VGA, VGG, ACU, VTOO, VTO, AP, KPS, KCO, VCO, VCM, VCG, MOT); cambios de enlaces; reestructura de sitios; CCTV; audio ambiental; optimización de telecomunicaciones.",I:"Actas de entrega de obras; integración de equipos de trabajo para proyectos internos; atención de solicitudes de Directores."}, acuerdos:"ML: Buscar capacitaciones en gestión de proyectos, gestión del tiempo y habilidades gerenciales. MD: Continuar con el nivel de eficacia y calidad, además de elevar el nivel de desempeño personal y grupal."},
+    {label:"Ene–Jun 2026", fecha:"22/06/2026", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Cumple con los objetivos planteados en los planes de trabajo mensuales. No requiere retroalimentación.",A:"No se presentan quejas ni reaperturas de tickets en el periodo. Valida siempre con los usuarios las atenciones y soluciones antes del cierre de mes.",E:"Entrega puntualmente los planes de trabajo y presenta iniciativas de ejecución de trabajos que antes se realizaban con proveedores, incluyendo migración de conmutadores a la nube y mejoras en enlaces de internet.",I:"Apoya a los compañeros del departamento de TI, impulsándolos a cumplir sus planes de trabajo. Muy buena relación con el equipo interno y proveedores."}, acuerdos:null},
+  ],
+  atendido: "Calificación perfecta en ambos periodos. El acuerdo 2025 de capacitación en gestión de proyectos (\"ML\") no se confirma directamente, pero el comentario 2026 ya lo describe tomando iniciativas propias de gestión de proyectos.",
+  reco_full: [
+    {texto:"Candidato más claro del equipo para una ruta de liderazgo formal — ya ejecuta iniciativas de gestión de proyectos por cuenta propia.", categoria:"Experiencia de desarrollo"},
+    {texto:"Formalizar la capacitación en gestión de proyectos y habilidades gerenciales acordada en 2025, si aún no se ha tomado.", categoria:"Capacitación formal — Gestión de proyectos"},
+  ],
+  reco_accion: "Formalizar ruta de liderazgo",
+},
+{
+  id:'miguelarmando', nombre:"Miguel Armando Rojas González", puesto:"Jefe de Sistemas", agencia:"SERVIOPERA", jefe:"Marco Antonio López Avelar", antiguedad:"7.2 años", grupo:"directo",
+  periods: [
+    {label:"Ene–Dic 2025 (anual)", fecha:"19/01/2026", global:97, clasif:"SOBRESALIENTE", paei:{P:85,A:100,E:100,I:100}, comentarios:{P:"Dashboard de ticketcenter.",A:"Dashboard de ticketcenter.",E:"Certificación de estándares TI Audi; atención a eventos/expos; apertura de agencias (Audi Certified Plus, Audi São Paulo, Chirey Patria, Geely Patria/Manzanillo, VanDrive, BMW Galerías).",I:"Dashboard de ticketcenter."}, acuerdos:"Tratar de delegar tickets a los técnicos a cargo. Capacitación en gestión de tiempo."},
+    {label:"Ene–Jun 2026", fecha:"22/06/2026", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"MR: mejorar tiempos de atención y documentación. ML: evaluar la posibilidad de tener un practicante o becario en el departamento, apoyando en la gestión y seguimiento de tickets.",A:"Sin comentarios.",E:"Sin comentarios.",I:"Sin comentarios."}, acuerdos:null},
+  ],
+  atendido: "Sí. El acuerdo de 2025 (\"delegar tickets a los técnicos a cargo\") se refleja en la propuesta de 2026 de sumar un practicante/becario — misma lógica de delegación, un paso más allá. Su calificación llegó a 100.",
+  reco_full: [
+    {texto:"Dar seguimiento a la propuesta de sumar un practicante o becario al equipo.", categoria:"Coaching del jefe"},
+    {texto:"Ya lidera formalmente a Luis Alonso y Edgar Esteban — confirmar que tiene el soporte de gestión de tiempo que se le acordó en 2025.", categoria:"Coaching del jefe"},
+  ],
+  reco_accion: "Evaluar propuesta de practicante/becario",
+},
+{
+  id:'pablo', nombre:"Pablo Guillén Medina", puesto:"Técnico de Soporte", agencia:"SERVIOPERA", jefe:"Marco Antonio López Avelar", antiguedad:"7.3 años", grupo:"directo",
+  periods: [
+    {label:"Ene–Dic 2025 (anual)", fecha:"31/01/2026", global:97, clasif:"SOBRESALIENTE", paei:{P:100,A:85,E:100,I:100}, comentarios:{P:"Dashboard de ticketcenter.",A:"Dashboard de ticketcenter.",E:"Plan de trabajo, Syndag/POC Motonova, aperturas Geely Patria y Manzanillo, VRT Drive, staff en evento deportivo, posada y Estrellas Vanguardia.",I:"Dashboard de ticketcenter."}, acuerdos:"G: mayor seguimiento en Back / delegar actividades con mi equipo / mayor seguimiento en metas de mi equipo. ML: sesiones intermedias / buscar capacitaciones en gestión de proyectos y habilidades gerenciales."},
+    {label:"Ene–Jun 2026", fecha:"22/06/2026", global:99.2, clasif:"SOBRESALIENTE", paei:{P:96,A:100,E:100,I:100}, comentarios:{P:"PG: revisar con mayor frecuencia la asignación de nuevos tickets a los técnicos. ML: revisar con Dirección si se puede contratar un practicante o becario que apoye en temas administrativos.",A:"PG: robustecer con el equipo técnico a cargo el cierre de tickets de Backlog.",E:"PG: bajar al equipo de trabajo la actitud de servicio que muestra Pablo, para que también ellos sean proactivos.",I:"Se cumple por más del 90% la atención de tickets. PG: reforzar con Daniel Venegas de VCO que suba el nivel de atención de tickets."}, acuerdos:null},
+  ],
+  atendido: "Parcialmente. El tema de \"delegar actividades con mi equipo\" de 2025 se repite en los cuatro indicadores de 2026 — Pablo ya opera como líder de un equipo de 4 técnicos (Daniel, Alejandro, José Fernando, David Gabriel), y el mensaje de fondo (delegar y desarrollar a su gente) sigue siendo el mismo.",
+  reco_full: [
+    {texto:"El tema de delegación y desarrollo de su equipo técnico aparece en los cuatro indicadores de 2026 — es momento de formalizar su rol de liderazgo, ya tiene 4 personas a cargo.", categoria:"Experiencia de desarrollo"},
+    {texto:"Confirmar si tomó la capacitación en gestión de proyectos acordada en 2025.", categoria:"Capacitación formal — Gestión de proyectos"},
+  ],
+  reco_accion: "Formalizar rol de liderazgo (ya tiene 4 personas a cargo)",
+},
+{
+  id:'valeria', nombre:"Valeria Corona Sánchez", puesto:"Técnico de Soporte", agencia:"SERVIOPERA", jefe:"Marco Antonio López Avelar", antiguedad:"4.8 años", grupo:"directo",
+  periods: [
+    {label:"Ene–Dic 2025 (anual)", fecha:"20/01/2026", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Plan de trabajo mensual. Reporte anual extraído de GLPI.",A:"Dashboard de ticketcenter.",E:"Histórico de planes de trabajo mensuales. Tickets registrados en GLPI.",I:"Planes de trabajo mensuales: revisión de proyectos con equipo interno y proveedores. Tickets GLPI en conjunto con proveedores."}, acuerdos:"Compromiso de mejorar documentación de atención interna de seguridad hacia soporte TI. Compromiso para revisión de cursos de ciberseguridad."},
+    {label:"Ene–Jun 2026", fecha:"14/07/2026", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ],
+  atendido: "Calificación perfecta en ambos periodos. No hay comentarios en 2026 que confirmen si tomó los cursos de ciberseguridad acordados en 2025.",
+  reco_full: [
+    {texto:"Confirmar si revisó y tomó cursos de ciberseguridad, acordado en 2025.", categoria:"Coaching del jefe"},
+  ],
+  reco_accion: "Confirmar avance en cursos de ciberseguridad",
+},
+{
+  id:'luis', nombre:"Luis Alonso Bolaños Díaz", puesto:"Técnico de Soporte TI", agencia:"SERVIOPERA", jefe:"Miguel Armando Rojas González", antiguedad:"1.9 años", grupo:"ma",
+  periods: [
+    {label:"Ene–Dic 2025 (anual)", fecha:"23/01/2026", global:97, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:85}, comentarios:{P:"Dashboard TI.",A:"Dashboard TI.",E:"Vanrenta: segmentación de red, aplicación de 5's, implementación de sistema Acumatica (en proceso). Geely Galerías: segmentación de red, aplicación de 5's.",I:"Extranet Vanguardia."}, acuerdos:"Trabajar más en equipo, comenzar a participar más en las actividades de otras agencias del grupo."},
+    {label:"Ene–Jun 2026", fecha:"21/07/2026", global:97.2, clasif:"SOBRESALIENTE", paei:{P:94,A:100,E:100,I:95}, comentarios:{P:"Dashboard TI. Acuerdo: reforzar en levantamiento de tickets y documentar en tiempo.",A:"Dashboard TI.",E:"Continuidad en mejores prácticas como segmentación de red en VR y aplicación de 5's. Acuerdo: mejorar condiciones del site y lugar asignado para personal de sistemas.",I:"Mejorar la comunicación en equipo y con proveedores a cargo."}, acuerdos:null},
+  ],
+  atendido: "Parcialmente. El acuerdo de 2025 (\"trabajar más en equipo\") se repite en 2026 en Colaboración (\"mejorar la comunicación en equipo y con proveedores\") — el mismo tema, sin resolverse del todo. Su calificación se mantuvo prácticamente igual (97→97.2).",
+  reco_full: [
+    {texto:"El tema de trabajo/comunicación en equipo aparece en ambos años — coaching directo de Miguel Armando, no capacitación formal.", categoria:"Coaching del jefe"},
+  ],
+  reco_accion: "Coaching en comunicación de equipo",
+},
+{
+  id:'edgar', nombre:"Edgar Esteban Mayo Cruz", puesto:"Técnico de Soporte TI", agencia:"SERVIOPERA", jefe:"Miguel Armando Rojas González", antiguedad:"3.3 años", grupo:"ma",
+  periods: [
+    {label:"Ene–Dic 2025 (anual)", fecha:"26/01/2026", global:97, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:85}, comentarios:{P:"Dashboard TI.",A:"Dashboard TI.",E:"Audi São Paulo: implementación nueva sucursal. Geely Galerías: segmentación de red. D3 Edge Box Audi: nuevo servidor con conexión a Planta Alemania. Honda Galerías: implementación de Telefonía VoIP.",I:"Extranet Vanguardia."}, acuerdos:"Trabajar en la comunicación constante y el trabajo en equipo."},
+    {label:"Ene–Jun 2026", fecha:"21/07/2026", global:97.5, clasif:"SOBRESALIENTE", paei:{P:95,A:100,E:100,I:95}, comentarios:{P:"Dashboard TI. Acuerdo: reforzar en levantamiento de tickets y documentar en tiempo.",A:"Dashboard TI.",E:"Implementación de sistema ADS en Audi (área servicio); continuidad a lineamientos VW en nuevos activos e ingreso de colaboradores; mejores prácticas ITIL en Honda Galerías/Acura; segmentación de red.",I:"Mejorar la comunicación en equipo y con proveedores a cargo."}, acuerdos:null},
+  ],
+  atendido: "Parcialmente — mismo patrón que Luis Alonso: el acuerdo de 2025 sobre comunicación y trabajo en equipo se repite casi igual en 2026. Es un tema compartido por ambos reportes de Miguel Armando, no aislado.",
+  reco_full: [
+    {texto:"Mismo tema que Luis Alonso (comunicación en equipo) — considerar una sesión conjunta del equipo de Miguel Armando en vez de dos conversaciones separadas.", categoria:"Coaching del jefe"},
+  ],
+  reco_accion: "Coaching en comunicación de equipo",
+},
+{
+  id:'daniel', nombre:"Daniel Venegas Villa", puesto:"Técnico de Soporte TI", agencia:"SERVIOPERA", jefe:"Pablo Guillén Medina", antiguedad:"3.6 años", grupo:"pablo",
+  periods: [
+    {label:"Ene–Dic 2025 (anual)", fecha:"27/01/2026", global:95.5, clasif:"SOBRESALIENTE", paei:{P:85,A:100,E:100,I:100}, comentarios:{P:"Dashboards.",A:"Dashboards.",E:"Proyectos de infraestructura (cámaras, nodos) en Honda Colima, Chirey Manzanillo, Honda Cd. Guzmán; apoyo en administración de líneas telefónicas con Telmex.",I:"Sin problemas con proveedores ni clientes internos; disponible con compañeros."}, acuerdos:"PGM: seguimiento a la asignación de tickets y planes de trabajo alineados a lineamientos TI. DVV: compromiso de aumentar los tickets que se generen."},
+    {label:"Ene–Jun 2026", fecha:"29/07/2026", global:94.45, clasif:"ADECUADO", paei:{P:94,A:85,E:100,I:100}, comentarios:{P:"Más atención a tickets.",A:"Retro: seguimiento de tickets, capturar el total de actividades.",E:"Tener más propuestas en las necesidades de infraestructura.",I:"Retro: comentar vacaciones y proyectos."}, acuerdos:null},
+  ],
+  atendido: "No. El acuerdo de 2025 sobre seguimiento de tickets se repite casi igual en 2026 (\"más atención a tickets\", \"seguimiento de tickets\") — es el único colaborador del equipo que bajó de Sobresaliente a Adecuado, y es también el que Pablo mencionó por nombre en su propia evaluación 2026 pidiendo reforzar su nivel de atención.",
+  reco_full: [
+    {texto:"Es el único caso de baja real del equipo (95.5→94.45) y el tema de seguimiento de tickets lleva dos periodos sin resolverse — atención prioritaria de Pablo.", categoria:"Coaching del jefe"},
+  ],
+  reco_accion: "Reforzar seguimiento de tickets (2 periodos sin resolver)",
+},
+{
+  id:'alejandro', nombre:"Alejandro Gaitán Mejía", puesto:"Técnico de Soporte TI", agencia:"BMW VANGUARDIA MOTORS", jefe:"Pablo Guillén Medina", antiguedad:"8.7 años", grupo:"pablo",
+  periods: [
+    {label:"Ene–Dic 2025 (anual)", fecha:"27/01/2026", global:93.3, clasif:"ADECUADO", paei:{P:100,A:100,E:85.2,I:85}, comentarios:{P:"Dashboards.",A:"Dashboards.",E:"Plan de trabajo.",I:"Plan de trabajo; implementación apertura BMW Galerías; implementación de usuarios en Mega."}, acuerdos:"PGM: en contacto a planes de trabajo. AGM: (sin acuerdo propio capturado)."},
+    {label:"Ene–Jun 2026", fecha:"17/07/2026", global:97.7, clasif:"SOBRESALIENTE", paei:{P:99,A:100,E:100,I:90}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Me comprometo a compartir fechas de vacaciones del equipo así como proyectos."}, acuerdos:null},
+  ],
+  atendido: "Sí. Mejora real de Adecuado a Sobresaliente (93.3→97.7), la segunda más grande del equipo completo.",
+  reco_full: [
+    {texto:"Reconocer la mejora de Adecuado a Sobresaliente.", categoria:"Reconocimiento"},
+  ],
+  reco_accion: "Reconocer mejora a Sobresaliente",
+},
+{
+  id:'josefernando', nombre:"José Fernando García Castañón", puesto:"Técnico de Soporte TI", agencia:"KIA ALTARIA", jefe:"Pablo Guillén Medina", antiguedad:"3.1 años", grupo:"pablo",
+  periods: [
+    {label:"Ene–Dic 2025 (anual)", fecha:"26/01/2026", global:96.3, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:85.2,I:100}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:"PMG: cumplimiento en apoyos de trabajo. JFGC: cumplimiento de planes de trabajo mes con mes."},
+    {label:"Ene–Jun 2026", fecha:"15/07/2026", global:95.5, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:90,I:90}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Revisión de lineamientos TI.",I:"Ofrecer planes de proyectos para trabajo en conjunto."}, acuerdos:null},
+  ],
+  atendido: "Se mantiene Sobresaliente en ambos periodos, con una baja leve (96.3→95.5) dentro del mismo nivel.",
+  reco_full: [
+    {texto:"Sin comentarios de riesgo — dar seguimiento normal.", categoria:"Coaching del jefe"},
+  ],
+  reco_accion: "Seguimiento normal",
+},
+{
+  id:'davidgabriel', nombre:"David Gabriel García Vázquez", puesto:"Técnico de Soporte TI", agencia:"KIA CORREGIDORA", jefe:"Pablo Guillén Medina", antiguedad:"2.9 años", grupo:"pablo",
+  periods: [
+    {label:"Ene–Dic 2025 (anual)", fecha:"26/01/2026", global:93.3, clasif:"ADECUADO", paei:{P:100,A:100,E:85.2,I:85}, comentarios:{P:"Dashboards.",A:"Dashboards.",E:"Proyecto de conmutador cloud.",I:"Reporte de planes de trabajo mensuales."}, acuerdos:"PMG: me comprometo a involucrarme más en los planes de trabajo. DGGV: me comprometo a cumplir con el plan de trabajo asignado y buscar mejoras para los procesos de sistemas."},
+    {label:"Ene–Jun 2026", fecha:"14/07/2026", global:96.25, clasif:"SOBRESALIENTE", paei:{P:100,A:95,E:90,I:100}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Invitarlo a más proyectos, lectura de lineamientos Audi y por contacto con Gaitán y Edgar Mayo.",I:"Moverse unos días a KIA Altaria para que se le conozca y tener más visión de otra agencia."}, acuerdos:null},
+  ],
+  atendido: "Sí. Mejora de Adecuado a Sobresaliente (93.3→96.25), y el acuerdo 2025 de \"buscar mejoras en procesos\" se refleja en la invitación 2026 a más proyectos y contacto con otros técnicos (Gaitán, Edgar Mayo) — se está construyendo colaboración cruzada real entre agencias.",
+  reco_full: [
+    {texto:"Dar seguimiento a la rotación temporal propuesta a KIA Altaria — es una buena práctica de desarrollo cruzado entre agencias.", categoria:"Experiencia de desarrollo"},
+  ],
+  reco_accion: "Dar seguimiento a rotación temporal a KIA Altaria",
+},
+];
+
+function fmt(v){ return (v===null||v===undefined) ? '—' : (Number.isInteger(v) ? v.toString() : v.toFixed(2)); }
+function initials(name){ return name.split(' ').filter(w=>w.length>2||/[A-ZÁÉÍÓÚÑ]/.test(w[0])).slice(0,2).map(w=>w[0]).join('').toUpperCase().slice(0,2); }
+function tier(g){ return g>=95?'SOBRESALIENTE':g>=85?'ADECUADO':'INSATISFACTORIO'; }
+function stars(g){ const n = g>=98?5:g>=95?5:g>=90?4:g>=85?3:g>=75?2:1; return '★'.repeat(n) + '☆'.repeat(5-n); }
+function deltaSpan(d){
+  if (d===null||d===undefined) return '<span class="delta-flat">—</span>';
+  if (d > 0.05) return `<span class="delta-up">▲ +${d.toFixed(1)}</span>`;
+  if (d < -0.05) return `<span class="delta-down">▼ ${d.toFixed(1)}</span>`;
+  return `<span class="delta-flat">▬ 0.0</span>`;
+}
+function series2(p){ return p.periods; }
+function personDelta(p){ const s=series2(p); return s[1].global - s[0].global; }
+
+function paeiCircleSvg(letter, value, size){
+  size = size||130;
+  const r = size/2-13, cx=size/2, cy=size/2, circ=2*Math.PI*r;
+  const frac = Math.max(0, Math.min(1, (value||0)/100));
+  const dash = frac*circ;
+  const color = PAEI_HEX[letter];
+  return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--navy-3)" stroke-width="13"/>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="13" stroke-linecap="round" stroke-dasharray="${dash} ${circ-dash}" transform="rotate(-90 ${cx} ${cy})"/>
+    <text x="${cx}" y="${cy-4}" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="25" fill="var(--ink)">${value!==null?value.toFixed(1):'—'}</text>
+    <text x="${cx}" y="${cy+20}" text-anchor="middle" font-family="IBM Plex Mono" font-weight="700" font-size="15" fill="${color}">(${letter})</text>
+  </svg>`;
+}
+function renderCircleRow(containerId, items, deltaLabel){
+  deltaLabel = deltaLabel || 'vs. 2025';
+  document.getElementById(containerId).innerHTML = `<div style="display:flex; gap:28px; justify-content:center; flex-wrap:wrap;">` +
+    items.map(it=>`<div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+      ${paeiCircleSvg(it.letter, it.value)}
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--muted); text-align:center; max-width:130px;">${PAEI_LABEL[it.letter]}</div>
+      <div style="font-size:12px;">${deltaSpan(it.delta)} <span style="color:var(--muted); font-size:10.5px;">${deltaLabel}</span></div>
+    </div>`).join('') + `</div>`;
+}
+
+function lineChartSvg(series, opts){
+  opts = opts || {};
+  const n = opts.n || 2;
+  const W = opts.w||620, H = opts.h||280, padL=44, padR = opts.endLabels? 54:18, padT=16, padB=36;
+  const plotW=W-padL-padR, plotH=H-padT-padB;
+  const yMin = opts.yMin!==undefined?opts.yMin:0, yMax = opts.yMax!==undefined?opts.yMax:100;
+  const xPos = i => padL + (i/(n-1))*plotW;
+  const yPos = v => padT + plotH - ((v-yMin)/(yMax-yMin))*plotH;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">`;
+  const gridVals = opts.gridVals || [yMin, (yMin+yMax)/2, yMax];
+  gridVals.forEach(v=>{
+    const y = yPos(v);
+    svg += `<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="var(--line)" stroke-width="1"/>
+      <text x="${padL-8}" y="${y+4}" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="var(--muted)">${v.toFixed(0)}</text>`;
+  });
+  const xLabels = opts.xLabels || ['2025','2026'];
+  xLabels.forEach((lbl,i)=> svg += `<text x="${xPos(i)}" y="${H-12}" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="var(--muted)">${lbl}</text>`);
+  series.forEach(s=>{
+    const pts = s.values.map((v,i)=> v!==null ? `${xPos(i)},${yPos(v)}` : null).filter(Boolean);
+    svg += `<polyline points="${pts.join(' ')}" fill="none" stroke="${s.color}" stroke-width="${s.width||2.5}"/>`;
+    s.values.forEach((v,i)=>{ if(v!==null){
+      svg += `<circle cx="${xPos(i)}" cy="${yPos(v)}" r="4" fill="${s.color}"/>`;
+      if (s.showLabel) svg += `<text x="${xPos(i)}" y="${yPos(v)-11}" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="11" fill="var(--ink)">${v.toFixed(1)}</text>`;
+    }});
+  });
+  if (opts.endLabels){
+    let ends = series.map(s=>{
+      const lastIdx = s.values.map((v,i)=>v!==null?i:-1).filter(i=>i>=0).pop();
+      return lastIdx===undefined ? null : {y: yPos(s.values[lastIdx]), val:s.values[lastIdx], color:s.color, letter:s.letter};
+    }).filter(Boolean).sort((a,b)=>a.y-b.y);
+    for (let i=1;i<ends.length;i++){ if (ends[i].y-ends[i-1].y<16) ends[i].y = ends[i-1].y+16; }
+    ends.forEach(e=>{
+      svg += `<text x="${W-padR+8}" y="${e.y+4}" font-family="IBM Plex Mono" font-weight="700" font-size="11" fill="${e.color}">(${e.letter}) ${e.val.toFixed(1)}</text>`;
+    });
+  }
+  svg += `</svg>`;
+  return svg;
+}
+
+function renderKpis(){
+  const avg2026 = PERSONAS.reduce((s,p)=>s+series2(p)[1].global,0)/PERSONAS.length;
+  const avg2025 = PERSONAS.reduce((s,p)=>s+series2(p)[0].global,0)/PERSONAS.length;
+  const delta = avg2026-avg2025;
+  const sobresalientes = PERSONAS.filter(p=>tier(series2(p)[1].global)==='SOBRESALIENTE').length;
+  const tiles = [
+    {l:'Equipo', n:PERSONAS.length, sub:'100% evaluado, ambos años'},
+    {l:'Promedio 2026', n:avg2026.toFixed(1), sub:'los 11 colaboradores'},
+    {l:'vs. 2025', n:`${delta>=0?'+':''}${delta.toFixed(1)}`, sub:`promedio 2025: ${avg2025.toFixed(1)}`, cls: delta>=0?'delta-up':'delta-down'},
+    {l:'Sobresalientes', n:`${sobresalientes}/${PERSONAS.length}`, sub:`${Math.round(sobresalientes/PERSONAS.length*100)}%`},
+  ];
+  document.getElementById('kpiGrid').innerHTML = tiles.map(t=>`
+    <div class="card kpi"><div class="l">${t.l}</div><div class="n ${t.cls||''}">${t.n}</div><div class="sub">${t.sub}</div></div>`).join('');
+}
+
+function renderTeamCircles(){
+  const cur={P:0,A:0,E:0,I:0}, prev={P:0,A:0,E:0,I:0};
+  PERSONAS.forEach(p=>{ const s=series2(p); ['P','A','E','I'].forEach(k=>{ cur[k]+=s[1].paei[k]; prev[k]+=s[0].paei[k]; }); });
+  ['P','A','E','I'].forEach(k=>{ cur[k]/=PERSONAS.length; prev[k]/=PERSONAS.length; });
+  const items = ['P','A','E','I'].map(k=>({letter:k, value:cur[k], delta:cur[k]-prev[k]}));
+  renderCircleRow('circleRowTeam', items, 'vs. 2025');
+}
+
+function renderCumplimientoAplicacion(){
+  const tiles = [
+    {l:'2025', n:'100%', sub:'11 de 11 evaluados'},
+    {l:'2026', n:'100%', sub:'11 de 11 evaluados'},
+    {l:'General', n:'100%', sub:'22 de 22 evaluaciones aplicadas'},
+  ];
+  document.getElementById('cumplimientoAplicacionGrid').innerHTML = tiles.map(t=>`
+    <div class="card kpi"><div class="l">${t.l}</div><div class="n">${t.n}</div><div class="sub">${t.sub}</div></div>`).join('');
+}
+
+function renderHighlights(){
+  const items = [
+    {label:'Calificación perfecta, 2 años', nombre:'Miguel Ángel', valor:'100 → 100', person:'miguelangel'},
+    {label:'Calificación perfecta, 2 años', nombre:'Valeria', valor:'100 → 100', person:'valeria'},
+    {label:'Mayor mejora del equipo', nombre:'Alejandro Gaitán', valor:'93.3 → 97.7', person:'alejandro'},
+  ];
+  document.getElementById('highlightGrid').innerHTML = items.map(it=>`
+    <div class="card hl-card" onclick="openHistorial('${it.person}')">
+      <div class="stars">★★★</div>
+      <div class="hn">${it.nombre}</div>
+      <div class="hv">${it.valor}</div>
+      <div class="hl">${it.label}</div>
+    </div>`).join('');
+}
+
+function heatColor(v){ if(v===null) return 'rgba(255,255,255,0.05)'; if(v>=95) return 'rgba(52,199,123,0.28)'; if(v>=85) return 'rgba(232,197,71,0.28)'; return 'rgba(240,82,75,0.28)'; }
+function heatTextColor(v){ if(v===null) return 'var(--muted)'; if(v>=95) return 'var(--g)'; if(v>=85) return 'var(--y)'; return 'var(--r)'; }
+function renderHeat(){
+  let html = '<thead><tr><th>Colaborador</th><th>P</th><th>A</th><th>E</th><th>I</th><th>Global</th></tr></thead><tbody>';
+  PERSONAS.forEach(p=>{
+    const s = series2(p)[1];
+    html += `<tr><td>${p.nombre.split(' ')[0]} ${p.nombre.split(' ')[1]||''}</td>`;
+    ['P','A','E','I'].forEach(k=>{ const v=s.paei[k]; html += `<td><span class="heat-cell" style="background:${heatColor(v)};color:${heatTextColor(v)};">${v}</span></td>`; });
+    html += `<td><span class="heat-cell" style="background:${heatColor(s.global)};color:${heatTextColor(s.global)};">${fmt(s.global)}</span></td></tr>`;
+  });
+  document.getElementById('heatTable').innerHTML = html + '</tbody>';
+}
+
+function teamCardHtml(p){
+  const s = series2(p)[1]; const g = s.global; const d = personDelta(p);
+  const arrow = d>0.5?'<span class="delta-up">↑</span>':d<-0.5?'<span class="delta-down">↓</span>':'<span class="delta-flat">→</span>';
+  return `<div class="card team-card" onclick="openHistorial('${p.id}')">
+    <div class="avatar">${initials(p.nombre)}</div>
+    <div class="tn">${p.nombre}</div>
+    <div class="tp">${p.puesto}${p.agencia!=='SERVIOPERA'?' · '+p.agencia:''}</div>
+    <div class="tv">${fmt(g)} ${arrow}</div>
+    <div class="stars">${stars(g)}</div>
+    <div class="tlink">Ver expediente →</div>
+  </div>`;
+}
+function renderTeamCards(){
+  document.getElementById('teamGridDirecto').innerHTML = PERSONAS.filter(p=>p.grupo==='directo').map(teamCardHtml).join('');
+  document.getElementById('teamGridMA').innerHTML = PERSONAS.filter(p=>p.grupo==='ma').map(teamCardHtml).join('');
+  document.getElementById('teamGridPablo').innerHTML = PERSONAS.filter(p=>p.grupo==='pablo').map(teamCardHtml).join('');
+}
+
+function renderComentario(){
+  const avg2026 = PERSONAS.reduce((s,p)=>s+series2(p)[1].global,0)/PERSONAS.length;
+  document.getElementById('comentarioBox').innerHTML = `<div class="aihead">🧠 Generado a partir de los datos del periodo</div>
+    El equipo completo de TI de Marco Antonio López Avelar (11 personas en 3 niveles) cerró con un promedio de <b>${avg2026.toFixed(1)}</b>, con 10 de 11 en Sobresaliente. <b>Miguel Ángel Delgado Moreno</b> y <b>Valeria Corona Sánchez</b> tienen calificación perfecta en ambos años; <b>Alejandro Gaitán Mejía</b> tuvo la mejora más grande (93.3→97.7).<br><br>
+    El único caso con baja real es <b>Daniel Venegas Villa</b> (95.5→94.45, Adecuado) — el mismo tema de seguimiento de tickets aparece en 2025 y 2026, y es el único colaborador que su propio jefe (Pablo) menciona por nombre pidiendo reforzar su nivel de atención.<br><br>
+    El patrón de desarrollo más claro sigue siendo <b>Miguel Ángel Delgado</b> y <b>Pablo Guillén</b>, ambos con recomendaciones repetidas de capacitación en gestión de proyectos y habilidades gerenciales — y Pablo ya lidera formalmente un equipo de 4 técnicos en 3 agencias distintas. También hay un patrón compartido entre <b>Luis Alonso Bolaños</b> y <b>Edgar Esteban Mayo</b> (ambos bajo Miguel Armando): el mismo pedido de "mejorar comunicación en equipo" se repite en los dos, en ambos años.`;
+}
+
+function renderPersistList(){
+  document.getElementById('persistList').innerHTML = `
+    <div class="card persist-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <b style="font-size:14px;">Luis Alonso Bolaños Díaz y Edgar Esteban Mayo Cruz</b>
+        <span class="pill-warn">⚠ 2 periodos, mismo tema, mismo jefe</span>
+      </div>
+      <div class="persist-steps">
+        <div class="persist-step"><div class="pl">2025 (ambos)</div>"Trabajar más en equipo" / "Trabajar en la comunicación constante y el trabajo en equipo."</div>
+        <div style="color:var(--muted);">→</div>
+        <div class="persist-step"><div class="pl">2026 (ambos)</div>"Mejorar la comunicación en equipo y con proveedores a cargo." (texto casi idéntico en los dos)</div>
+      </div>
+      <p style="font-size:12.5px; color:var(--muted); margin:8px 0 0;">Mismo tema, mismo jefe (Miguel Armando), redacción casi idéntica en los dos colaboradores — sugiere una oportunidad de equipo, no dos casos individuales.</p>
+    </div>
+    <div class="card persist-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <b style="font-size:14px;">Daniel Venegas Villa</b>
+        <span class="pill-warn">⚠ 2 periodos, sin resolver, único con baja</span>
+      </div>
+      <div class="persist-steps">
+        <div class="persist-step"><div class="pl">2025</div>"Seguimiento a la asignación de tickets... compromiso de aumentar los tickets que se generen."</div>
+        <div style="color:var(--muted);">→</div>
+        <div class="persist-step"><div class="pl">2026</div>"Más atención a tickets... seguimiento de tickets, capturar el total de actividades."</div>
+      </div>
+      <p style="font-size:12.5px; color:var(--muted); margin:8px 0 0;">Es también el único colaborador mencionado por nombre en la evaluación de su propio jefe (Pablo) en 2026, pidiendo reforzar su atención de tickets.</p>
+    </div>`;
+}
+
+function renderPromoCoach(){
+  const promo = PERSONAS.filter(p=>['miguelangel','pablo'].includes(p.id));
+  document.getElementById('promoList').innerHTML = promo.map(p=>{
+    const g = series2(p)[1].global;
+    return `<div class="card hl-card" onclick="openHistorial('${p.id}')">
+      <div class="stars">${stars(g)}</div>
+      <div class="hn">${p.nombre.split(' ')[0]} ${p.nombre.split(' ')[1]||''}</div>
+      <div class="hv">${fmt(g)}</div>
+      <div class="hl">Liderazgo ya en práctica</div>
+    </div>`;
+  }).join('');
+}
+
+function renderRiesgo(){
+  document.getElementById('riesgoBox').innerHTML = `<div class="aihead">🧠 Calificación baja + comentarios negativos + sin mejora = Riesgo Alto</div>
+    Nadie está por debajo de 85, así que nadie califica como Riesgo Alto por la fórmula estricta. <b>Daniel Venegas Villa</b> es el único a vigilar: bajó de Sobresaliente a Adecuado y el mismo tema (seguimiento de tickets) lleva dos periodos sin resolverse — no es Riesgo Alto todavía, pero es el caso más cercano.`;
+}
+
+function renderPlanGerencial(){
+  const PRIORIDAD = {daniel:'Alta', miguelangel:'Media', pablo:'Media', luis:'Media', edgar:'Media', miguelarmando:'Baja', victor:'Baja', valeria:'Baja', alejandro:'Baja', josefernando:'Baja', davidgabriel:'Baja'};
+  const TIPO = {daniel:'Único con baja, tema sin resolver', miguelangel:'Formalizar ruta de liderazgo', pablo:'Formalizar rol de liderazgo, ya con 4 a cargo', luis:'Tema de comunicación de equipo', edgar:'Tema de comunicación de equipo', miguelarmando:'Seguimiento a propuesta de practicante', victor:'Reforzar documentación', valeria:'Confirmar capacitación de ciberseguridad', alejandro:'Reconocer mejora', josefernando:'Seguimiento normal', davidgabriel:'Seguimiento a rotación temporal'};
+  const prioColor = {Alta:'var(--r)', Media:'var(--o)', Baja:'var(--g)'};
+  document.getElementById('planGerencialTable').innerHTML =
+    `<thead><tr><th>Colaborador</th><th>Situación</th><th>Acción sugerida</th><th>Prioridad</th></tr></thead><tbody>` +
+    PERSONAS.map(p=>`<tr>
+      <td>${p.nombre}</td><td>${TIPO[p.id]}</td>
+      <td><span class="pill-action">${p.reco_accion}</span></td>
+      <td><span style="color:${prioColor[PRIORIDAD[p.id]]}; font-weight:700; font-family:'IBM Plex Mono',monospace; font-size:11px;">${PRIORIDAD[p.id]}</span></td>
+    </tr>`).join('') + `</tbody>`;
+}
+
+function renderTendenciaEquipo(){
+  const vals = [0,1].map(i=>{
+    const scores = PERSONAS.map(p=>series2(p)[i].global);
+    return scores.reduce((a,b)=>a+b,0)/scores.length;
+  });
+  document.getElementById('lineTeam').innerHTML = lineChartSvg([{values:vals, color:'var(--blue-light)', width:3, showLabel:true}], {n:2, xLabels:['2025','2026'], yMin:85, yMax:100});
+}
+
+function renderTendenciaPaei(){
+  const series = ['P','A','E','I'].map(k=>{
+    const values = [0,1].map(i=>{
+      const scores = PERSONAS.map(p=>series2(p)[i].paei[k]);
+      return scores.reduce((a,b)=>a+b,0)/scores.length;
+    });
+    return {values, color:PAEI_HEX[k], width:2.75, letter:k};
+  });
+  document.getElementById('linePaei').innerHTML = lineChartSvg(series, {n:2, xLabels:['2025','2026'], endLabels:true, yMin:85, yMax:100});
+  document.getElementById('paeiLegend').innerHTML = ['P','A','E','I'].map(k=>`
+    <div style="display:flex; align-items:center; gap:6px; font-size:12px;">
+      <span style="width:16px; height:3px; background:${PAEI_HEX[k]}; display:inline-block; border-radius:2px;"></span>${PAEI_LABEL[k]}
+    </div>`).join('');
+}
+
+let currentHistId = PERSONAS[0].id;
+function renderHistList(){
+  document.getElementById('histList').innerHTML = PERSONAS.map(p=>`
+    <div class="hist-item ${p.id===currentHistId?'active':''}" data-id="${p.id}">
+      <span>${p.nombre}</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;">${fmt(series2(p)[1].global)}</span>
+    </div>`).join('');
+  document.getElementById('histList').querySelectorAll('.hist-item').forEach(el=>{
+    el.addEventListener('click', ()=>{ currentHistId = el.dataset.id; renderHistList(); renderExpediente(); });
+  });
+}
+function openHistorial(id){
+  currentHistId = id;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelector('.tab-btn[data-tab="historial"]').classList.add('active');
+  document.getElementById('panel-historial').classList.add('active');
+  renderHistList(); renderExpediente();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function renderExpediente(){
+  const p = PERSONAS.find(x=>x.id===currentHistId);
+  const s = series2(p);
+  const cur = s[1]; const g = cur.global; const t = tier(g);
+  const ranking = [...PERSONAS].sort((a,b)=>series2(b)[1].global-series2(a)[1].global);
+  const rankPos = ranking.findIndex(x=>x.id===p.id)+1;
+
+  const lineHtml = lineChartSvg([{values:s.map(x=>x.global), color:'var(--blue-light)', width:3, showLabel:true}], {n:2, xLabels:[s[0].label, s[1].label], yMin:85, yMax:100});
+  const prevPaei = s[0].paei;
+  const circleItems = ['P','A','E','I'].map(k=>({letter:k, value:cur.paei[k], delta: cur.paei[k]-prevPaei[k]}));
+
+  const periodsTableHtml = `<div style="overflow-x:auto;"><table class="rtable" style="min-width:760px;">
+    <thead><tr><th>Periodo</th><th style="text-align:right">General</th><th style="text-align:right">(P)</th><th style="text-align:right">(A)</th><th style="text-align:right">(E)</th><th style="text-align:right">(I)</th><th style="min-width:300px;">Comentarios</th></tr></thead>
+    <tbody>${p.periods.map(per=>{
+      const com = `<b style="color:var(--blue-light);">(P)</b> ${per.comentarios.P}<br><b style="color:var(--blue-light);">(A)</b> ${per.comentarios.A}<br><b style="color:var(--blue-light);">(E)</b> ${per.comentarios.E}<br><b style="color:var(--blue-light);">(I)</b> ${per.comentarios.I}${per.acuerdos?`<br><b style="color:var(--blue-light);">Acuerdo:</b> ${per.acuerdos}`:''}`;
+      return `<tr>
+        <td><b>${per.label}</b><br><span class="tier-pill ${per.clasif}" style="margin-top:4px;display:inline-block;">${per.clasif.charAt(0)+per.clasif.slice(1).toLowerCase()}</span></td>
+        <td class="num" style="font-weight:800;">${fmt(per.global)}</td>
+        <td class="num">${per.paei.P}</td><td class="num">${per.paei.A}</td><td class="num">${per.paei.E}</td><td class="num">${per.paei.I}</td>
+        <td style="font-size:12px; line-height:1.55;">${com}</td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table></div>`;
+
+  document.getElementById('expedienteCard').innerHTML = `
+    <div class="expediente-header">
+      <div style="display:flex; gap:14px; align-items:center;">
+        <div class="av-lg">${initials(p.nombre)}</div>
+        <div><div style="font-weight:800; font-size:18px;">${p.nombre}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted);">${p.puesto} · ${p.agencia}</div></div>
+      </div>
+      <button class="btn-pdf" onclick="window.print()">⬇ Descargar PDF</button>
+    </div>
+    <div class="exp-meta">
+      <div class="em"><div class="ek">Antigüedad</div><div class="ev">${p.antiguedad}</div></div>
+      <div class="em"><div class="ek">Jefe</div><div class="ev" style="font-size:11.5px;">${p.jefe}</div></div>
+      <div class="em"><div class="ek">Calificación actual</div><div class="ev">${fmt(g)} <span class="tier-pill ${t}">${t.charAt(0)+t.slice(1).toLowerCase()}</span></div></div>
+      <div class="em"><div class="ek">Ranking equipo</div><div class="ev">#${rankPos} de ${ranking.length}</div></div>
+      <div class="em"><div class="ek">Tendencia</div><div class="ev">${deltaSpan(personDelta(p))}</div></div>
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">Calificación por indicador (vs. periodo anterior)</div>
+      <div id="circleRowPerson"></div>
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">Evolución de calificación</div>
+      <div style="display:flex; justify-content:center;">${lineHtml}</div>
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">¿Se atendieron los puntos?</div>
+      <p style="font-size:13px; line-height:1.65; margin:0 0 14px;">${p.atendido}</p>
+      <div class="section-kicker" style="margin-bottom:10px;">Concentrado general</div>
+      ${periodsTableHtml}
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">Qué mide cada indicador en su puesto</div>
+      <div class="doc-block"><p><b>P</b> — ${PUESTO_DEF[p.puesto].P}<br><b>A</b> — ${PUESTO_DEF[p.puesto].A}<br><b>E</b> — ${PUESTO_DEF[p.puesto].E}<br><b>I</b> — ${PUESTO_DEF[p.puesto].I}</p><p style="margin-top:8px; color:var(--muted); font-size:11px;">Fuente: Matriz de Ponderación oficial, plantillas PAEI Grupo Vanguardia.</p></div>
+    </div>
+    <div style="padding:0 22px 24px;">
+      <div class="card ai-box"><div class="aihead">🧠 Recomendación IA</div>
+        <ul style="margin:0; padding-left:18px;">${p.reco_full.map(r=>`<li style="margin-bottom:8px;"><span class="pill-action" style="margin-bottom:4px;display:inline-block;">${r.categoria}</span><br>${r.texto}</li>`).join('')}</ul>
+      </div>
+    </div>
+  `;
+  renderCircleRow('circleRowPerson', circleItems, 'vs. periodo anterior');
+}
+
+function initAll(){
+  renderKpis();
+  renderTeamCircles();
+  renderCumplimientoAplicacion();
+  renderHighlights();
+  renderHeat();
+  renderComentario();
+  renderTeamCards();
+  renderPersistList();
+  renderPromoCoach();
+  renderRiesgo();
+  renderPlanGerencial();
+  renderTendenciaEquipo();
+  renderTendenciaPaei();
+  renderHistList();
+  renderExpediente();
+}
+initAll();
+
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>
