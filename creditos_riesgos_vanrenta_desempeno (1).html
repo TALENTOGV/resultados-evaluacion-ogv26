@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Créditos y Riesgos · Vanrenta · Centro de Inteligencia del Desempeño</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+:root{
+  --navy:#060B1F; --navy-2:#0B1330; --navy-3:#121B42;
+  --line:rgba(255,255,255,0.09); --ink:#F4F6FA; --muted:rgba(244,246,250,0.55);
+  --blue-light:#7FD1F0; --blue:#2E8FE0;
+  --g:#34C77B; --y:#E8C547; --r:#F0524B; --o:#F0964B;
+  --paei-p:#2E8FE0; --paei-a:#E8C547; --paei-e:#34C77B; --paei-i:#A6415A;
+  --shadow:0 1px 2px rgba(0,0,0,0.2), 0 12px 32px -16px rgba(0,0,0,0.55);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--navy);color:var(--ink);font-family:'Manrope',sans-serif;-webkit-font-smoothing:antialiased;}
+main{max-width:1100px;margin:0 auto;padding:0 5vw 90px;}
+header.top{ background:radial-gradient(ellipse at 75% -10%, rgba(46,143,224,0.22), transparent 55%), var(--navy); padding:40px 5vw 0; border-bottom:1px solid var(--line); }
+.eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--blue-light); margin:0 0 10px; }
+.hero-title{ font-weight:800; font-size:clamp(24px,3vw,34px); margin:0 0 8px; letter-spacing:-.01em; }
+.hero-sub{ font-size:13.5px; color:var(--muted); max-width:660px; line-height:1.6; margin:0 0 26px; }
+.tabs{ display:flex; gap:4px; flex-wrap:wrap; }
+.tab-btn{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.03em; text-transform:uppercase; color:var(--muted); background:none; border:none; padding:14px 16px; cursor:pointer; border-bottom:3px solid transparent; transition:color .15s,border-color .15s; white-space:nowrap; }
+.tab-btn:hover{ color:var(--blue-light); }
+.tab-btn.active{ color:var(--ink); border-bottom-color:var(--blue); font-weight:700; }
+.panel{ display:none; } .panel.active{ display:block; }
+section{ padding:34px 0 8px; border-bottom:1px solid var(--line); }
+section:last-of-type{ border-bottom:none; }
+.section-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; margin-bottom:18px; }
+.section-kicker{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--blue-light); margin:0 0 6px; }
+.section-title{ font-weight:800; font-size:clamp(18px,2vw,22px); margin:0; }
+.section-note{ font-size:12.5px; color:var(--muted); max-width:360px; line-height:1.5; text-align:right; }
+.card{ background:var(--navy-2); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); }
+.kpi-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+@media(max-width:800px){ .kpi-grid{ grid-template-columns:1fr 1fr; } }
+.kpi{ padding:18px; }
+.kpi .l{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.kpi .n{ font-weight:800; font-size:24px; }
+.kpi .sub{ margin-top:6px; font-size:11px; color:var(--muted); }
+.delta-up{ color:var(--g); font-weight:700; } .delta-down{ color:var(--r); font-weight:700; } .delta-flat{ color:var(--muted); font-weight:700; }
+.tier-pill{ font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.05em; text-transform:uppercase; padding:3px 9px; border-radius:20px; display:inline-block; }
+.tier-pill.SOBRESALIENTE{ background:rgba(52,199,123,0.15); color:var(--g); }
+.tier-pill.ADECUADO{ background:rgba(232,197,71,0.15); color:var(--y); }
+.tier-pill.INSATISFACTORIO{ background:rgba(240,82,75,0.15); color:var(--r); }
+.pill-warn{ font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.05em; text-transform:uppercase; padding:2px 8px; border-radius:20px; background:rgba(240,150,75,0.13); color:var(--o); display:inline-block; }
+.pill-action{ font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.03em; padding:5px 11px; border-radius:8px; background:var(--navy-3); border:1px solid var(--line); color:var(--ink); display:inline-block; }
+table.rtable{ width:100%; border-collapse:collapse; font-size:12.5px; }
+table.rtable th{ text-align:left; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); padding:9px 10px; border-bottom:1px solid var(--line); }
+table.rtable td{ padding:10px 10px; border-bottom:1px solid var(--line); vertical-align:middle; }
+table.rtable td.num{ font-family:'IBM Plex Mono',monospace; text-align:right; }
+table.rtable tr:last-child td{ border-bottom:none; }
+.comment-box{ padding:20px 22px; font-size:13.5px; line-height:1.7; }
+.comment-box b{ color:var(--blue-light); }
+.ai-box{ padding:20px 22px; font-size:13.5px; line-height:1.75; border-left:3px solid var(--blue-light); background:rgba(127,209,240,0.05); }
+.ai-box .aihead{ display:flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--blue-light); margin-bottom:10px; }
+.note-box{ padding:16px 20px; font-size:12.5px; color:var(--muted); line-height:1.6; border-left:3px solid var(--o); background:rgba(240,150,75,0.05); border-radius:0 10px 10px 0; }
+.alert-box{ padding:16px 20px; font-size:12.5px; color:var(--ink); line-height:1.6; border-left:3px solid var(--r); background:rgba(240,82,75,0.07); border-radius:0 10px 10px 0; }
+.doc-block{ background:var(--navy-3); border-radius:10px; padding:12px 14px; margin-bottom:8px; }
+.doc-block .dk{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--blue-light); margin-bottom:5px; }
+.doc-block p{ margin:0; font-size:12.5px; line-height:1.6; white-space:pre-line; color:var(--ink); }
+.highlight-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+@media(max-width:800px){ .highlight-grid{ grid-template-columns:1fr 1fr; } }
+.hl-card{ padding:18px; text-align:center; }
+.hl-card .stars{ color:var(--y); font-size:13px; margin-bottom:8px; }
+.hl-card .hn{ font-weight:800; font-size:15px; margin-bottom:4px; }
+.hl-card .hv{ font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--blue-light); margin-bottom:6px; }
+.hl-card .hl{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+.team-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+@media(max-width:800px){ .team-grid{ grid-template-columns:1fr 1fr; } }
+.team-card{ padding:18px; cursor:pointer; transition:border-color .15s, transform .15s; }
+.team-card:hover{ border-color:rgba(127,209,240,0.35); transform:translateY(-2px); }
+.avatar{ width:42px; height:42px; border-radius:50%; background:var(--navy-3); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; color:var(--blue-light); margin-bottom:10px; }
+.team-card .tn{ font-weight:700; font-size:13.5px; margin-bottom:2px; }
+.team-card .tp{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--muted); margin-bottom:10px; }
+.team-card .tv{ font-weight:800; font-size:22px; }
+.team-card .stars{ color:var(--y); font-size:11px; margin:4px 0 8px; }
+.team-card .tlink{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--blue-light); text-transform:uppercase; letter-spacing:.05em; }
+.heat-table{ width:100%; border-collapse:collapse; font-size:12.5px; }
+.heat-table th{ font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; color:var(--muted); padding:8px 10px; text-align:center; }
+.heat-table th:first-child{ text-align:left; }
+.heat-table td{ padding:8px 10px; text-align:center; border-bottom:1px solid var(--line); }
+.heat-table td:first-child{ text-align:left; font-weight:600; }
+.heat-cell{ display:inline-block; min-width:40px; padding:5px 8px; border-radius:6px; font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:12px; }
+.persist-card{ padding:18px 20px; }
+.persist-steps{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:10px 0; }
+.persist-step{ background:var(--navy-3); border-radius:8px; padding:8px 12px; font-size:12px; max-width:240px; }
+.persist-step .pl{ font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--muted); text-transform:uppercase; }
+.subgroup-label{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--blue-light); margin:26px 0 12px; }
+.subgroup-label:first-child{ margin-top:0; }
+.hist-shell{ display:grid; grid-template-columns:230px 1fr; gap:24px; }
+@media(max-width:800px){ .hist-shell{ grid-template-columns:1fr; } }
+.hist-list{ display:flex; flex-direction:column; gap:4px; }
+.hist-item{ padding:10px 14px; border-radius:9px; cursor:pointer; font-size:13px; display:flex; justify-content:space-between; align-items:center; }
+.hist-item:hover{ background:var(--navy-3); }
+.hist-item.active{ background:rgba(127,209,240,0.1); color:var(--blue-light); font-weight:700; }
+.expediente-header{ display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:14px; padding:20px 22px; }
+.expediente-header .av-lg{ width:56px; height:56px; border-radius:50%; background:var(--navy-3); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:19px; color:var(--blue-light); }
+.exp-meta{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; padding:0 22px 20px; }
+@media(max-width:650px){ .exp-meta{ grid-template-columns:1fr 1fr; } }
+.exp-meta .em{ background:var(--navy-3); border-radius:9px; padding:10px 12px; }
+.exp-meta .ek{ font-family:'IBM Plex Mono',monospace; font-size:9px; text-transform:uppercase; color:var(--muted); margin-bottom:3px; }
+.exp-meta .ev{ font-weight:700; font-size:13px; }
+.btn-pdf{ font-family:'Manrope',sans-serif; font-weight:700; font-size:12.5px; color:#06101F; background:var(--blue-light); border:none; border-radius:9px; padding:10px 16px; cursor:pointer; }
+@media print{
+  :root{
+    --navy:#ffffff; --navy-2:#ffffff; --navy-3:#f2f3f5;
+    --line:#c9ccd2; --ink:#0a0a0a; --muted:#3f4147;
+    --blue-light:#1d4ed8; --blue:#1d4ed8;
+    --g:#15803d; --y:#92660b; --r:#b91c1c; --o:#b45309;
+  }
+  body *{ visibility:hidden; }
+  #printArea, #printArea *{ visibility:visible; }
+  #printArea{ position:absolute; left:0; top:0; width:100%; }
+  .tabs, .btn-pdf, .hist-list{ display:none !important; }
+  body{ background:#fff; color:#0a0a0a; }
+  .card{ border:1px solid #c9ccd2 !important; box-shadow:none !important; }
+  .doc-block, .ai-box{ background:#f2f3f5 !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <p class="eyebrow">Capital Humano · Grupo Vanguardia · División Financiera</p>
+  <h1 class="hero-title">Créditos y Riesgos — Centro de Inteligencia del Desempeño</h1>
+  <p class="hero-sub">Vanrenta. Reporte para Angélica Orrala Orrala. Diana Lorena Ulaje Sánchez es su único reporte directo — Jefa de Crédito y Riesgos, con 6 colaboradores propios a cargo. 7 personas en total dentro de esta cadena.</p>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="resumen">🏠 Resumen Ejecutivo</button>
+    <button class="tab-btn" data-tab="equipo">👥 Mi Equipo</button>
+    <button class="tab-btn" data-tab="ia">🧠 Análisis IA</button>
+    <button class="tab-btn" data-tab="tendencias">📈 Tendencias</button>
+    <button class="tab-btn" data-tab="historial">📁 Historial</button>
+  </div>
+</header>
+
+<main>
+
+<div class="panel active" id="panel-resumen">
+
+<section style="padding-top:30px;">
+  <div class="alert-box">
+    <b style="color:var(--r);">Alerta principal.</b> Susana Guillermina Enciso Méndez muestra una <b>baja sostenida en tres periodos consecutivos</b> (88 → 87 → 83.65), cruzando a Insatisfactorio en 2026. Es la única analista de recepción de expedientes del equipo, y el propio comentario de Diana sobre "evitar cuellos de botella desde la recepción de expedientes hasta la liberación" apunta directamente a esta posición.
+  </div>
+</section>
+
+<section>
+  <div class="note-box">
+    <b style="color:var(--o);">Contexto.</b> Diana asumió la jefatura de este equipo en julio de 2025 (antes reportaban a Angélica Orrala Orrala directamente). Su primer registro como jefa es Jul-Dic 2025.
+  </div>
+</section>
+
+<section>
+  <div class="kpi-grid" id="kpiGrid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Vista clara</p><h2 class="section-title">Calificación promedio por indicador</h2></div>
+    <p class="section-note">Equipo completo. Variación vs. periodo anterior.</p>
+  </div>
+  <div class="card" style="padding:26px;"><div id="circleRowTeam"></div></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Diana Lorena Ulaje Sánchez · jefa inmediata</p><h2 class="section-title">Cumplimiento de aplicación de evaluaciones</h2></div>
+  </div>
+  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);" id="cumplimientoAplicacionGrid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Reconocimiento</p><h2 class="section-title">Lo mejor del equipo</h2></div>
+  </div>
+  <div class="highlight-grid" id="highlightGrid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Vista rápida</p><h2 class="section-title">Mapa de calor PAEI — 2026</h2></div>
+  </div>
+  <div class="card" style="padding:14px 16px; overflow-x:auto;">
+    <table class="heat-table" id="heatTable"></table>
+  </div>
+</section>
+
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Lectura automática</p><h2 class="section-title">Comentario ejecutivo</h2></div>
+  </div>
+  <div class="card ai-box" id="comentarioBox"></div>
+</section>
+
+</div>
+
+<div class="panel" id="panel-equipo">
+<section style="padding-top:30px; border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Estructura</p><h2 class="section-title">7 colaboradores</h2></div>
+    <p class="section-note">Da clic en una tarjeta para abrir su expediente completo.</p>
+  </div>
+  <div class="subgroup-label">Reporte directo de Angélica</div>
+  <div class="team-grid" id="teamGridDiana"></div>
+  <div class="subgroup-label">Equipo de Diana Lorena Ulaje Sánchez (Jefe de Crédito y Riesgos)</div>
+  <div class="team-grid" id="teamGrid"></div>
+</section>
+</div>
+
+<div class="panel" id="panel-ia">
+<section style="padding-top:30px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Prioridad</p><h2 class="section-title">Caso de atención inmediata</h2></div>
+  </div>
+  <div class="alert-box" id="casoAtencion"></div>
+</section>
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Lo que ningún jefe obtiene normalmente</p><h2 class="section-title">Persistencia del problema</h2></div>
+  </div>
+  <div id="persistList" style="display:flex; flex-direction:column; gap:14px;"></div>
+</section>
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Automático</p><h2 class="section-title">Colaboradores con potencial para desarrollo</h2></div>
+  </div>
+  <div id="promoList" class="highlight-grid"></div>
+</section>
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Para la jefa</p><h2 class="section-title">Plan de Acción Gerencial</h2></div>
+  </div>
+  <div class="card" style="padding:6px 16px;"><table class="rtable" id="planGerencialTable"></table></div>
+</section>
+</div>
+
+<div class="panel" id="panel-tendencias">
+<section style="padding-top:30px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Tendencia</p><h2 class="section-title">Del equipo — por semestre</h2></div>
+    <p class="section-note">Ene–Jun 2025 · Jul–Dic 2025 · Ene–Jun 2026 (Diana solo tiene los últimos dos).</p>
+  </div>
+  <div class="card" style="padding:22px;"><div id="lineTeam" style="display:flex; justify-content:center;"></div></div>
+</section>
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Tendencia</p><h2 class="section-title">Por indicador PAEI — (P) (A) (E) (I) juntas</h2></div>
+  </div>
+  <div class="card" style="padding:22px;"><div id="linePaei" style="display:flex; justify-content:center;"></div><div id="paeiLegend" style="display:flex; gap:16px; justify-content:center; margin-top:14px; flex-wrap:wrap;"></div></div>
+</section>
+</div>
+
+<div class="panel" id="panel-historial">
+<section style="padding-top:30px; border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Expediente</p><h2 class="section-title">Historial por colaborador</h2></div>
+  </div>
+  <div class="hist-shell">
+    <div class="hist-list" id="histList"></div>
+    <div id="printArea"><div class="card" id="expedienteCard"></div></div>
+  </div>
+</section>
+</div>
+
+</main>
+
+<script>
+const PAEI_LABEL = {P:'(P) Eficacia', A:'(A) Eficiencia', E:'(E) Proactividad', I:'(I) Colaboración'};
+const PAEI_HEX = {P:'#2E8FE0', A:'#E8C547', E:'#34C77B', I:'#A6415A'};
+
+const PUESTO_DEF = {
+  'Jefe de Crédito y Riesgos': { P:'Estándares de tiempo de respuesta en análisis de riesgos; comunicación con clientes internos (ventas, mesa de control); metas comerciales mensuales; gestión de personal y liderazgo.', A:'Estudios de crédito de analistas conforme a políticas; cartera vencida no mayor al 1%; cero fraudes; resultado de auditorías; correcta liberación de solicitudes en el sistema.', E:'Desarrollar el área de verificación ocular; proceso de entrega de maquinaria; proceso de etiquetado de equipos; desarrollar el área de Recompras.', I:'Trabajo en equipo con área comercial, operaciones, calidad y legal; buena comunicación entre departamentos; buen ambiente laboral.' },
+  'Verificador de Crédito y Riesgos': { P:'Entrega en tiempo y forma de reportes de visita ocular; análisis de prevención de fraudes en campo.', A:'Supervisión de equipos ya arrendados; sin errores en formatos de visitas oculares; seguimiento al llenado de bitácoras.', E:'Mejoras en el formato de visitas oculares y de supervisión de activos.', I:'Trabajo en equipo con ejecutivos comerciales y analistas; cumplimiento de Experiencia Vanguardia.' },
+  'Analista de Crédito Jr.': { P:'Plan de trabajo.', A:'Cartera vencida no mayor al 1%; cero fraudes; tiempo de respuesta de 1 día; auditorías internas sin observaciones; sin reprocesos.', E:'Videos de capacitación mensuales; mejoras en paramétricas y formatos; mejoras en procesos y políticas; participación en proyectos especiales.', I:'Apertura a retroalimentación; trabajo en equipo (capacitaciones, apoyo en cierre de mes); cumplimiento de Experiencia Vanguardia.' },
+  'Analista de Recepción de Expedientes': { P:'Liberaciones en Anfexi y CRM; cumplimiento en tiempos de respuesta en revisión de expedientes, asignación de visitas y casos.', A:'Liberaciones en el sistema en tiempo, forma y sin errores; auditorías internas sin observaciones; bitácora de solicitudes actualizada diariamente sin errores.', E:'Mejoras en el formato de control de solicitudes; mejoras en procesos y políticas; participación en proyectos especiales.', I:'Trabajo en equipo con clientes internos y compañeros; cumplimiento de Experiencia Vanguardia.' },
+};
+
+const PERSONAS = [
+{ id:'diana', nombre:"Diana Lorena Ulaje Sánchez", puesto:"Jefe de Crédito y Riesgos", agencia:"VANRENTA", jefe:"Angélica Orrala Orrala", antiguedad:"1.1 años",
+  periods:[
+    {label:"Jul–Dic 2025", global:92, clasif:"ADECUADO", paei:{P:85,A:100,E:83.3,I:100}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:"Mejorar eficiencia en tiempos de respuesta para análisis y gestión de administrativas. Mejorar la cultura de la puntualidad del equipo. Mejorar puntos de calidad."},
+    {label:"Ene–Jun 2026", global:95.6, clasif:"SOBRESALIENTE", paei:{P:95,A:96,E:96,I:95}, comentarios:{P:"Falta mejorar la gestión del personal para evitar tiempos muertos y cuellos de botella en el proceso desde la recepción de expedientes hasta la liberación de operaciones en el sistema. Mejorar la puntualidad del equipo.",A:"Se tiene muy buena estructura en los procesos y seguimiento de políticas. Solo dar seguimiento a subsanar auditorías internas para cerrar todos los meses al 100%.",E:"Se está avanzando en la supervisión de los equipos, incrementando el número de visitas. Falta gestionar el cumplimiento del proceso de visitas para la entrega del reporte en tiempo real y llegar a la capacidad instalada (hasta 80 visitas mensuales por verificador). En promedio se están realizando 20 visitas al mes por verificador, muy por debajo de la capacidad instalada.",I:"Trabajar en la inteligencia emocional ante situaciones críticas o de presión cuando se sale del estado de confort. Cuidar la forma de comunicación con el área comercial sin que se sientan atacados o que se tiene autoridad sobre ellos."}, acuerdos:null},
+  ], atendido:"Parcialmente. El acuerdo de Jul-Dic 2025 sobre \"mejorar la cultura de puntualidad del equipo\" se repite casi igual en 2026 — sigue siendo un tema abierto. En cambio, su calificación general mejoró de forma clara (92→95.6).",
+  reco_full:[
+    {texto:"Su propio comentario de 2026 sobre cuellos de botella \"desde la recepción de expedientes hasta la liberación\" apunta directamente al puesto de Susana Guillermina — es la misma alerta que ya identificó ella misma.", categoria:"Coaching del jefe"},
+    {texto:"Trabajar en inteligencia emocional bajo presión, señalado explícitamente como punto de desarrollo — considerar coaching ejecutivo dado que es su primer año como jefa.", categoria:"Experiencia de desarrollo"},
+  ], reco_accion:"Coaching ejecutivo en gestión bajo presión" },
+{ id:'guillermo', nombre:"Guillermo Isaac Barrón Bobadilla", puesto:"Verificador de Crédito y Riesgos", agencia:"VANRENTA", jefe:"Diana Lorena Ulaje Sánchez", antiguedad:"1.7 años",
+  periods:[
+    {label:"Ene–Jun 2025", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Jul–Dic 2025", global:94.75, clasif:"ADECUADO", paei:{P:100,A:85,E:100,I:100}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:"Poner más atención en supervisión de maquinaria, tanto en buscar hacer más visitas al mes, como en mantener actualizada la bitácora de supervisión de maquinaria."},
+    {label:"Ene–Jun 2026", global:95.2, clasif:"SOBRESALIENTE", paei:{P:92,A:100,E:100,I:90}, comentarios:{P:"Objetivo de visitas oculares: 40/mes (ene-feb), 30/mes (desde marzo). Promedio real ene-jun 2026: 22.6 visitas (~75%). Objetivo de visitas de supervisión: 3 contratos/mes (ene-feb), 10/mes (desde marzo). Promedio real: 6.5 contratos (~65%). Prevención de fraudes en campo: muy buena.",A:"Reportes de visita y bitácora de supervisión llenados con calidad, sin observaciones de auditoría.",E:"Muy buena autogestión; proactividad en coordinación con el ejecutivo; propuestas de modificaciones a formatos.",I:"Retroalimentación favorable de clientes internos. Se recomienda mayor involucramiento con el equipo y las metas de toda el área, no solo con los demás verificadores."}, acuerdos:null},
+  ], atendido:"Parcialmente. El acuerdo de Jul-Dic 2025 (más visitas de supervisión, bitácora actualizada) mejoró la calidad documental, pero el volumen de visitas sigue por debajo del objetivo (75% y 65% de la meta) — el tema de cantidad no se resolvió del todo, aunque la calificación se mantiene alta.",
+  reco_full:[{texto:"El volumen de visitas está entre 65-75% del objetivo en ambos indicadores — vale la pena entender si es un tema de capacidad instalada (tiempo disponible) o de priorización, antes de pedir simplemente \"más visitas\".", categoria:"Coaching del jefe"}], reco_accion:"Diagnosticar causa de volumen de visitas por debajo de meta" },
+{ id:'ismael', nombre:"Ismael Rico Jiménez", puesto:"Analista de Crédito Jr.", agencia:"VANRENTA", jefe:"Diana Lorena Ulaje Sánchez", antiguedad:"3.3 años",
+  periods:[
+    {label:"Ene–Jun 2025", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Jul–Dic 2025", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Bitácora de casos y sistemas CRM/Anfexi.",A:"Bitácora de casos; reporte de cartera; reporte de auditoría mensual.",E:"Paramétricas de análisis de casos y recompras automáticas; reportes de crédito; propuestas de mejora; apoyo en proyectos especiales.",I:"Sistema CRM; apoyo en capacitación al nuevo Jefe de Crédito; asesoría a compañeros del equipo y de otras áreas."}, acuerdos:"Continuar mejorando como Comité y dando retroalimentación a los ejecutivos con empatía y enfoque comercial. Ir desarrollando enfoque de liderazgo para llevar a bordo al resto del equipo ante cambios que se requieran."},
+    {label:"Ene–Jun 2026", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Objetivo de tiempo total en crédito: 10 hrs máx. Tiempo real: 10.35 hrs (se implementó Acumática). Objetivo de tiempo en análisis: 6 hrs máx. Tiempo real: 5.41 hrs (cumplido). Casi sin observaciones de auditoría.",A:"Muy buen nivel de análisis (preciso y rápido); en mayo y junio ya logró mantener su tiempo total de casos por debajo de 10 horas.",E:"Propone y realiza mejoras en paramétricas de análisis y recompras automáticas; propone soluciones ante eventos de urgencia.",I:"Ha demostrado buenas habilidades de liderazgo, cercanía con el equipo y asesoría, sin involucrarse en conflictos internos. El área comercial reconoce mejor comunicación y mayor apertura. Ganó \"Mejor compañero del mes\"."}, acuerdos:null},
+  ], atendido:"Sí, de sobra. Tres periodos consecutivos perfectos. El acuerdo de 2025 sobre \"desarrollar enfoque de liderazgo\" ya se refleja en el comentario 2026 sobre sus habilidades de liderazgo y cercanía con el equipo — es el ejemplo más claro de desarrollo sostenido del equipo.",
+  reco_full:[{texto:"Ya apoyó en la capacitación del nuevo Jefe de Crédito (Diana) y muestra liderazgo consolidado — es el candidato más claro para una posición de mayor responsabilidad formal (Verificador senior o Comité).", categoria:"Experiencia de desarrollo"}], reco_accion:"Evaluar para posición de mayor responsabilidad" },
+{ id:'karina', nombre:"Karina Guadalupe de Lira Reyes", puesto:"Analista de Crédito Jr.", agencia:"VANRENTA", jefe:"Diana Lorena Ulaje Sánchez", antiguedad:"11.1 años",
+  periods:[
+    {label:"Ene–Jun 2025", global:91, clasif:"ADECUADO", paei:{P:100,A:85,E:80,I:100}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Jul–Dic 2025", global:91.8, clasif:"ADECUADO", paei:{P:100,A:85,E:85.3,I:100}, comentarios:{P:"Bitácora de casos y sistemas CRM/Anfexi.",A:"Bitácora de casos; reporte de cartera; reporte de auditoría mensual.",E:"Sin información.",I:"Sistema CRM; apoyo en capacitación a personal que le sucedió en su puesto anterior."}, acuerdos:"Poner más énfasis en mejorar tiempos de respuesta. Pensar más como Comité, generando propuestas para subsanar temas de riesgo con enfoque en rentabilidad, no solo de riesgo."},
+    {label:"Ene–Jun 2026", global:92.75, clasif:"ADECUADO", paei:{P:90,A:95,E:85,I:100}, comentarios:{P:"Objetivo de tiempo total: 10 hrs máx. Tiempo real: 11.99 hrs (se implementó Acumática). Objetivo de tiempo en análisis: 6 hrs máx. Tiempo real: 7.29 hrs (no cumplido).",A:"Análisis de gran calidad; amplio conocimiento de políticas. Con mayor confianza está tomando más casos de maquinaria y equipo, lo que impactó sus tiempos — se trabajará en mayor agilidad en casos de mayor complejidad. Han disminuido las observaciones de auditoría.",E:"Ya alcanza un nivel que le permite proponer mejoras para el departamento; se le invitará a participar en videos de capacitación para ejecutivos.",I:"Retroalimentación favorable de compañeros y área comercial; apoya en capacitación a su sucesor y a verificadores. Hay que cuidar que este apoyo no impacte sus propios tiempos de respuesta — se requiere balancear."}, acuerdos:null},
+  ], atendido:"Parcialmente. El acuerdo de 2025 sobre mejorar tiempos de respuesta no se ha resuelto (de hecho su tiempo total subió a 11.99 hrs, por encima del objetivo de 10) — pero el comentario 2026 explica que es porque está tomando casos más complejos (maquinaria y equipo), no por bajo desempeño. El acuerdo de \"pensar como Comité\" sí avanzó — ya la invitan a videos de capacitación para ejecutivos.",
+  reco_full:[{texto:"Con 11.1 años de antigüedad, es la analista más senior — el aumento en su tiempo de respuesta coincide con que está absorbiendo los casos más complejos del equipo; vale la pena ajustar su meta de tiempo en vez de tratarla igual que a los analistas junior.", categoria:"Coaching del jefe"}], reco_accion:"Ajustar meta de tiempo por complejidad de casos" },
+{ id:'marco', nombre:"Marco Antonio López Rodríguez", puesto:"Verificador de Crédito y Riesgos", agencia:"VANRENTA", jefe:"Diana Lorena Ulaje Sánchez", antiguedad:"6.9 años",
+  periods:[
+    {label:"Ene–Jun 2025", global:86, clasif:"ADECUADO", paei:{P:82.9,A:82.9,E:80,I:100}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Jul–Dic 2025", global:88, clasif:"ADECUADO", paei:{P:85,A:85,E:85,I:100}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:"Mejorar la cantidad de visitas realizadas generando mejor logística para atender más visitas con los mismos recursos. Dar seguimiento a las visitas de supervisión manteniendo actualizada la bitácora."},
+    {label:"Ene–Jun 2026", global:91.3, clasif:"ADECUADO", paei:{P:90,A:88,E:90,I:100}, comentarios:{P:"Objetivo de visitas oculares: 40/mes (ene-feb), 30/mes (desde marzo). Promedio real: 15.3 visitas (~43% vs. objetivo). Objetivo de visitas de supervisión: 3/mes (ene-feb), 10/mes (desde marzo). Promedio real: 7 contratos (~75%). Entrega en tiempo: adecuado.",A:"Archivos y bitácoras llenados en tiempo y forma; visitas cargadas en Acumática saliendo de la visita; sin observaciones de auditoría; mayor eficiencia en el uso de recursos; mejoró su uso de herramientas tecnológicas.",E:"Mejoró su logística de visitas para atender más con los mismos recursos; se anticipa preparando las visitas antes de acudir; contacta proactivamente a ejecutivos.",I:"Retroalimentación favorable de clientes internos; alto nivel de disponibilidad para apoyar al equipo; ganador constante de \"El Mejor Compañero del Mes\"."}, acuerdos:null},
+  ], atendido:"Parcialmente. El acuerdo de Jul-Dic 2025 sobre mejorar la cantidad de visitas y logística sí avanzó en proceso (mejor uso de herramientas, mejor logística), pero el volumen de visitas oculares sigue muy por debajo del objetivo (43%), incluso más bajo que el de Guillermo (75%) en el mismo indicador.",
+  reco_full:[{texto:"Su cumplimiento de visitas oculares (43%) es el más bajo del equipo de verificadores, a pesar de mejoras documentadas en logística y herramientas — vale la pena revisar si hay una barrera específica (zona geográfica, carga de trabajo) distinta a la de Guillermo.", categoria:"Coaching del jefe"}], reco_accion:"Revisar barrera específica en cumplimiento de visitas" },
+{ id:'susanag', nombre:"Susana Guillermina Enciso Méndez", puesto:"Analista de Recepción de Expedientes", agencia:"VANRENTA", jefe:"Diana Lorena Ulaje Sánchez", antiguedad:"4.9 años",
+  periods:[
+    {label:"Ene–Jun 2025 (como Auxiliar Administrativo)", global:88, clasif:"ADECUADO", paei:{P:85,A:100,E:80,I:80}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Jul–Dic 2025 (como Auxiliar Administrativo)", global:87, clasif:"ADECUADO", paei:{P:85,A:85,E:85.3,I:100}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:"Poner más cuidado en liberaciones y priorizarlas. Atender rápidamente autorizaciones especiales y cambios de cotización. Ser más proactiva para solucionar temas (indagar, consultar política, revisar historial) antes de acudir a un tercero."},
+    {label:"Ene–Jun 2026", global:83.65, clasif:"INSATISFACTORIO", paei:{P:85,A:83,E:85,I:80}, comentarios:{P:"Objetivo de tiempo en asignación de casos: 2 hrs máx. Tiempo real: 1.72 hrs (cumplido). Objetivo de tiempo en liberación de casos: 1 hr máx. Tiempo real: 1.71 hrs (no cumplido). Se requiere fortalecer el conocimiento de políticas para reducir la dependencia de consultas con el jefe y analistas.",A:"Se requiere reforzar la revisión previa a la asignación de casos: evitar pedir los faltantes \"a cuenta gotas\", reducir casos regresados por analistas, mejorar tiempos de carga de actas y revisar exhaustivamente la base de crédito antes de generar reportes.",E:"Validar de forma más exhaustiva las condiciones de las actas contra la documentación recibida, agotando las herramientas disponibles antes de consultar al jefe o analistas. Se reconoce mejor gestión de visitas oculares con el proveedor externo Rocketpin.",I:"Participar más activamente en el apoyo a las necesidades operativas del equipo cuando la carga de trabajo lo permita, para ampliar sus conocimientos en análisis."}, acuerdos:null},
+  ], atendido:"No. El acuerdo de Jul-Dic 2025 (\"ser más proactiva, consultar antes de acudir a un tercero\") se repite casi igual en el comentario de Proactividad de 2026 (\"agotar herramientas antes de consultar al jefe o analistas\") — es el mismo tema, sin resolver, y su calificación bajó por tercer periodo consecutivo, cruzando a Insatisfactorio.",
+  reco_full:[
+    {texto:"Tres periodos consecutivos a la baja, ahora en Insatisfactorio — el tema de dependencia excesiva en consultas a terceros (en vez de resolver con la política disponible) se repite igual en 2025 y 2026. Es el caso de mayor prioridad del equipo.", categoria:"Coaching del jefe"},
+    {texto:"Reforzar conocimiento de políticas de liberación de casos, específicamente para reducir el tiempo de liberación (1.71 hrs vs. objetivo de 1 hr) sin depender de terceros.", categoria:"Capacitación formal — Políticas de liberación de casos"},
+  ], reco_accion:"Plan de mejora — 3 periodos a la baja, ahora Insatisfactorio" },
+{ id:'susanal', nombre:"Susana Lizeth Zepeda González", puesto:"Analista de Crédito Jr.", agencia:"VANRENTA", jefe:"Diana Lorena Ulaje Sánchez", antiguedad:"1.6 años",
+  periods:[
+    {label:"Ene–Jun 2025", global:97, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:80,I:100}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Jul–Dic 2025", global:97.8, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:85.3,I:100}, comentarios:{P:"Bitácora de casos y sistemas CRM/Anfexi.",A:"Bitácora de casos; reporte de cartera; reporte de auditoría mensual.",E:"Paramétrica para clientes que forman parte de un grupo.",I:"Sistema CRM; sugerencias de mejora en procesos; retroalimentación favorable de compañeros y área comercial."}, acuerdos:"Proponer mejoras a procesos y formatos cuando las identifique. Mejorar tiempos de respuesta y llenado de paramétrica en casos de mayor complejidad. Mejorar puntualidad."},
+    {label:"Ene–Jun 2026", global:97.25, clasif:"SOBRESALIENTE", paei:{P:100,A:95,E:100,I:95}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Constantemente propone mejoras a formatos y paramétricas para mejor análisis y tiempos de respuesta. Ya alcanzó un nivel adecuado para asignarle algún proyecto de mejora específico.",I:"Su fuerte enfoque en lograr resultados debe evolucionar de un logro individual a uno de equipo o de empresa. Muestra amplia colaboración con su equipo, pero se requiere llevarlo también a colaboración entre áreas. Ganó \"Mejor compañero del mes\"."}, acuerdos:null},
+  ], atendido:"Sí, en gran parte. El acuerdo de 2025 sobre proponer mejoras a procesos se cumplió con claridad — el comentario 2026 confirma que ya está lista para un proyecto de mejora específico. El tema de puntualidad de 2025 no se vuelve a mencionar en 2026.",
+  reco_full:[{texto:"Ya está lista para un proyecto de mejora específico, según el propio comentario de 2026 — asignarle uno formal y usarlo como siguiente paso de desarrollo.", categoria:"Experiencia de desarrollo"}], reco_accion:"Asignar proyecto de mejora específico" },
+];
+
+function fmt(v){ return (v===null||v===undefined) ? '—' : (Number.isInteger(v) ? v.toString() : v.toFixed(2)); }
+function initials(name){ return name.split(' ').filter(w=>w.length>2||/[A-ZÁÉÍÓÚÑ]/.test(w[0])).slice(0,2).map(w=>w[0]).join('').toUpperCase().slice(0,2); }
+function tier(g){ return g>=95?'SOBRESALIENTE':g>=85?'ADECUADO':'INSATISFACTORIO'; }
+function stars(g){ const n = g>=98?5:g>=95?5:g>=90?4:g>=85?3:g>=75?2:1; return '★'.repeat(n) + '☆'.repeat(5-n); }
+function deltaSpan(d){
+  if (d===null||d===undefined) return '<span class="delta-flat">—</span>';
+  if (d > 0.05) return `<span class="delta-up">▲ +${d.toFixed(1)}</span>`;
+  if (d < -0.05) return `<span class="delta-down">▼ ${d.toFixed(1)}</span>`;
+  return `<span class="delta-flat">▬ 0.0</span>`;
+}
+function curPeriod(p){ return p.periods[p.periods.length-1]; }
+function prevPeriod(p){ return p.periods.length>1 ? p.periods[p.periods.length-2] : null; }
+function personDelta(p){ const prev=prevPeriod(p); return prev ? curPeriod(p).global - prev.global : null; }
+
+function paeiCircleSvg(letter, value, size){
+  size = size||130;
+  const r = size/2-13, cx=size/2, cy=size/2, circ=2*Math.PI*r;
+  const frac = Math.max(0, Math.min(1, (value||0)/100));
+  const dash = frac*circ;
+  const color = PAEI_HEX[letter];
+  return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--navy-3)" stroke-width="13"/>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="13" stroke-linecap="round" stroke-dasharray="${dash} ${circ-dash}" transform="rotate(-90 ${cx} ${cy})"/>
+    <text x="${cx}" y="${cy-4}" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="25" fill="var(--ink)">${value!==null?value.toFixed(1):'—'}</text>
+    <text x="${cx}" y="${cy+20}" text-anchor="middle" font-family="IBM Plex Mono" font-weight="700" font-size="15" fill="${color}">(${letter})</text>
+  </svg>`;
+}
+function renderCircleRow(containerId, items, deltaLabel){
+  deltaLabel = deltaLabel || 'vs. periodo anterior';
+  document.getElementById(containerId).innerHTML = `<div style="display:flex; gap:28px; justify-content:center; flex-wrap:wrap;">` +
+    items.map(it=>`<div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+      ${paeiCircleSvg(it.letter, it.value)}
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--muted); text-align:center; max-width:130px;">${PAEI_LABEL[it.letter]}</div>
+      <div style="font-size:12px;">${deltaSpan(it.delta)} <span style="color:var(--muted); font-size:10.5px;">${deltaLabel}</span></div>
+    </div>`).join('') + `</div>`;
+}
+
+function lineChartSvg(series, opts){
+  opts = opts || {};
+  const n = opts.n || 3;
+  const W = opts.w||620, H = opts.h||300, padL=44, padR = opts.endLabels? 54:18, padT=16, padB=36;
+  const plotW=W-padL-padR, plotH=H-padT-padB;
+  const yMin = opts.yMin!==undefined?opts.yMin:0, yMax = opts.yMax!==undefined?opts.yMax:100;
+  const xPos = i => padL + (i/(n-1))*plotW;
+  const yPos = v => padT + plotH - ((v-yMin)/(yMax-yMin))*plotH;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">`;
+  const gridVals = opts.gridVals || [yMin, (yMin+yMax)/2, yMax];
+  gridVals.forEach(v=>{
+    const y = yPos(v);
+    svg += `<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="var(--line)" stroke-width="1"/>
+      <text x="${padL-8}" y="${y+4}" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="var(--muted)">${v.toFixed(0)}</text>`;
+  });
+  const xLabels = opts.xLabels || ['Ene–Jun 25','Jul–Dic 25','Ene–Jun 26'];
+  xLabels.forEach((lbl,i)=> svg += `<text x="${xPos(i)}" y="${H-12}" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="var(--muted)">${lbl}</text>`);
+  series.forEach(s=>{
+    const pts = s.values.map((v,i)=> v!==null ? `${xPos(i)},${yPos(v)}` : null).filter(Boolean);
+    svg += `<polyline points="${pts.join(' ')}" fill="none" stroke="${s.color}" stroke-width="${s.width||2.5}"/>`;
+    s.values.forEach((v,i)=>{ if(v!==null){
+      svg += `<circle cx="${xPos(i)}" cy="${yPos(v)}" r="4" fill="${s.color}"/>`;
+      if (s.showLabel) svg += `<text x="${xPos(i)}" y="${yPos(v)-11}" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="11" fill="var(--ink)">${v.toFixed(1)}</text>`;
+    }});
+  });
+  if (opts.endLabels){
+    let ends = series.map(s=>{
+      const lastIdx = s.values.map((v,i)=>v!==null?i:-1).filter(i=>i>=0).pop();
+      return lastIdx===undefined ? null : {y: yPos(s.values[lastIdx]), val:s.values[lastIdx], color:s.color, letter:s.letter};
+    }).filter(Boolean).sort((a,b)=>a.y-b.y);
+    for (let i=1;i<ends.length;i++){ if (ends[i].y-ends[i-1].y<16) ends[i].y = ends[i-1].y+16; }
+    ends.forEach(e=>{
+      svg += `<text x="${W-padR+8}" y="${e.y+4}" font-family="IBM Plex Mono" font-weight="700" font-size="11" fill="${e.color}">(${e.letter}) ${e.val.toFixed(1)}</text>`;
+    });
+  }
+  svg += `</svg>`;
+  return svg;
+}
+
+function renderKpis(){
+  const total = PERSONAS.length;
+  const avg2026 = PERSONAS.reduce((s,p)=>s+curPeriod(p).global,0)/total;
+  const withPrev = PERSONAS.filter(p=>prevPeriod(p));
+  const avgPrev = withPrev.reduce((s,p)=>s+prevPeriod(p).global,0)/withPrev.length;
+  const avg2026Comp = withPrev.reduce((s,p)=>s+curPeriod(p).global,0)/withPrev.length;
+  const delta = avg2026Comp - avgPrev;
+  const insatisfactorios = PERSONAS.filter(p=>tier(curPeriod(p).global)==='INSATISFACTORIO').length;
+  const tiles = [
+    {l:'Equipo', n:total, sub:'100% evaluado 2026'},
+    {l:'Promedio 2026', n:avg2026.toFixed(1), sub:'los 6 colaboradores'},
+    {l:'vs. periodo anterior', n:`${delta>=0?'+':''}${delta.toFixed(1)}`, sub:`promedio anterior: ${avgPrev.toFixed(1)}`, cls: delta>=0?'delta-up':'delta-down'},
+    {l:'En riesgo', n:`${insatisfactorios}/${total}`, sub:'Insatisfactorio'},
+  ];
+  document.getElementById('kpiGrid').innerHTML = tiles.map(t=>`
+    <div class="card kpi"><div class="l">${t.l}</div><div class="n ${t.cls||''}">${t.n}</div><div class="sub">${t.sub}</div></div>`).join('');
+}
+
+function renderTeamCircles(){
+  const cur={P:0,A:0,E:0,I:0}, prev={P:0,A:0,E:0,I:0};
+  PERSONAS.forEach(p=>{ const c=curPeriod(p), pr=prevPeriod(p); ['P','A','E','I'].forEach(k=>{ cur[k]+=c.paei[k]; prev[k]+=pr.paei[k]; }); });
+  ['P','A','E','I'].forEach(k=>{ cur[k]/=PERSONAS.length; prev[k]/=PERSONAS.length; });
+  const items = ['P','A','E','I'].map(k=>({letter:k, value:cur[k], delta:cur[k]-prev[k]}));
+  renderCircleRow('circleRowTeam', items, 'vs. periodo anterior');
+}
+
+function renderCumplimientoAplicacion(){
+  const tiles = [
+    {l:'2025 (bajo Diana)', n:'100%', sub:'6 de 6 evaluados (desde Jul-Dic)'},
+    {l:'2026', n:'100%', sub:'6 de 6 evaluados'},
+    {l:'General', n:'100%', sub:'12 de 12 evaluaciones aplicadas'},
+  ];
+  document.getElementById('cumplimientoAplicacionGrid').innerHTML = tiles.map(t=>`
+    <div class="card kpi"><div class="l">${t.l}</div><div class="n">${t.n}</div><div class="sub">${t.sub}</div></div>`).join('');
+}
+
+function renderHighlights(){
+  const items = [
+    {label:'3 periodos perfectos', nombre:'Ismael Rico', valor:'100 → 100 → 100', person:'ismael'},
+    {label:'Mejora sostenida', nombre:'Susana Lizeth', valor:'97 → 97.8 → 97.25', person:'susanal'},
+    {label:'Mayor antigüedad, absorbe complejidad', nombre:'Karina de Lira', valor:'11.1 años · 92.75', person:'karina'},
+  ];
+  document.getElementById('highlightGrid').innerHTML = items.map(it=>`
+    <div class="card hl-card" onclick="openHistorial('${it.person}')">
+      <div class="stars">★★★</div>
+      <div class="hn">${it.nombre}</div>
+      <div class="hv">${it.valor}</div>
+      <div class="hl">${it.label}</div>
+    </div>`).join('');
+}
+
+function heatColor(v){ if(v===null) return 'rgba(255,255,255,0.05)'; if(v>=95) return 'rgba(52,199,123,0.28)'; if(v>=85) return 'rgba(232,197,71,0.28)'; return 'rgba(240,82,75,0.28)'; }
+function heatTextColor(v){ if(v===null) return 'var(--muted)'; if(v>=95) return 'var(--g)'; if(v>=85) return 'var(--y)'; return 'var(--r)'; }
+function renderHeat(){
+  let html = '<thead><tr><th>Colaborador</th><th>P</th><th>A</th><th>E</th><th>I</th><th>Global</th></tr></thead><tbody>';
+  PERSONAS.forEach(p=>{
+    const s = curPeriod(p);
+    html += `<tr><td>${p.nombre.split(' ')[0]} ${p.nombre.split(' ')[1]||''}</td>`;
+    ['P','A','E','I'].forEach(k=>{ const v=s.paei[k]; html += `<td><span class="heat-cell" style="background:${heatColor(v)};color:${heatTextColor(v)};">${v}</span></td>`; });
+    html += `<td><span class="heat-cell" style="background:${heatColor(s.global)};color:${heatTextColor(s.global)};">${fmt(s.global)}</span></td></tr>`;
+  });
+  document.getElementById('heatTable').innerHTML = html + '</tbody>';
+}
+
+function renderTeamCards(){
+  document.getElementById('teamGridDiana').innerHTML = PERSONAS.filter(p=>p.id==='diana').map(p=>{
+    const s = curPeriod(p); const g = s.global; const d = personDelta(p);
+    const arrow = d>0.5?'<span class="delta-up">↑</span>':d<-0.5?'<span class="delta-down">↓</span>':'<span class="delta-flat">→</span>';
+    return `<div class="card team-card" onclick="openHistorial('${p.id}')">
+      <div class="avatar">${initials(p.nombre)}</div>
+      <div class="tn">${p.nombre}</div>
+      <div class="tp">${p.puesto}</div>
+      <div class="tv">${fmt(g)} ${arrow}</div>
+      <div class="stars">${stars(g)}</div>
+      <div class="tlink">Ver expediente →</div>
+    </div>`;
+  }).join('');
+  document.getElementById('teamGrid').innerHTML = PERSONAS.filter(p=>p.id!=='diana').map(p=>{
+    const s = curPeriod(p); const g = s.global; const d = personDelta(p);
+    const arrow = d>0.5?'<span class="delta-up">↑</span>':d<-0.5?'<span class="delta-down">↓</span>':'<span class="delta-flat">→</span>';
+    return `<div class="card team-card" onclick="openHistorial('${p.id}')">
+      <div class="avatar">${initials(p.nombre)}</div>
+      <div class="tn">${p.nombre}</div>
+      <div class="tp">${p.puesto}</div>
+      <div class="tv">${fmt(g)} ${arrow}</div>
+      <div class="stars">${stars(g)}</div>
+      <div class="tlink">Ver expediente →</div>
+    </div>`;
+  }).join('');
+}
+
+function renderComentario(){
+  const avg2026 = PERSONAS.reduce((s,p)=>s+curPeriod(p).global,0)/PERSONAS.length;
+  document.getElementById('comentarioBox').innerHTML = `<div class="aihead">🧠 Generado a partir de los datos del periodo</div>
+    El equipo de Créditos y Riesgos de Diana Lorena Ulaje Sánchez cerró con un promedio de <b>${avg2026.toFixed(1)}</b>. <b>Ismael Rico Jiménez</b> tiene tres periodos consecutivos perfectos y ya muestra liderazgo consolidado (apoyó en la capacitación de la propia Diana al asumir el puesto). <b>Susana Lizeth Zepeda</b> también se mantiene consistentemente Sobresaliente.<br><br>
+    El caso más urgente es <b>Susana Guillermina Enciso Méndez</b>, con una baja sostenida en tres periodos que cruza a Insatisfactorio en 2026 — el mismo tema de dependencia excesiva en consultas a terceros se repite igual en 2025 y 2026.<br><br>
+    Entre los dos verificadores (Guillermo y Marco), ambos cumplen con la calidad documental pero están por debajo del objetivo de volumen de visitas oculares (75% y 43% respectivamente) — Marco tiene el cumplimiento más bajo del equipo en ese indicador específico. <b>Karina de Lira</b>, la más senior (11.1 años), muestra un patrón distinto: su tiempo de respuesta subió, pero es porque está absorbiendo los casos más complejos del equipo, no por bajo desempeño.`;
+}
+
+function renderCasoAtencion(){
+  document.getElementById('casoAtencion').innerHTML = `
+    <b style="color:var(--r);">Susana Guillermina Enciso Méndez</b> — baja sostenida en tres periodos consecutivos (88 → 87 → 83.65), cruzando a Insatisfactorio en 2026.<br><br>
+    El acuerdo de Jul-Dic 2025 ("ser más proactiva, consultar la política antes de acudir a un tercero") se repite casi con las mismas palabras en el comentario de Proactividad de 2026 ("agotar herramientas disponibles antes de consultar al jefe o analistas") — es el mismo tema, documentado en ambos periodos, sin resolver.<br><br>
+    <b>Recomendación:</b> reforzar conocimiento de políticas de liberación de casos de forma estructurada, y dar seguimiento cercano — es la única persona del equipo con una tendencia de baja sostenida en tres periodos.
+  `;
+}
+
+function renderPersistList(){
+  document.getElementById('persistList').innerHTML = `
+    <div class="card persist-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <b style="font-size:14px;">Susana Guillermina Enciso Méndez</b>
+        <span class="pill-warn">⚠ 3 periodos, mismo tema, en baja</span>
+      </div>
+      <div class="persist-steps">
+        <div class="persist-step"><div class="pl">Jul-Dic 2025</div>"Ser más proactiva para solucionar temas... antes de acudir a un tercero."</div>
+        <div style="color:var(--muted);">→</div>
+        <div class="persist-step"><div class="pl">Ene-Jun 2026</div>"Agotar las herramientas y criterios disponibles antes de consultar con Jefe o Analistas."</div>
+      </div>
+    </div>
+    <div class="card persist-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <b style="font-size:14px;">Guillermo Barrón y Marco López (Verificadores)</b>
+        <span class="pill-warn">⚠ 2 periodos, mismo tipo de tema</span>
+      </div>
+      <div class="persist-steps">
+        <div class="persist-step"><div class="pl">Guillermo · 2025→2026</div>Acuerdo de más visitas de supervisión → 2026: 65% de la meta.</div>
+        <div style="color:var(--muted);">+</div>
+        <div class="persist-step"><div class="pl">Marco · 2025→2026</div>Acuerdo de más visitas oculares → 2026: 43% de la meta, la más baja del equipo.</div>
+      </div>
+      <p style="font-size:12.5px; color:var(--muted); margin:8px 0 0;">Ambos verificadores comparten el mismo tipo de brecha (volumen de visitas vs. objetivo), aunque en distinta magnitud — Diana identificó esto mismo en su propio comentario 2026 sobre la capacidad instalada del equipo de verificación.</p>
+    </div>`;
+}
+
+function renderPromoCoach(){
+  const ids = ['ismael','susanal'];
+  document.getElementById('promoList').innerHTML = ids.map(id=>{
+    const p = PERSONAS.find(x=>x.id===id);
+    const g = curPeriod(p).global;
+    return `<div class="card hl-card" onclick="openHistorial('${id}')">
+      <div class="stars">${stars(g)}</div>
+      <div class="hn">${p.nombre.split(' ')[0]} ${p.nombre.split(' ')[1]||''}</div>
+      <div class="hv">${fmt(g)}</div>
+      <div class="hl">${id==='ismael'?'Liderazgo consolidado':'Lista para proyecto de mejora'}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderPlanGerencial(){
+  const PRIORIDAD = {susanag:'Alta', marco:'Media', guillermo:'Media', karina:'Media', diana:'Media', ismael:'Baja', susanal:'Baja'};
+  const TIPO = {susanag:'3 periodos a la baja, ahora Insatisfactorio', marco:'Volumen de visitas más bajo del equipo', guillermo:'Volumen de visitas por debajo de meta', karina:'Tiempos afectados por casos complejos', diana:'Primer año como jefa, coaching ejecutivo', ismael:'Liderazgo consolidado', susanal:'Lista para siguiente nivel'};
+  const prioColor = {Alta:'var(--r)', Media:'var(--o)', Baja:'var(--g)'};
+  document.getElementById('planGerencialTable').innerHTML =
+    `<thead><tr><th>Colaborador</th><th>Situación</th><th>Acción sugerida</th><th>Prioridad</th></tr></thead><tbody>` +
+    PERSONAS.map(p=>`<tr>
+      <td>${p.nombre}</td><td>${TIPO[p.id]}</td>
+      <td><span class="pill-action">${p.reco_accion}</span></td>
+      <td><span style="color:${prioColor[PRIORIDAD[p.id]]}; font-weight:700; font-family:'IBM Plex Mono',monospace; font-size:11px;">${PRIORIDAD[p.id]}</span></td>
+    </tr>`).join('') + `</tbody>`;
+}
+
+function renderTendenciaEquipo(){
+  const vals = [0,1,2].map(i=>{
+    const scores = PERSONAS.map(p=>{ const idx = p.periods.length===2 ? i-1 : i; return (idx>=0 && p.periods[idx]) ? p.periods[idx].global : null; }).filter(v=>v!==null);
+    return scores.length ? scores.reduce((a,b)=>a+b,0)/scores.length : null;
+  });
+  document.getElementById('lineTeam').innerHTML = lineChartSvg([{values:vals, color:'var(--blue-light)', width:3, showLabel:true}], {yMin:75, yMax:100});
+}
+
+function renderTendenciaPaei(){
+  const series = ['P','A','E','I'].map(k=>{
+    const values = [0,1,2].map(i=>{
+      const scores = PERSONAS.map(p=>{ const idx = p.periods.length===2 ? i-1 : i; return (idx>=0 && p.periods[idx]) ? p.periods[idx].paei[k] : null; }).filter(v=>v!==null);
+      return scores.length ? scores.reduce((a,b)=>a+b,0)/scores.length : null;
+    });
+    return {values, color:PAEI_HEX[k], width:2.75, letter:k};
+  });
+  document.getElementById('linePaei').innerHTML = lineChartSvg(series, {endLabels:true, yMin:75, yMax:100});
+  document.getElementById('paeiLegend').innerHTML = ['P','A','E','I'].map(k=>`
+    <div style="display:flex; align-items:center; gap:6px; font-size:12px;">
+      <span style="width:16px; height:3px; background:${PAEI_HEX[k]}; display:inline-block; border-radius:2px;"></span>${PAEI_LABEL[k]}
+    </div>`).join('');
+}
+
+let currentHistId = PERSONAS[0].id;
+function renderHistList(){
+  document.getElementById('histList').innerHTML = PERSONAS.map(p=>`
+    <div class="hist-item ${p.id===currentHistId?'active':''}" data-id="${p.id}">
+      <span>${p.nombre}</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;">${fmt(curPeriod(p).global)}</span>
+    </div>`).join('');
+  document.getElementById('histList').querySelectorAll('.hist-item').forEach(el=>{
+    el.addEventListener('click', ()=>{ currentHistId = el.dataset.id; renderHistList(); renderExpediente(); });
+  });
+}
+function openHistorial(id){
+  currentHistId = id;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelector('.tab-btn[data-tab="historial"]').classList.add('active');
+  document.getElementById('panel-historial').classList.add('active');
+  renderHistList(); renderExpediente();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function renderExpediente(){
+  const p = PERSONAS.find(x=>x.id===currentHistId);
+  const cur = curPeriod(p); const g = cur.global; const t = tier(g);
+  const prev = prevPeriod(p);
+  const ranking = [...PERSONAS].sort((a,b)=>curPeriod(b).global-curPeriod(a).global);
+  const rankPos = ranking.findIndex(x=>x.id===p.id)+1;
+
+  const n = p.periods.length;
+  const lineHtml = lineChartSvg([{values:p.periods.map(x=>x.global), color:'var(--blue-light)', width:3, showLabel:true}], {n:n, xLabels:p.periods.map(x=>x.label), yMin:75, yMax:100});
+  const circleItems = ['P','A','E','I'].map(k=>({letter:k, value:cur.paei[k], delta: prev.paei[k]!==null ? cur.paei[k]-prev.paei[k] : undefined}));
+
+  const periodsTableHtml = `<div style="overflow-x:auto;"><table class="rtable" style="min-width:760px;">
+    <thead><tr><th>Periodo</th><th style="text-align:right">General</th><th style="text-align:right">(P)</th><th style="text-align:right">(A)</th><th style="text-align:right">(E)</th><th style="text-align:right">(I)</th><th style="min-width:300px;">Comentarios</th></tr></thead>
+    <tbody>${p.periods.map(per=>{
+      const com = `<b style="color:var(--blue-light);">(P)</b> ${per.comentarios.P}<br><b style="color:var(--blue-light);">(A)</b> ${per.comentarios.A}<br><b style="color:var(--blue-light);">(E)</b> ${per.comentarios.E}<br><b style="color:var(--blue-light);">(I)</b> ${per.comentarios.I}${per.acuerdos&&per.acuerdos!=="Sin información."?`<br><b style="color:var(--blue-light);">Acuerdo:</b> ${per.acuerdos}`:''}`;
+      return `<tr>
+        <td><b>${per.label}</b><br><span class="tier-pill ${per.clasif}" style="margin-top:4px;display:inline-block;">${per.clasif.charAt(0)+per.clasif.slice(1).toLowerCase()}</span></td>
+        <td class="num" style="font-weight:800;">${fmt(per.global)}</td>
+        <td class="num">${fmt(per.paei.P)}</td><td class="num">${fmt(per.paei.A)}</td><td class="num">${fmt(per.paei.E)}</td><td class="num">${fmt(per.paei.I)}</td>
+        <td style="font-size:12px; line-height:1.55;">${com}</td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table></div>`;
+
+  document.getElementById('expedienteCard').innerHTML = `
+    <div class="expediente-header">
+      <div style="display:flex; gap:14px; align-items:center;">
+        <div class="av-lg">${initials(p.nombre)}</div>
+        <div><div style="font-weight:800; font-size:18px;">${p.nombre}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted);">${p.puesto} · ${p.agencia}</div></div>
+      </div>
+      <button class="btn-pdf" onclick="window.print()">⬇ Descargar PDF</button>
+    </div>
+    <div class="exp-meta">
+      <div class="em"><div class="ek">Antigüedad</div><div class="ev">${p.antiguedad}</div></div>
+      <div class="em"><div class="ek">Jefe</div><div class="ev" style="font-size:11.5px;">${p.jefe}</div></div>
+      <div class="em"><div class="ek">Calificación actual</div><div class="ev">${fmt(g)} <span class="tier-pill ${t}">${t.charAt(0)+t.slice(1).toLowerCase()}</span></div></div>
+      <div class="em"><div class="ek">Ranking equipo</div><div class="ev">#${rankPos} de ${ranking.length}</div></div>
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">Calificación por indicador (vs. periodo anterior)</div>
+      <div id="circleRowPerson"></div>
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">Evolución de calificación</div>
+      <div style="display:flex; justify-content:center;">${lineHtml}</div>
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">¿Se atendieron los puntos?</div>
+      <p style="font-size:13px; line-height:1.65; margin:0 0 14px;">${p.atendido}</p>
+      <div class="section-kicker" style="margin-bottom:10px;">Concentrado general</div>
+      ${periodsTableHtml}
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">Qué mide cada indicador en su puesto</div>
+      <div class="doc-block"><p><b>P</b> — ${PUESTO_DEF[p.puesto].P}<br><b>A</b> — ${PUESTO_DEF[p.puesto].A}<br><b>E</b> — ${PUESTO_DEF[p.puesto].E}<br><b>I</b> — ${PUESTO_DEF[p.puesto].I}</p><p style="margin-top:8px; color:var(--muted); font-size:11px;">Fuente: Matriz de Ponderación oficial, plantillas PAEI Grupo Vanguardia.</p></div>
+    </div>
+    <div style="padding:0 22px 24px;">
+      <div class="card ai-box"><div class="aihead">🧠 Recomendación IA</div>
+        <ul style="margin:0; padding-left:18px;">${p.reco_full.map(r=>`<li style="margin-bottom:8px;"><span class="pill-action" style="margin-bottom:4px;display:inline-block;">${r.categoria}</span><br>${r.texto}</li>`).join('')}</ul>
+      </div>
+    </div>
+  `;
+  renderCircleRow('circleRowPerson', circleItems, 'vs. periodo anterior');
+}
+
+function initAll(){
+  renderKpis();
+  renderTeamCircles();
+  renderCumplimientoAplicacion();
+  renderHighlights();
+  renderHeat();
+  renderComentario();
+  renderTeamCards();
+  renderCasoAtencion();
+  renderPersistList();
+  renderPromoCoach();
+  renderPlanGerencial();
+  renderTendenciaEquipo();
+  renderTendenciaPaei();
+  renderHistList();
+  renderExpediente();
+}
+initAll();
+
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>
