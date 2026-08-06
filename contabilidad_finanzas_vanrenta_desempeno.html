@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Contabilidad y Finanzas · Vanrenta / Arrendamiento Productivo · Centro de Inteligencia del Desempeño</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+:root{
+  --navy:#060B1F; --navy-2:#0B1330; --navy-3:#121B42;
+  --line:rgba(255,255,255,0.09); --ink:#F4F6FA; --muted:rgba(244,246,250,0.55);
+  --blue-light:#7FD1F0; --blue:#2E8FE0;
+  --g:#34C77B; --y:#E8C547; --r:#F0524B; --o:#F0964B;
+  --paei-p:#2E8FE0; --paei-a:#E8C547; --paei-e:#34C77B; --paei-i:#A6415A;
+  --shadow:0 1px 2px rgba(0,0,0,0.2), 0 12px 32px -16px rgba(0,0,0,0.55);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--navy);color:var(--ink);font-family:'Manrope',sans-serif;-webkit-font-smoothing:antialiased;}
+main{max-width:1100px;margin:0 auto;padding:0 5vw 90px;}
+header.top{ background:radial-gradient(ellipse at 75% -10%, rgba(46,143,224,0.22), transparent 55%), var(--navy); padding:40px 5vw 0; border-bottom:1px solid var(--line); }
+.eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--blue-light); margin:0 0 10px; }
+.hero-title{ font-weight:800; font-size:clamp(22px,3vw,32px); margin:0 0 8px; letter-spacing:-.01em; }
+.hero-sub{ font-size:13.5px; color:var(--muted); max-width:680px; line-height:1.6; margin:0 0 26px; }
+.tabs{ display:flex; gap:4px; flex-wrap:wrap; }
+.tab-btn{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.03em; text-transform:uppercase; color:var(--muted); background:none; border:none; padding:14px 16px; cursor:pointer; border-bottom:3px solid transparent; transition:color .15s,border-color .15s; white-space:nowrap; }
+.tab-btn:hover{ color:var(--blue-light); }
+.tab-btn.active{ color:var(--ink); border-bottom-color:var(--blue); font-weight:700; }
+.panel{ display:none; } .panel.active{ display:block; }
+section{ padding:34px 0 8px; border-bottom:1px solid var(--line); }
+section:last-of-type{ border-bottom:none; }
+.section-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; margin-bottom:18px; }
+.section-kicker{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--blue-light); margin:0 0 6px; }
+.section-title{ font-weight:800; font-size:clamp(18px,2vw,22px); margin:0; }
+.section-note{ font-size:12.5px; color:var(--muted); max-width:360px; line-height:1.5; text-align:right; }
+.card{ background:var(--navy-2); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); }
+.kpi-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+@media(max-width:800px){ .kpi-grid{ grid-template-columns:1fr 1fr; } }
+.kpi{ padding:18px; }
+.kpi .l{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.kpi .n{ font-weight:800; font-size:24px; }
+.kpi .sub{ margin-top:6px; font-size:11px; color:var(--muted); }
+.delta-up{ color:var(--g); font-weight:700; } .delta-down{ color:var(--r); font-weight:700; } .delta-flat{ color:var(--muted); font-weight:700; }
+.tier-pill{ font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.05em; text-transform:uppercase; padding:3px 9px; border-radius:20px; display:inline-block; }
+.tier-pill.SOBRESALIENTE{ background:rgba(52,199,123,0.15); color:var(--g); }
+.tier-pill.ADECUADO{ background:rgba(232,197,71,0.15); color:var(--y); }
+.tier-pill.INSATISFACTORIO{ background:rgba(240,82,75,0.15); color:var(--r); }
+.pill-warn{ font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.05em; text-transform:uppercase; padding:2px 8px; border-radius:20px; background:rgba(240,150,75,0.13); color:var(--o); display:inline-block; }
+.pill-action{ font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.03em; padding:5px 11px; border-radius:8px; background:var(--navy-3); border:1px solid var(--line); color:var(--ink); display:inline-block; }
+table.rtable{ width:100%; border-collapse:collapse; font-size:12.5px; }
+table.rtable th{ text-align:left; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); padding:9px 10px; border-bottom:1px solid var(--line); }
+table.rtable td{ padding:10px 10px; border-bottom:1px solid var(--line); vertical-align:middle; }
+table.rtable td.num{ font-family:'IBM Plex Mono',monospace; text-align:right; }
+table.rtable tr:last-child td{ border-bottom:none; }
+.comment-box{ padding:20px 22px; font-size:13.5px; line-height:1.7; }
+.comment-box b{ color:var(--blue-light); }
+.ai-box{ padding:20px 22px; font-size:13.5px; line-height:1.75; border-left:3px solid var(--blue-light); background:rgba(127,209,240,0.05); }
+.ai-box .aihead{ display:flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--blue-light); margin-bottom:10px; }
+.note-box{ padding:16px 20px; font-size:12.5px; color:var(--muted); line-height:1.6; border-left:3px solid var(--o); background:rgba(240,150,75,0.05); border-radius:0 10px 10px 0; }
+.alert-box{ padding:16px 20px; font-size:12.5px; color:var(--ink); line-height:1.6; border-left:3px solid var(--r); background:rgba(240,82,75,0.07); border-radius:0 10px 10px 0; }
+.doc-block{ background:var(--navy-3); border-radius:10px; padding:12px 14px; margin-bottom:8px; }
+.doc-block .dk{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--blue-light); margin-bottom:5px; }
+.doc-block p{ margin:0; font-size:12.5px; line-height:1.6; white-space:pre-line; color:var(--ink); }
+.highlight-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+@media(max-width:800px){ .highlight-grid{ grid-template-columns:1fr 1fr; } }
+.hl-card{ padding:18px; text-align:center; }
+.hl-card .stars{ color:var(--y); font-size:13px; margin-bottom:8px; }
+.hl-card .hn{ font-weight:800; font-size:15px; margin-bottom:4px; }
+.hl-card .hv{ font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--blue-light); margin-bottom:6px; }
+.hl-card .hl{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+.team-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+@media(max-width:800px){ .team-grid{ grid-template-columns:1fr 1fr; } }
+.team-card{ padding:18px; cursor:pointer; transition:border-color .15s, transform .15s; }
+.team-card:hover{ border-color:rgba(127,209,240,0.35); transform:translateY(-2px); }
+.avatar{ width:42px; height:42px; border-radius:50%; background:var(--navy-3); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; color:var(--blue-light); margin-bottom:10px; }
+.team-card .tn{ font-weight:700; font-size:13.5px; margin-bottom:2px; }
+.team-card .tp{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--muted); margin-bottom:10px; }
+.team-card .tv{ font-weight:800; font-size:22px; }
+.team-card .stars{ color:var(--y); font-size:11px; margin:4px 0 8px; }
+.team-card .tlink{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--blue-light); text-transform:uppercase; letter-spacing:.05em; }
+.heat-table{ width:100%; border-collapse:collapse; font-size:12px; }
+.heat-table th{ font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; color:var(--muted); padding:8px 8px; text-align:center; }
+.heat-table th:first-child{ text-align:left; }
+.heat-table td{ padding:7px 8px; text-align:center; border-bottom:1px solid var(--line); }
+.heat-table td:first-child{ text-align:left; font-weight:600; }
+.heat-cell{ display:inline-block; min-width:38px; padding:5px 7px; border-radius:6px; font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:11.5px; }
+.persist-card{ padding:18px 20px; }
+.persist-steps{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:10px 0; }
+.persist-step{ background:var(--navy-3); border-radius:8px; padding:8px 12px; font-size:12px; max-width:240px; }
+.persist-step .pl{ font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--muted); text-transform:uppercase; }
+.subgroup-label{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--blue-light); margin:26px 0 12px; }
+.subgroup-label:first-child{ margin-top:0; }
+.hist-shell{ display:grid; grid-template-columns:230px 1fr; gap:24px; }
+@media(max-width:800px){ .hist-shell{ grid-template-columns:1fr; } }
+.hist-list{ display:flex; flex-direction:column; gap:4px; }
+.hist-item{ padding:10px 14px; border-radius:9px; cursor:pointer; font-size:13px; display:flex; justify-content:space-between; align-items:center; }
+.hist-item:hover{ background:var(--navy-3); }
+.hist-item.active{ background:rgba(127,209,240,0.1); color:var(--blue-light); font-weight:700; }
+.expediente-header{ display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:14px; padding:20px 22px; }
+.expediente-header .av-lg{ width:56px; height:56px; border-radius:50%; background:var(--navy-3); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:19px; color:var(--blue-light); }
+.exp-meta{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; padding:0 22px 20px; }
+@media(max-width:650px){ .exp-meta{ grid-template-columns:1fr 1fr; } }
+.exp-meta .em{ background:var(--navy-3); border-radius:9px; padding:10px 12px; }
+.exp-meta .ek{ font-family:'IBM Plex Mono',monospace; font-size:9px; text-transform:uppercase; color:var(--muted); margin-bottom:3px; }
+.exp-meta .ev{ font-weight:700; font-size:13px; }
+.btn-pdf{ font-family:'Manrope',sans-serif; font-weight:700; font-size:12.5px; color:#06101F; background:var(--blue-light); border:none; border-radius:9px; padding:10px 16px; cursor:pointer; }
+@media print{
+  body *{ visibility:hidden; }
+  #printArea, #printArea *{ visibility:visible; }
+  #printArea{ position:absolute; left:0; top:0; width:100%; }
+  .tabs, .btn-pdf, .hist-list{ display:none !important; }
+  body{ background:#fff; color:#111; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <p class="eyebrow">Capital Humano · Grupo Vanguardia · División Financiera</p>
+  <h1 class="hero-title">Contabilidad y Finanzas — Centro de Inteligencia del Desempeño</h1>
+  <p class="hero-sub">Vanrenta y Arrendamiento Productivo. Reporte para Miguel Ángel Márquez Muñoz, jefe inmediato. 15 colaboradores en tres niveles: 6 reportan directo a Miguel; Diego Domínguez (Finanzas), Magda Cervantes (Contabilidad) y Alfonso Ornelas (Contabilidad, Arrendamiento Productivo) tienen su propio equipo a cargo.</p>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="resumen">🏠 Resumen Ejecutivo</button>
+    <button class="tab-btn" data-tab="equipo">👥 Mi Equipo</button>
+    <button class="tab-btn" data-tab="ia">🧠 Análisis IA</button>
+    <button class="tab-btn" data-tab="tendencias">📈 Tendencias</button>
+    <button class="tab-btn" data-tab="historial">📁 Historial</button>
+  </div>
+</header>
+
+<main>
+
+<div class="panel active" id="panel-resumen">
+
+<section style="padding-top:30px;">
+  <div class="alert-box">
+    <b style="color:var(--r);">Alerta principal.</b> Martha Edith Sánchez Núñez lleva <b>tres periodos consecutivos en Insatisfactorio</b> (82 → 72.3 → 80). Su indicador de Colaboración cayó a 0 en Jul-Dic 2025 y su jefa (Magda) documentó "mejorar actitud" como compromiso explícito, sin que se haya resuelto.
+  </div>
+</section>
+
+<section>
+  <div class="kpi-grid" id="kpiGrid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Vista clara</p><h2 class="section-title">Calificación promedio por indicador</h2></div>
+    <p class="section-note">Equipo completo (15). Variación vs. 2025 (12 con dato comparable).</p>
+  </div>
+  <div class="card" style="padding:26px;"><div id="circleRowTeam"></div></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Miguel Ángel Márquez Muñoz · jefe inmediato</p><h2 class="section-title">Cumplimiento de aplicación de evaluaciones</h2></div>
+  </div>
+  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);" id="cumplimientoAplicacionGrid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Reconocimiento</p><h2 class="section-title">Lo mejor del equipo</h2></div>
+  </div>
+  <div class="highlight-grid" id="highlightGrid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Vista rápida</p><h2 class="section-title">Mapa de calor PAEI — 2026</h2></div>
+  </div>
+  <div class="card" style="padding:14px 16px; overflow-x:auto;">
+    <table class="heat-table" id="heatTable"></table>
+  </div>
+</section>
+
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Lectura automática</p><h2 class="section-title">Comentario ejecutivo</h2></div>
+  </div>
+  <div class="card ai-box" id="comentarioBox"></div>
+</section>
+
+</div>
+
+<div class="panel" id="panel-equipo">
+<section style="padding-top:30px; border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Estructura</p><h2 class="section-title">15 colaboradores</h2></div>
+    <p class="section-note">Da clic en una tarjeta para abrir su expediente completo.</p>
+  </div>
+  <div class="subgroup-label">Reportes directos de Miguel</div>
+  <div class="team-grid" id="teamGridDirecto"></div>
+  <div class="subgroup-label">Equipo de Diego Domínguez López (Finanzas)</div>
+  <div class="team-grid" id="teamGridDiego"></div>
+  <div class="subgroup-label">Equipo de Magda Gabriela Cervantes Senes (Contabilidad)</div>
+  <div class="team-grid" id="teamGridMagda"></div>
+  <div class="subgroup-label">Equipo de Alfonso Ornelas Gutiérrez (Contabilidad, Arrendamiento Productivo)</div>
+  <div class="team-grid" id="teamGridAlfonso"></div>
+</section>
+</div>
+
+<div class="panel" id="panel-ia">
+<section style="padding-top:30px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Prioridad</p><h2 class="section-title">Caso de atención inmediata</h2></div>
+  </div>
+  <div class="alert-box" id="casoAtencion"></div>
+</section>
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Lo que ningún jefe obtiene normalmente</p><h2 class="section-title">Persistencia del problema</h2></div>
+  </div>
+  <div id="persistList" style="display:flex; flex-direction:column; gap:14px;"></div>
+</section>
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Automático</p><h2 class="section-title">Colaboradores con potencial para desarrollo</h2></div>
+  </div>
+  <div id="promoList" class="highlight-grid"></div>
+</section>
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Para el jefe</p><h2 class="section-title">Plan de Acción Gerencial</h2></div>
+  </div>
+  <div class="card" style="padding:6px 16px; overflow-x:auto;"><table class="rtable" id="planGerencialTable"></table></div>
+</section>
+</div>
+
+<div class="panel" id="panel-tendencias">
+<section style="padding-top:30px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Tendencia</p><h2 class="section-title">Del equipo — 2025 vs. 2026</h2></div>
+    <p class="section-note">Solo los 12 con dato comparable en ambos años.</p>
+  </div>
+  <div class="card" style="padding:22px;"><div id="lineTeam" style="display:flex; justify-content:center;"></div></div>
+</section>
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Tendencia</p><h2 class="section-title">Por indicador PAEI — (P) (A) (E) (I) juntas</h2></div>
+  </div>
+  <div class="card" style="padding:22px;"><div id="linePaei" style="display:flex; justify-content:center;"></div><div id="paeiLegend" style="display:flex; gap:16px; justify-content:center; margin-top:14px; flex-wrap:wrap;"></div></div>
+</section>
+</div>
+
+<div class="panel" id="panel-historial">
+<section style="padding-top:30px; border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Expediente</p><h2 class="section-title">Historial por colaborador</h2></div>
+  </div>
+  <div class="hist-shell">
+    <div class="hist-list" id="histList"></div>
+    <div id="printArea"><div class="card" id="expedienteCard"></div></div>
+  </div>
+</section>
+</div>
+
+</main>
+
+<script>
+const PAEI_LABEL = {P:'(P) Eficacia', A:'(A) Eficiencia', E:'(E) Proactividad', I:'(I) Colaboración'};
+const PAEI_HEX = {P:'#2E8FE0', A:'#E8C547', E:'#34C77B', I:'#A6415A'};
+
+const PUESTO_DEF = {
+  'Analista Financiero': { P:'Plan de trabajo; reportes de bursatilización, líneas de crédito, disposición de línea de crédito y análisis financiero.', A:'Envío de reportes bursátiles en tiempo; cumplimiento de disposiciones de líneas de crédito; cumplimiento de políticas de financiamiento.', E:'Propuestas de mejora en plataforma de fondeo; participación en proyectos especiales.', I:'Participación activa en el equipo; actitud propositiva; promotor de Grupo Vanguardia.' },
+  'Coordinador de Tesorería': { P:'Plan de trabajo; análisis de flujo de efectivo.', A:'Pago de líneas de crédito según calendario; pago a proveedores según política; validaciones de ingresos según política.', E:'Propuestas de mejora en plataforma de pago a proveedores; identificación de áreas de oportunidad.', I:'Participación activa en el equipo; ayuda a compañeros; promotor de Grupo Vanguardia.' },
+  'Contador': { P:'Plan de trabajo.', A:'Conciliaciones bancarias en tiempo; integraciones de cuentas; presentación de impuestos y declaraciones; estados financieros; auditorías internas y externas.', E:'Propuestas de mejora de procesos; participación en proyectos especiales; actualización de políticas y descriptivos; automatización de actividades.', I:'Participación activa; brindar capacitación y plan de desarrollo del equipo; retroalimentación oportuna; integración de equipos multidisciplinarios.' },
+  'Tesorero Jr': { P:'Plan de trabajo; validaciones de ingresos; solicitudes de pago a proveedores.', A:'Validaciones de ingresos y solicitudes de pago en tiempo y forma; actualización de reporte de movimientos bancarios.', E:'Propuestas de mejora en plataforma de pago a proveedores; identificación de áreas de oportunidad.', I:'Participación activa en el equipo; ayuda a compañeros; promotor de Grupo Vanguardia.' },
+  'Gerente de Contabilidad': { P:'Plan de trabajo.', A:'Conciliaciones bancarias en tiempo; integraciones de cuentas; presentación de impuestos y declaraciones; estados financieros; auditorías internas y externas.', E:'Propuestas de mejora de procesos; participación en proyectos especiales; propuestas de automatización; desarrollo del departamento para metas de crecimiento.', I:'Participación activa; brindar capacitación y plan de desarrollo del equipo; retroalimentación oportuna; integración de equipos multidisciplinarios.' },
+  'Analista Contable de Ingresos (Desembolso Inicial)': { P:'Plan de trabajo; avance de fases en CRM y Anfexi; reporte de cartera bursa.', A:'Facturación y aplicación de pagos de desembolso inicial; notas de cargo; conciliaciones bancarias; complementos de pago.', E:'Proactividad y autonomía en resolución de problemas de facturación; propuestas de mejora.', I:'Participación activa en el equipo; ayuda a compañeros; promotor de Grupo Vanguardia.' },
+  'Analista Contable 2': { P:'Plan de trabajo.', A:'Generación de anticipos; captura de pólizas; registro de líneas de crédito; conciliaciones bancarias; integración de cuentas; reportes.', E:'Propuestas de mejora; identificación de áreas de oportunidad; autonomía en resolución de problemas.', I:'Participación activa en el equipo; ayuda a compañeros a mejorar y capacitar; promotor de Grupo Vanguardia.' },
+  'Analista Contable de Ingresos (Rentas)': { P:'Plan de trabajo.', A:'Facturación mensual de rentas en Anfexi y Total Dealer; control de cartera; aplicación diaria de pagos; complementos de pago; notas de crédito.', E:'Proactividad y autonomía en resolución de problemas de facturación; propuestas de mejora.', I:'Participación activa en el equipo; ayuda a compañeros; promotor de Grupo Vanguardia.' },
+  'Analista Contable 3': { P:'Plan de trabajo.', A:'Captura de pólizas contables; integración de cuentas asignadas; elaboración de reportes.', E:'Propuestas de mejora; identificación de áreas de oportunidad; apoyo a las actividades del departamento.', I:'Participación activa en el equipo; ayuda a compañeros; promotor de Grupo Vanguardia.' },
+  'Analista Contable de Egresos': { P:'Plan de trabajo.', A:'Registro de egresos de cuentas bancarias; reembolsos de gastos; integración mensual de anticipos a proveedores; elaboración de cheques; pagos a líneas de crédito.', E:'Propuestas de mejora; identificación de áreas de oportunidad; autonomía en resolución de problemas.', I:'Participación activa en el equipo; ayuda a compañeros; promotor de Grupo Vanguardia.' },
+  'Analista Contable de Cuentas por Pagar': { P:'Plan de trabajo.', A:'Provisión en tiempo de activos fijos y gastos del mes; integración mensual de cuentas por pagar; facturación de valores residuales.', E:'Propuestas de mejora; identificación de áreas de oportunidad; autonomía en resolución de problemas.', I:'Participación activa en el equipo; ayuda a compañeros; promotor de Grupo Vanguardia.' },
+};
+
+const PERSONAS = [
+{ id:'diego', nombre:"Diego Domínguez López", puesto:"Analista Financiero", agencia:"VANRENTA", jefe:"Miguel Ángel Márquez Muñoz", antiguedad:"5.1 años", grupo:"directo",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Calificación perfecta en ambos periodos, sin comentarios que documenten el porqué — el número es consistente pero no hay evidencia narrativa detrás.",
+  reco_full:[{texto:"Ya lidera formalmente a Cristóbal y David — confirmar que tiene el soporte y tiempo necesario para ese rol adicional.", categoria:"Coaching del jefe"}], reco_accion:"Confirmar soporte para su rol de liderazgo" },
+{ id:'ischia', nombre:"Ischia Elizabeth Moreno Ornelas", puesto:"Coordinador de Tesorería", agencia:"VANRENTA", jefe:"Miguel Ángel Márquez Muñoz", antiguedad:"19.3 años", grupo:"directo",
+  periods:[
+    {label:"Ene–Jun 2025", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:98.6, clasif:"SOBRESALIENTE", paei:{P:99,A:99,E:98,I:98}, comentarios:{P:"Análisis de flujo de efectivo se evaluará el segundo semestre, con el compromiso de revisarlo una vez a la semana (presupuesto) y una vez al mes (vs. real). Fondeo deberá avisar disposiciones y contraprestación semanalmente.",A:"Monitorear en el segundo semestre los cambios con la incorporación de tesorería egresos.",E:"Seguimiento oportuno para concluir el proceso de CxP en Acumatica durante el segundo semestre.",I:"Tener mayor acercamiento y comunicación con el Gerente Comercial."}, acuerdos:null},
+  ], atendido:"Se mantiene Sobresaliente con la antigüedad más alta del equipo (19.3 años). El punto de Integración (mayor acercamiento con el Gerente Comercial) es nuevo en 2026, sin antecedente previo que comparar.",
+  reco_full:[{texto:"Dar seguimiento al acercamiento con el Gerente Comercial señalado en 2026.", categoria:"Coaching del jefe"}], reco_accion:"Seguimiento a comunicación con Gerente Comercial" },
+{ id:'magda', nombre:"Magda Gabriela Cervantes Senes", puesto:"Contador", agencia:"VANRENTA", jefe:"Miguel Ángel Márquez Muñoz", antiguedad:"4.6 años", grupo:"directo",
+  periods:[
+    {label:"Ene–Jun 2025", global:89, clasif:"ADECUADO", paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Jul–Dic 2025", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:"Sin información."},
+    {label:"Ene–Jun 2026", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Sin comentario capturado.",A:"Concluir integraciones de cuentas proveedores, intercompañías y anticipo a proveedores. En el segundo semestre se revisarán puntos de mejora en conciliaciones bancarias (seguimiento con áreas y depuración de 2025).",E:"Desarrollo del departamento: definir actividades por puesto, delegando más. Concluir puntos de mejora (conciliaciones, integraciones, automatizaciones).",I:"Buscar que las áreas de oportunidad del equipo se atiendan lo más pronto posible, para evitar que se vuelvan un problema mayor."}, acuerdos:null},
+  ], atendido:"Mejoró de Adecuado (89) a Sobresaliente (100) y lo sostiene. El comentario de Integración 2026 (\"atender áreas de oportunidad del equipo antes de que sean un problema mayor\") es notable — coincide con el momento en que su equipo tiene el caso más severo del reporte (Martha).",
+  reco_full:[
+    {texto:"Su propio comentario de 2026 sobre \"atender áreas de oportunidad del equipo antes de que sean un problema mayor\" es una señal de que ella misma identifica el riesgo de Martha — apoyarla directamente en ese plan de acción.", categoria:"Coaching del jefe"},
+    {texto:"Dar seguimiento a la depuración de conciliaciones bancarias 2025 acordada para el segundo semestre.", categoria:"Coaching del jefe"},
+  ], reco_accion:"Apoyar plan de acción para su equipo (incl. Martha)" },
+{ id:'mayra', nombre:"Mayra Betsabé Espinoza García", puesto:"Tesorero Jr", agencia:"VANRENTA", jefe:"Miguel Ángel Márquez Muñoz", antiguedad:"5.2 años", grupo:"directo",
+  periods:[
+    {label:"Ene–Jun 2025", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:99.85, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:99,I:100}, comentarios:{P:"Enviar una semana antes del cierre de mes los movimientos pendientes del mes en curso, para validar con todas las áreas.",A:"Sin comentario capturado.",E:"Trabajar con mayor comunicación con gerentes de área, con acompañamiento de la Coordinadora de Tesorería.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Se mantiene prácticamente perfecta (100→99.85). Los dos puntos de 2026 (adelantar movimientos pendientes, mayor comunicación con gerentes) son nuevos, sin antecedente en 2025.",
+  reco_full:[{texto:"Dar seguimiento al acompañamiento de la Coordinadora de Tesorería (Ischia) en la comunicación con gerentes de área.", categoria:"Coaching del jefe"}], reco_accion:"Seguimiento a comunicación con gerentes de área" },
+{ id:'victor', nombre:"Víctor Rafael Morelos Gutiérrez", puesto:"Gerente de Contabilidad", agencia:"VANRENTA", jefe:"Miguel Ángel Márquez Muñoz", antiguedad:"1.2 años", grupo:"directo",
+  periods:[
+    {label:"Ene–Jun 2026", global:99.2, clasif:"SOBRESALIENTE", paei:{P:99,A:99,E:99,I:100}, comentarios:{P:"Enfocarse en integraciones de cuentas pendientes, actualización de proceso y fiscal.",A:"Sin comentario capturado.",E:"Definir capacitación externa relacionada en Finanzas, en 4T26.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primer registro capturado (ingresó mayo 2025) — arranque muy sólido como Gerente de Contabilidad, sin antecedente para comparar.",
+  reco_full:[{texto:"Dar seguimiento a la capacitación externa en Finanzas planeada para 4T26.", categoria:"Coaching del jefe"}], reco_accion:"Dar seguimiento a capacitación externa 4T26" },
+{ id:'alfonso', nombre:"Alfonso Ornelas Gutiérrez", puesto:"Contador", agencia:"ARRENDAMIENTO PRODUCTIVO", jefe:"Miguel Ángel Márquez Muñoz", antiguedad:"12.7 años", grupo:"directo",
+  periods:[
+    {label:"Ene–Jun 2025", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Capacitación IEE, próximo ciclo."}, acuerdos:null},
+  ], atendido:"Calificación perfecta y consistente, con la antigüedad más alta entre los reportes directos (12.7 años) después de Ischia.",
+  reco_full:[{texto:"Dar seguimiento a la capacitación IEE planeada para el próximo ciclo.", categoria:"Coaching del jefe"}], reco_accion:"Seguimiento a capacitación IEE" },
+{ id:'cristobal', nombre:"Cristóbal Santiago Rodríguez Rodríguez", puesto:"Analista Financiero", agencia:"VANRENTA", jefe:"Diego Domínguez López", antiguedad:"1.5 años", grupo:"diego",
+  periods:[
+    {label:"Ene–Jun 2026", global:94.5, clasif:"ADECUADO", paei:{P:100,A:85,E:95,I:100}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primer registro (ingreso reciente, 1.5 años). Adecuado, sin comentarios que expliquen el indicador más bajo (Eficiencia, 85).",
+  reco_full:[{texto:"Sin comentarios capturados — pedir a Diego que documente evidencia en el próximo ciclo, especialmente en Eficiencia (85, su punto más bajo).", categoria:"Coaching del jefe"}], reco_accion:"Solicitar evidencia documentada al jefe" },
+{ id:'david', nombre:"David Enrique Apodaca Flores", puesto:"Analista Financiero", agencia:"VANRENTA", jefe:"Diego Domínguez López", antiguedad:"9.0 años", grupo:"diego",
+  periods:[
+    {label:"Ene–Jun 2025", global:89, clasif:"ADECUADO", paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:96, clasif:"SOBRESALIENTE", paei:{P:100,A:90,E:95,I:100}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Mejora real de Adecuado a Sobresaliente (89→96), la más alta antigüedad de su grupo (9 años). Sin comentarios en ningún periodo que documenten qué cambió.",
+  reco_full:[{texto:"Reconocer la mejora a Sobresaliente — con 9 años de antigüedad, es un caso sólido para mentoría interna de Cristóbal.", categoria:"Mentoría interna"}], reco_accion:"Formalizar como mentor de Cristóbal" },
+{ id:'armando', nombre:"Armando Díaz Palomino", puesto:"Analista Contable de Cuentas por Pagar", agencia:"VANRENTA", jefe:"Magda Gabriela Cervantes Senes", antiguedad:"1.8 años", grupo:"magda",
+  periods:[
+    {label:"Ene–Jun 2025", global:92, clasif:"ADECUADO", paei:{P:100,A:82.9,E:80,I:100}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Jul–Dic 2025", global:94.75, clasif:"ADECUADO", paei:{P:100,A:85,E:100,I:100}, comentarios:{P:"Sin información.",A:"Hay errores, no lee bien las indicaciones; a veces se le corrige y la corrección vuelve a tener errores; todavía no está claro en el proceso contable.",E:"Sin información.",I:"Sin información."}, acuerdos:"Prestar más atención en todo."},
+    {label:"Ene–Jun 2026", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Sí. El problema documentado en Jul-Dic 2025 (errores por no leer bien las indicaciones) no vuelve a aparecer, y llegó a calificación perfecta en 2026 — mejora real y sostenida.",
+  reco_full:[{texto:"Reconocer la mejora de Adecuado a Sobresaliente, resolviendo un problema de precisión documentado explícitamente en 2025.", categoria:"Reconocimiento"}], reco_accion:"Reconocer mejora — resolvió problema de precisión" },
+{ id:'guillermo', nombre:"Guillermo Vergara Contreras", puesto:"Analista Contable 2", agencia:"VANRENTA", jefe:"Magda Gabriela Cervantes Senes", antiguedad:"3.3 años", grupo:"magda",
+  periods:[
+    {label:"Ene–Jun 2025", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:"Sin información."},
+    {label:"Jul–Dic 2025", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:"Sin información."},
+    {label:"Ene–Jun 2026", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Calificación perfecta en los tres periodos consecutivos — el resultado más consistente de todo el equipo de Miguel.",
+  reco_full:[{texto:"Tres periodos consecutivos perfectos — formalizar como mentor del equipo de Magda, especialmente para los casos con dificultades (Heriberto, Martha, Teresa).", categoria:"Mentoría interna"}], reco_accion:"Formalizar como mentor del equipo de Magda" },
+{ id:'heriberto', nombre:"Heriberto García Gallegos", puesto:"Analista Contable de Ingresos (Rentas)", agencia:"VANRENTA", jefe:"Magda Gabriela Cervantes Senes", antiguedad:"1.8 años", grupo:"magda",
+  periods:[
+    {label:"Ene–Jun 2025", global:91, clasif:"ADECUADO", paei:{P:100,A:82.9,E:80,I:100}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Jul–Dic 2025", global:93.25, clasif:"ADECUADO", paei:{P:100,A:85,E:85,I:100}, comentarios:{P:"Sin información.",A:"Hay muchos errores, descuido (facturas canceladas) en algo de suma importancia; no presta atención; la integración de proveedores no estaba totalmente correcta; no hay que revisar las cosas varias veces. Platica mucho.",E:"Sin información.",I:"Sin información."}, acuerdos:"Prestar más atención y ser muy cuidadoso en cada uno de sus procesos. Cambio de lugar a petición del colaborador."},
+    {label:"Ene–Jun 2026", global:88.25, clasif:"ADECUADO", paei:{P:95,A:80,E:95,I:85}, comentarios:{P:"Seguimiento a la integración de CxC Rentas.",A:"Errores, falta de atención.",E:"Falta un poco la detección de áreas de oportunidad.",I:"Correcciones en conciliaciones bancarias."}, acuerdos:null},
+  ], atendido:"No — el mismo tema de errores y falta de atención se repite en los tres periodos, con la misma redacción de fondo (\"errores\", \"falta de atención\", \"correcciones\"). Su calificación bajó en el periodo más reciente (93.25→88.25), a pesar de que ya se le cambió de lugar de trabajo a petición propia en 2025.",
+  reco_full:[
+    {texto:"El tema de errores por falta de atención lleva tres periodos sin resolverse, ya con un cambio de lugar de trabajo de por medio que no fue suficiente — necesita un plan de acompañamiento más estructurado, no solo pedirle que preste atención.", categoria:"Capacitación formal — Precisión en procesos contables"},
+  ], reco_accion:"Plan de acompañamiento estructurado (3 periodos sin resolver)" },
+{ id:'jorge', nombre:"Jorge Zaid López Chitica", puesto:"Analista Contable 3", agencia:"VANRENTA", jefe:"Magda Gabriela Cervantes Senes", antiguedad:"1.0 años", grupo:"magda",
+  periods:[
+    {label:"Ene–Jun 2026", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primer registro (ingreso julio 2025) — arranque perfecto, sin antecedente para comparar.",
+  reco_full:[{texto:"Reconocer el arranque perfecto en su primera evaluación.", categoria:"Reconocimiento"}], reco_accion:"Reconocer arranque sobresaliente" },
+{ id:'martha', nombre:"Martha Edith Sánchez Núñez", puesto:"Analista Contable de Egresos", agencia:"VANRENTA", jefe:"Magda Gabriela Cervantes Senes", antiguedad:"6.8 años", grupo:"magda",
+  periods:[
+    {label:"Ene–Jun 2025", global:82, clasif:"INSATISFACTORIO", paei:{P:82.9,A:82.9,E:80,I:80}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Jul–Dic 2025", global:72.3, clasif:"INSATISFACTORIO", paei:{P:85,A:85,E:85.3,I:0}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:"Mejorar en todos sus procesos y mejora de actitud (hizo el compromiso)."},
+    {label:"Ene–Jun 2026", global:80, clasif:"INSATISFACTORIO", paei:{P:80,A:80,E:80,I:80}, comentarios:{P:"Mejora en los tiempos.",A:"Buscar asesoría para actividades como comprobación de gastos.",E:"Sin comentario capturado.",I:"Mejorar actitud."}, acuerdos:null},
+  ], atendido:"No — es el único caso del reporte con tres periodos consecutivos en Insatisfactorio (82 → 72.3 → 80). Su indicador de Colaboración cayó a 0 en Jul-Dic 2025, y el compromiso de \"mejora de actitud\" que ella misma hizo en esa evaluación se repite casi textual en el comentario de 2026 (\"mejorar actitud\") — sin resolverse en tres periodos.",
+  reco_full:[
+    {texto:"Prioridad más alta del reporte completo. Tres periodos consecutivos en Insatisfactorio con el mismo tema de actitud sin resolver, más problemas técnicos documentados (comprobación de gastos). Esto necesita una conversación formal de plan de mejora con RH involucrado, no solo retroalimentación del día a día.", categoria:"Coaching del jefe"},
+    {texto:"Buscar asesoría para actividades de comprobación de gastos, señalado explícitamente en 2026 — es el único punto técnico concreto entre los tres periodos.", categoria:"Capacitación formal — Comprobación de gastos"},
+  ], reco_accion:"Plan de mejora formal con RH — 3 periodos en Insatisfactorio" },
+{ id:'teresa', nombre:"Teresa de Jesús Hernández Suárez", puesto:"Analista Contable de Cuentas por Pagar", agencia:"VANRENTA", jefe:"Magda Gabriela Cervantes Senes", antiguedad:"5.2 años", grupo:"magda",
+  periods:[
+    {label:"Ene–Jun 2025", global:82, clasif:"INSATISFACTORIO", paei:{P:82.9,A:82.9,E:80,I:80}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Jul–Dic 2025", global:85.5, clasif:"ADECUADO", paei:{P:85,A:85,E:85.3,I:63.75}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:"Mejorar en su proceso, prestar más atención y cambio de actitud."},
+    {label:"Ene–Jun 2026", global:85, clasif:"ADECUADO", paei:{P:85,A:85,E:85,I:85}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Parcialmente. Se recuperó de Insatisfactorio a Adecuado (82→85.5) y lo sostiene (85), una historia distinta a la de Martha en el mismo equipo, con el mismo tipo de acuerdo (\"cambio de actitud\"). Sin comentarios en 2026 que confirmen si el cambio de actitud se consolidó del todo.",
+  reco_full:[{texto:"Reconocer la recuperación desde Insatisfactorio — es un caso de éxito dentro del mismo equipo que tiene a Martha en la situación opuesta, vale la pena entender qué fue diferente.", categoria:"Reconocimiento"}], reco_accion:"Reconocer recuperación; comparar con caso de Martha" },
+{ id:'monica', nombre:"Mónica Elizabeth Guerra Sahagún", puesto:"Analista Contable de Ingresos (Rentas)", agencia:"ARRENDAMIENTO PRODUCTIVO", jefe:"Alfonso Ornelas Gutiérrez", antiguedad:"9.5 años", grupo:"alfonso",
+  periods:[
+    {label:"Ene–Jun 2025", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Calificación perfecta y consistente, la mayor antigüedad de todo el equipo de Alfonso (9.5 años).",
+  reco_full:[{texto:"Formato firmado pendiente en el archivo — confirmar que el proceso quedó cerrado formalmente.", categoria:"Coaching del jefe"}], reco_accion:"Confirmar formato firmado" },
+];
+
+function fmt(v){ return (v===null||v===undefined) ? '—' : (Number.isInteger(v) ? v.toString() : v.toFixed(2)); }
+function initials(name){ return name.split(' ').filter(w=>w.length>2||/[A-ZÁÉÍÓÚÑ]/.test(w[0])).slice(0,2).map(w=>w[0]).join('').toUpperCase().slice(0,2); }
+function tier(g){ return g>=95?'SOBRESALIENTE':g>=85?'ADECUADO':'INSATISFACTORIO'; }
+function stars(g){ const n = g>=98?5:g>=95?5:g>=90?4:g>=85?3:g>=75?2:1; return '★'.repeat(n) + '☆'.repeat(5-n); }
+function deltaSpan(d){
+  if (d===null||d===undefined) return '<span class="delta-flat">—</span>';
+  if (d > 0.05) return `<span class="delta-up">▲ +${d.toFixed(1)}</span>`;
+  if (d < -0.05) return `<span class="delta-down">▼ ${d.toFixed(1)}</span>`;
+  return `<span class="delta-flat">▬ 0.0</span>`;
+}
+function curPeriod(p){ return p.periods[p.periods.length-1]; }
+function prevPeriod(p){ return p.periods.length>1 ? p.periods[p.periods.length-2] : null; }
+function personDelta(p){ const prev=prevPeriod(p); return prev ? curPeriod(p).global - prev.global : null; }
+
+function paeiCircleSvg(letter, value, size){
+  size = size||130;
+  const r = size/2-13, cx=size/2, cy=size/2, circ=2*Math.PI*r;
+  const frac = Math.max(0, Math.min(1, (value||0)/100));
+  const dash = frac*circ;
+  const color = PAEI_HEX[letter];
+  return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--navy-3)" stroke-width="13"/>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="13" stroke-linecap="round" stroke-dasharray="${dash} ${circ-dash}" transform="rotate(-90 ${cx} ${cy})"/>
+    <text x="${cx}" y="${cy-4}" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="25" fill="var(--ink)">${value!==null?value.toFixed(1):'—'}</text>
+    <text x="${cx}" y="${cy+20}" text-anchor="middle" font-family="IBM Plex Mono" font-weight="700" font-size="15" fill="${color}">(${letter})</text>
+  </svg>`;
+}
+function renderCircleRow(containerId, items, deltaLabel){
+  deltaLabel = deltaLabel || 'vs. periodo anterior';
+  document.getElementById(containerId).innerHTML = `<div style="display:flex; gap:28px; justify-content:center; flex-wrap:wrap;">` +
+    items.map(it=>`<div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+      ${paeiCircleSvg(it.letter, it.value)}
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--muted); text-align:center; max-width:130px;">${PAEI_LABEL[it.letter]}</div>
+      ${it.delta!==undefined ? `<div style="font-size:12px;">${deltaSpan(it.delta)} <span style="color:var(--muted); font-size:10.5px;">${deltaLabel}</span></div>` : ''}
+    </div>`).join('') + `</div>`;
+}
+
+function lineChartSvg(series, opts){
+  opts = opts || {};
+  const n = opts.n || 2;
+  const W = opts.w||620, H = opts.h||280, padL=44, padR = opts.endLabels? 54:18, padT=16, padB=36;
+  const plotW=W-padL-padR, plotH=H-padT-padB;
+  const yMin = opts.yMin!==undefined?opts.yMin:0, yMax = opts.yMax!==undefined?opts.yMax:100;
+  const xPos = i => padL + (i/(n-1))*plotW;
+  const yPos = v => padT + plotH - ((v-yMin)/(yMax-yMin))*plotH;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">`;
+  const gridVals = opts.gridVals || [yMin, (yMin+yMax)/2, yMax];
+  gridVals.forEach(v=>{
+    const y = yPos(v);
+    svg += `<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="var(--line)" stroke-width="1"/>
+      <text x="${padL-8}" y="${y+4}" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="var(--muted)">${v.toFixed(0)}</text>`;
+  });
+  const xLabels = opts.xLabels || ['2025','2026'];
+  xLabels.forEach((lbl,i)=> svg += `<text x="${xPos(i)}" y="${H-12}" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="var(--muted)">${lbl}</text>`);
+  series.forEach(s=>{
+    const pts = s.values.map((v,i)=> v!==null ? `${xPos(i)},${yPos(v)}` : null).filter(Boolean);
+    svg += `<polyline points="${pts.join(' ')}" fill="none" stroke="${s.color}" stroke-width="${s.width||2.5}"/>`;
+    s.values.forEach((v,i)=>{ if(v!==null){
+      svg += `<circle cx="${xPos(i)}" cy="${yPos(v)}" r="4" fill="${s.color}"/>`;
+      if (s.showLabel) svg += `<text x="${xPos(i)}" y="${yPos(v)-11}" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="11" fill="var(--ink)">${v.toFixed(1)}</text>`;
+    }});
+  });
+  if (opts.endLabels){
+    let ends = series.map(s=>{
+      const lastIdx = s.values.map((v,i)=>v!==null?i:-1).filter(i=>i>=0).pop();
+      return lastIdx===undefined ? null : {y: yPos(s.values[lastIdx]), val:s.values[lastIdx], color:s.color, letter:s.letter};
+    }).filter(Boolean).sort((a,b)=>a.y-b.y);
+    for (let i=1;i<ends.length;i++){ if (ends[i].y-ends[i-1].y<16) ends[i].y = ends[i-1].y+16; }
+    ends.forEach(e=>{
+      svg += `<text x="${W-padR+8}" y="${e.y+4}" font-family="IBM Plex Mono" font-weight="700" font-size="11" fill="${e.color}">(${e.letter}) ${e.val.toFixed(1)}</text>`;
+    });
+  }
+  svg += `</svg>`;
+  return svg;
+}
+
+function renderKpis(){
+  const total = PERSONAS.length;
+  const avg2026 = PERSONAS.reduce((s,p)=>s+curPeriod(p).global,0)/total;
+  const withBoth = PERSONAS.filter(p=>prevPeriod(p));
+  const avg2025 = withBoth.reduce((s,p)=>s+prevPeriod(p).global,0)/withBoth.length;
+  const avg2026Comp = withBoth.reduce((s,p)=>s+curPeriod(p).global,0)/withBoth.length;
+  const delta = avg2026Comp - avg2025;
+  const insatisfactorios = PERSONAS.filter(p=>tier(curPeriod(p).global)==='INSATISFACTORIO').length;
+  const tiles = [
+    {l:'Equipo', n:total, sub:'100% evaluado 2026'},
+    {l:'Promedio 2026', n:avg2026.toFixed(1), sub:'los 15 colaboradores'},
+    {l:'vs. 2025', n:`${delta>=0?'+':''}${delta.toFixed(1)}`, sub:`${withBoth.length} con dato en ambos años`, cls: delta>=0?'delta-up':'delta-down'},
+    {l:'En riesgo', n:`${insatisfactorios}/${total}`, sub:'Insatisfactorio'},
+  ];
+  document.getElementById('kpiGrid').innerHTML = tiles.map(t=>`
+    <div class="card kpi"><div class="l">${t.l}</div><div class="n ${t.cls||''}">${t.n}</div><div class="sub">${t.sub}</div></div>`).join('');
+}
+
+function renderTeamCircles(){
+  const withBoth = PERSONAS.filter(p=>prevPeriod(p) && prevPeriod(p).paei.P!==null);
+  const cur={P:0,A:0,E:0,I:0}, prev={P:0,A:0,E:0,I:0};
+  withBoth.forEach(p=>{ ['P','A','E','I'].forEach(k=>{ cur[k]+=curPeriod(p).paei[k]; prev[k]+=prevPeriod(p).paei[k]; }); });
+  ['P','A','E','I'].forEach(k=>{ cur[k]/=withBoth.length; prev[k]/=withBoth.length; });
+  const items = ['P','A','E','I'].map(k=>({letter:k, value:cur[k], delta:cur[k]-prev[k]}));
+  renderCircleRow('circleRowTeam', items, 'vs. 2025');
+}
+
+function renderCumplimientoAplicacion(){
+  const tiles = [
+    {l:'2025', n:'80%', sub:'12 de 15 evaluados'},
+    {l:'2026', n:'100%', sub:'15 de 15 evaluados'},
+    {l:'General', n:'90%', sub:'27 de 30 evaluaciones esperadas'},
+  ];
+  document.getElementById('cumplimientoAplicacionGrid').innerHTML = tiles.map(t=>`
+    <div class="card kpi"><div class="l">${t.l}</div><div class="n">${t.n}</div><div class="sub">${t.sub}</div></div>`).join('');
+}
+
+function renderHighlights(){
+  const items = [
+    {label:'3 periodos perfectos', nombre:'Guillermo Vergara', valor:'100 → 100 → 100', person:'guillermo'},
+    {label:'Recuperación de errores', nombre:'Armando Díaz', valor:'92 → 94.75 → 100', person:'armando'},
+    {label:'Mayor antigüedad, perfecto', nombre:'Ischia Moreno', valor:'19.3 años · 98.6', person:'ischia'},
+  ];
+  document.getElementById('highlightGrid').innerHTML = items.map(it=>`
+    <div class="card hl-card" onclick="openHistorial('${it.person}')">
+      <div class="stars">★★★</div>
+      <div class="hn">${it.nombre}</div>
+      <div class="hv">${it.valor}</div>
+      <div class="hl">${it.label}</div>
+    </div>`).join('');
+}
+
+function heatColor(v){ if(v===null) return 'rgba(255,255,255,0.05)'; if(v>=95) return 'rgba(52,199,123,0.28)'; if(v>=85) return 'rgba(232,197,71,0.28)'; return 'rgba(240,82,75,0.28)'; }
+function heatTextColor(v){ if(v===null) return 'var(--muted)'; if(v>=95) return 'var(--g)'; if(v>=85) return 'var(--y)'; return 'var(--r)'; }
+function renderHeat(){
+  let html = '<thead><tr><th>Colaborador</th><th>P</th><th>A</th><th>E</th><th>I</th><th>Global</th></tr></thead><tbody>';
+  PERSONAS.forEach(p=>{
+    const s = curPeriod(p);
+    html += `<tr><td>${p.nombre.split(' ')[0]} ${p.nombre.split(' ')[1]||''}</td>`;
+    ['P','A','E','I'].forEach(k=>{ const v=s.paei[k]; html += `<td><span class="heat-cell" style="background:${heatColor(v)};color:${heatTextColor(v)};">${v!==null?v:'—'}</span></td>`; });
+    html += `<td><span class="heat-cell" style="background:${heatColor(s.global)};color:${heatTextColor(s.global)};">${fmt(s.global)}</span></td></tr>`;
+  });
+  document.getElementById('heatTable').innerHTML = html + '</tbody>';
+}
+
+function teamCardHtml(p){
+  const s = curPeriod(p); const g = s.global; const d = personDelta(p);
+  const arrow = d===null?'':(d>0.5?'<span class="delta-up">↑</span>':d<-0.5?'<span class="delta-down">↓</span>':'<span class="delta-flat">→</span>');
+  return `<div class="card team-card" onclick="openHistorial('${p.id}')">
+    <div class="avatar">${initials(p.nombre)}</div>
+    <div class="tn">${p.nombre}</div>
+    <div class="tp">${p.puesto}${p.agencia!=='VANRENTA'?' · '+p.agencia:''}</div>
+    <div class="tv">${fmt(g)} ${arrow}</div>
+    <div class="stars">${stars(g)}</div>
+    <div class="tlink">Ver expediente →</div>
+  </div>`;
+}
+function renderTeamCards(){
+  document.getElementById('teamGridDirecto').innerHTML = PERSONAS.filter(p=>p.grupo==='directo').map(teamCardHtml).join('');
+  document.getElementById('teamGridDiego').innerHTML = PERSONAS.filter(p=>p.grupo==='diego').map(teamCardHtml).join('');
+  document.getElementById('teamGridMagda').innerHTML = PERSONAS.filter(p=>p.grupo==='magda').map(teamCardHtml).join('');
+  document.getElementById('teamGridAlfonso').innerHTML = PERSONAS.filter(p=>p.grupo==='alfonso').map(teamCardHtml).join('');
+}
+
+function renderComentario(){
+  const avg2026 = PERSONAS.reduce((s,p)=>s+curPeriod(p).global,0)/PERSONAS.length;
+  document.getElementById('comentarioBox').innerHTML = `<div class="aihead">🧠 Generado a partir de los datos del periodo</div>
+    El equipo completo de Contabilidad y Finanzas de Miguel Ángel Márquez Muñoz (15 personas en 4 niveles) cerró con un promedio de <b>${avg2026.toFixed(1)}</b>. La mayoría del equipo está en Sobresaliente, con varios casos de calificación perfecta sostenida (Guillermo Vergara, tres periodos consecutivos en 100).<br><br>
+    El equipo de <b>Magda Gabriela Cervantes Senes</b> concentra la mayor variación: mientras Guillermo y Armando muestran resultados perfectos o en recuperación, <b>Martha Edith Sánchez Núñez</b> lleva tres periodos consecutivos en Insatisfactorio, y <b>Heriberto García Gallegos</b> tiene el mismo tema de errores por falta de atención repetido en los tres periodos, incluso después de un cambio de lugar de trabajo. <b>Teresa de Jesús Hernández Suárez</b>, en el mismo equipo, sí logró recuperarse de Insatisfactorio a Adecuado — vale la pena entender qué fue diferente en su caso frente al de Martha.<br><br>
+    Nota de cumplimiento: 3 de los 15 colaboradores (Víctor, Cristóbal, Jorge) no tenían registro 2025 por ser de ingreso reciente — su cumplimiento 2025 no aplica, no es una omisión.`;
+}
+
+function renderCasoAtencion(){
+  document.getElementById('casoAtencion').innerHTML = `
+    <b style="color:var(--r);">Martha Edith Sánchez Núñez</b> — Insatisfactorio en Ene-Jun 2025 (82), Jul-Dic 2025 (72.3) y Ene-Jun 2026 (80). Tres periodos consecutivos sin salir de Insatisfactorio.<br><br>
+    Lo que sabemos: su indicador de Colaboración cayó a 0 en Jul-Dic 2025, y el acuerdo de ese periodo (\"mejorar en todos sus procesos y mejora de actitud\") se repite casi textual en el comentario de 2026 (\"mejorar actitud\") — el compromiso que ella misma hizo no se ha sostenido. En 2026 también aparece un punto técnico concreto: buscar asesoría para comprobación de gastos.<br><br>
+    <b>Recomendación:</b> esto ya no es un tema de retroalimentación de rutina — con tres periodos en Insatisfactorio amerita un plan de mejora formal, idealmente con Capital Humano involucrado, antes del siguiente ciclo de evaluación.
+  `;
+}
+
+function renderPersistList(){
+  document.getElementById('persistList').innerHTML = `
+    <div class="card persist-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <b style="font-size:14px;">Heriberto García Gallegos</b>
+        <span class="pill-warn">⚠ 3 periodos, mismo tema</span>
+      </div>
+      <div class="persist-steps">
+        <div class="persist-step"><div class="pl">Jul-Dic 2025</div>"Hay muchos errores, descuido... no presta atención... Platica mucho."</div>
+        <div style="color:var(--muted);">→</div>
+        <div class="persist-step"><div class="pl">Ene-Jun 2026</div>"Errores, falta de atención." / "Correcciones en conciliaciones bancarias."</div>
+      </div>
+      <p style="font-size:12.5px; color:var(--muted); margin:8px 0 0;">Ya se le cambió de lugar de trabajo en 2025 a petición propia, y el tema siguió — indica que el problema no es ambiental, necesita un abordaje distinto.</p>
+    </div>
+    <div class="card persist-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <b style="font-size:14px;">Martha Edith Sánchez Núñez</b>
+        <span class="pill-warn">⚠ 3 periodos, Insatisfactorio, sin resolver</span>
+      </div>
+      <div class="persist-steps">
+        <div class="persist-step"><div class="pl">Jul-Dic 2025</div>Acuerdo: "Mejorar en todos sus procesos y mejora de actitud (hizo el compromiso)."</div>
+        <div style="color:var(--muted);">→</div>
+        <div class="persist-step"><div class="pl">Ene-Jun 2026</div>Comentario de Colaboración: "Mejorar actitud."</div>
+      </div>
+      <p style="font-size:12.5px; color:var(--muted); margin:8px 0 0;">Es el caso más severo de todo el equipo — el compromiso de cambio de actitud que ella misma hizo hace un año se repite casi con las mismas palabras.</p>
+    </div>`;
+}
+
+function renderPromoCoach(){
+  const ids = ['guillermo','armando','ischia'];
+  document.getElementById('promoList').innerHTML = ids.map(id=>{
+    const p = PERSONAS.find(x=>x.id===id);
+    const g = curPeriod(p).global;
+    return `<div class="card hl-card" onclick="openHistorial('${id}')">
+      <div class="stars">${stars(g)}</div>
+      <div class="hn">${p.nombre.split(' ')[0]} ${p.nombre.split(' ')[1]||''}</div>
+      <div class="hv">${fmt(g)}</div>
+      <div class="hl">${id==='guillermo'?'3 periodos perfectos':id==='armando'?'Resolvió problema documentado':'Consistencia con mayor antigüedad'}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderPlanGerencial(){
+  const PRIORIDAD = {martha:'Alta', heriberto:'Alta', teresa:'Media', magda:'Media', cristobal:'Baja', diego:'Baja', ischia:'Baja', mayra:'Baja', victor:'Baja', alfonso:'Baja', david:'Baja', armando:'Baja', guillermo:'Baja', jorge:'Baja', monica:'Baja'};
+  const TIPO = {martha:'3 periodos en Insatisfactorio', heriberto:'3 periodos, mismo tema de errores', teresa:'Confirmar consolidación de recuperación', magda:'Apoyar plan de acción con Martha', cristobal:'Sin evidencia documentada', diego:'Confirmar soporte de liderazgo', ischia:'Seguimiento normal', mayra:'Seguimiento normal', victor:'Seguimiento normal', alfonso:'Seguimiento normal', david:'Reconocer mejora', armando:'Reconocer mejora', guillermo:'Formalizar mentoría', jorge:'Reconocer arranque', monica:'Confirmar formato firmado'};
+  const prioColor = {Alta:'var(--r)', Media:'var(--o)', Baja:'var(--g)'};
+  document.getElementById('planGerencialTable').innerHTML =
+    `<thead><tr><th>Colaborador</th><th>Situación</th><th>Acción sugerida</th><th>Prioridad</th></tr></thead><tbody>` +
+    PERSONAS.map(p=>`<tr>
+      <td>${p.nombre}</td><td>${TIPO[p.id]}</td>
+      <td><span class="pill-action">${p.reco_accion}</span></td>
+      <td><span style="color:${prioColor[PRIORIDAD[p.id]]}; font-weight:700; font-family:'IBM Plex Mono',monospace; font-size:11px;">${PRIORIDAD[p.id]}</span></td>
+    </tr>`).join('') + `</tbody>`;
+}
+
+function renderTendenciaEquipo(){
+  const withBoth = PERSONAS.filter(p=>prevPeriod(p));
+  const vals = [
+    withBoth.reduce((s,p)=>s+prevPeriod(p).global,0)/withBoth.length,
+    withBoth.reduce((s,p)=>s+curPeriod(p).global,0)/withBoth.length,
+  ];
+  document.getElementById('lineTeam').innerHTML = lineChartSvg([{values:vals, color:'var(--blue-light)', width:3, showLabel:true}], {n:2, xLabels:['2025','2026'], yMin:80, yMax:100});
+}
+
+function renderTendenciaPaei(){
+  const withBoth = PERSONAS.filter(p=>prevPeriod(p) && prevPeriod(p).paei.P!==null);
+  const series = ['P','A','E','I'].map(k=>{
+    const values = [
+      withBoth.reduce((s,p)=>s+prevPeriod(p).paei[k],0)/withBoth.length,
+      withBoth.reduce((s,p)=>s+curPeriod(p).paei[k],0)/withBoth.length,
+    ];
+    return {values, color:PAEI_HEX[k], width:2.75, letter:k};
+  });
+  document.getElementById('linePaei').innerHTML = lineChartSvg(series, {n:2, xLabels:['2025','2026'], endLabels:true, yMin:80, yMax:100});
+  document.getElementById('paeiLegend').innerHTML = ['P','A','E','I'].map(k=>`
+    <div style="display:flex; align-items:center; gap:6px; font-size:12px;">
+      <span style="width:16px; height:3px; background:${PAEI_HEX[k]}; display:inline-block; border-radius:2px;"></span>${PAEI_LABEL[k]}
+    </div>`).join('');
+}
+
+let currentHistId = PERSONAS[0].id;
+function renderHistList(){
+  document.getElementById('histList').innerHTML = PERSONAS.map(p=>`
+    <div class="hist-item ${p.id===currentHistId?'active':''}" data-id="${p.id}">
+      <span>${p.nombre}</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;">${fmt(curPeriod(p).global)}</span>
+    </div>`).join('');
+  document.getElementById('histList').querySelectorAll('.hist-item').forEach(el=>{
+    el.addEventListener('click', ()=>{ currentHistId = el.dataset.id; renderHistList(); renderExpediente(); });
+  });
+}
+function openHistorial(id){
+  currentHistId = id;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelector('.tab-btn[data-tab="historial"]').classList.add('active');
+  document.getElementById('panel-historial').classList.add('active');
+  renderHistList(); renderExpediente();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function renderExpediente(){
+  const p = PERSONAS.find(x=>x.id===currentHistId);
+  const cur = curPeriod(p); const g = cur.global; const t = tier(g);
+  const prev = prevPeriod(p);
+  const ranking = [...PERSONAS].sort((a,b)=>curPeriod(b).global-curPeriod(a).global);
+  const rankPos = ranking.findIndex(x=>x.id===p.id)+1;
+
+  const n = p.periods.length;
+  const lineHtml = n>1 ? lineChartSvg([{values:p.periods.map(x=>x.global), color:'var(--blue-light)', width:3, showLabel:true}], {n:n, xLabels:p.periods.map(x=>x.label), yMin:60, yMax:100}) : '';
+  const circleItems = ['P','A','E','I'].map(k=>({letter:k, value:cur.paei[k], delta: (prev && prev.paei[k]!==null) ? cur.paei[k]-prev.paei[k] : undefined}));
+
+  const periodsTableHtml = `<div style="overflow-x:auto;"><table class="rtable" style="min-width:760px;">
+    <thead><tr><th>Periodo</th><th style="text-align:right">General</th><th style="text-align:right">(P)</th><th style="text-align:right">(A)</th><th style="text-align:right">(E)</th><th style="text-align:right">(I)</th><th style="min-width:300px;">Comentarios</th></tr></thead>
+    <tbody>${p.periods.map(per=>{
+      const com = `<b style="color:var(--blue-light);">(P)</b> ${per.comentarios.P}<br><b style="color:var(--blue-light);">(A)</b> ${per.comentarios.A}<br><b style="color:var(--blue-light);">(E)</b> ${per.comentarios.E}<br><b style="color:var(--blue-light);">(I)</b> ${per.comentarios.I}${per.acuerdos&&per.acuerdos!=="Sin información."?`<br><b style="color:var(--blue-light);">Acuerdo:</b> ${per.acuerdos}`:''}`;
+      return `<tr>
+        <td><b>${per.label}</b><br><span class="tier-pill ${per.clasif}" style="margin-top:4px;display:inline-block;">${per.clasif.charAt(0)+per.clasif.slice(1).toLowerCase()}</span></td>
+        <td class="num" style="font-weight:800;">${fmt(per.global)}</td>
+        <td class="num">${fmt(per.paei.P)}</td><td class="num">${fmt(per.paei.A)}</td><td class="num">${fmt(per.paei.E)}</td><td class="num">${fmt(per.paei.I)}</td>
+        <td style="font-size:12px; line-height:1.55;">${com}</td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table></div>`;
+
+  document.getElementById('expedienteCard').innerHTML = `
+    <div class="expediente-header">
+      <div style="display:flex; gap:14px; align-items:center;">
+        <div class="av-lg">${initials(p.nombre)}</div>
+        <div><div style="font-weight:800; font-size:18px;">${p.nombre}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted);">${p.puesto} · ${p.agencia}</div></div>
+      </div>
+      <button class="btn-pdf" onclick="window.print()">⬇ Descargar PDF</button>
+    </div>
+    <div class="exp-meta">
+      <div class="em"><div class="ek">Antigüedad</div><div class="ev">${p.antiguedad}</div></div>
+      <div class="em"><div class="ek">Jefe</div><div class="ev" style="font-size:11.5px;">${p.jefe}</div></div>
+      <div class="em"><div class="ek">Calificación actual</div><div class="ev">${fmt(g)} <span class="tier-pill ${t}">${t.charAt(0)+t.slice(1).toLowerCase()}</span></div></div>
+      <div class="em"><div class="ek">Ranking equipo</div><div class="ev">#${rankPos} de ${ranking.length}</div></div>
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">Calificación por indicador (vs. periodo anterior)</div>
+      <div id="circleRowPerson"></div>
+    </div>
+    ${lineHtml ? `<div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">Evolución de calificación</div>
+      <div style="display:flex; justify-content:center;">${lineHtml}</div>
+    </div>` : ''}
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">¿Se atendieron los puntos?</div>
+      <p style="font-size:13px; line-height:1.65; margin:0 0 14px;">${p.atendido}</p>
+      <div class="section-kicker" style="margin-bottom:10px;">Concentrado general</div>
+      ${periodsTableHtml}
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">Qué mide cada indicador en su puesto</div>
+      <div class="doc-block"><p><b>P</b> — ${PUESTO_DEF[p.puesto].P}<br><b>A</b> — ${PUESTO_DEF[p.puesto].A}<br><b>E</b> — ${PUESTO_DEF[p.puesto].E}<br><b>I</b> — ${PUESTO_DEF[p.puesto].I}</p><p style="margin-top:8px; color:var(--muted); font-size:11px;">Fuente: Matriz de Ponderación oficial, plantillas PAEI Grupo Vanguardia.</p></div>
+    </div>
+    <div style="padding:0 22px 24px;">
+      <div class="card ai-box"><div class="aihead">🧠 Recomendación IA</div>
+        <ul style="margin:0; padding-left:18px;">${p.reco_full.map(r=>`<li style="margin-bottom:8px;"><span class="pill-action" style="margin-bottom:4px;display:inline-block;">${r.categoria}</span><br>${r.texto}</li>`).join('')}</ul>
+      </div>
+    </div>
+  `;
+  renderCircleRow('circleRowPerson', circleItems, 'vs. periodo anterior');
+}
+
+function initAll(){
+  renderKpis();
+  renderTeamCircles();
+  renderCumplimientoAplicacion();
+  renderHighlights();
+  renderHeat();
+  renderComentario();
+  renderTeamCards();
+  renderCasoAtencion();
+  renderPersistList();
+  renderPromoCoach();
+  renderPlanGerencial();
+  renderTendenciaEquipo();
+  renderTendenciaPaei();
+  renderHistList();
+  renderExpediente();
+}
+initAll();
+
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>
