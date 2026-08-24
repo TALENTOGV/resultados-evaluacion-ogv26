@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>KIA Altaria · Centro de Inteligencia del Desempeño</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+:root{
+  --navy:#060B1F; --navy-2:#0B1330; --navy-3:#121B42;
+  --line:rgba(255,255,255,0.09); --ink:#F4F6FA; --muted:rgba(244,246,250,0.55);
+  --blue-light:#7FD1F0; --blue:#2E8FE0;
+  --g:#34C77B; --y:#E8C547; --r:#F0524B; --o:#F0964B;
+  --paei-p:#2E8FE0; --paei-a:#E8C547; --paei-e:#34C77B; --paei-i:#A78BFA;
+  --shadow:0 1px 2px rgba(0,0,0,0.2), 0 12px 32px -16px rgba(0,0,0,0.55);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--navy);color:var(--ink);font-family:'Manrope',sans-serif;-webkit-font-smoothing:antialiased;}
+main{max-width:1100px;margin:0 auto;padding:0 5vw 90px;}
+header.top{ background:radial-gradient(ellipse at 75% -10%, rgba(46,143,224,0.22), transparent 55%), var(--navy); padding:40px 5vw 0; border-bottom:1px solid var(--line); }
+.eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--blue-light); margin:0 0 10px; }
+.hero-title{ font-weight:800; font-size:clamp(22px,3vw,32px); margin:0 0 8px; letter-spacing:-.01em; }
+.hero-sub{ font-size:13.5px; color:var(--muted); max-width:680px; line-height:1.6; margin:0 0 26px; }
+.tabs{ display:flex; gap:4px; flex-wrap:wrap; }
+.tab-btn{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.03em; text-transform:uppercase; color:var(--muted); background:none; border:none; padding:14px 16px; cursor:pointer; border-bottom:3px solid transparent; transition:color .15s,border-color .15s; white-space:nowrap; }
+.tab-btn:hover{ color:var(--blue-light); }
+.tab-btn.active{ color:var(--ink); border-bottom-color:var(--blue); font-weight:700; }
+.panel{ display:none; } .panel.active{ display:block; }
+section{ padding:34px 0 8px; border-bottom:1px solid var(--line); }
+section:last-of-type{ border-bottom:none; }
+.section-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; margin-bottom:18px; }
+.section-kicker{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--blue-light); margin:0 0 6px; }
+.section-title{ font-weight:800; font-size:clamp(18px,2vw,22px); margin:0; }
+.section-note{ font-size:12.5px; color:var(--muted); max-width:360px; line-height:1.5; text-align:right; }
+.card{ background:var(--navy-2); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); }
+.kpi-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+@media(max-width:800px){ .kpi-grid{ grid-template-columns:1fr 1fr; } }
+.kpi{ padding:18px; }
+.kpi .l{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.kpi .n{ font-weight:800; font-size:24px; }
+.kpi .sub{ margin-top:6px; font-size:11px; color:var(--muted); }
+.delta-up{ color:var(--g); font-weight:700; } .delta-down{ color:var(--r); font-weight:700; } .delta-flat{ color:var(--muted); font-weight:700; }
+.tier-pill{ font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.05em; text-transform:uppercase; padding:3px 9px; border-radius:20px; display:inline-block; }
+.tier-pill.SOBRESALIENTE{ background:rgba(52,199,123,0.15); color:var(--g); }
+.tier-pill.ADECUADO{ background:rgba(232,197,71,0.15); color:var(--y); }
+.tier-pill.INSATISFACTORIO{ background:rgba(240,82,75,0.15); color:var(--r); }
+.pill-warn{ font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.05em; text-transform:uppercase; padding:2px 8px; border-radius:20px; background:rgba(240,150,75,0.13); color:var(--o); display:inline-block; }
+.pill-action{ font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.03em; padding:5px 11px; border-radius:8px; background:var(--navy-3); border:1px solid var(--line); color:var(--ink); display:inline-block; }
+table.rtable{ width:100%; border-collapse:collapse; font-size:12.5px; }
+table.rtable th{ text-align:left; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); padding:9px 10px; border-bottom:1px solid var(--line); }
+table.rtable td{ padding:10px 10px; border-bottom:1px solid var(--line); vertical-align:middle; }
+table.rtable td.num{ font-family:'IBM Plex Mono',monospace; text-align:right; }
+table.rtable tr:last-child td{ border-bottom:none; }
+.ai-box{ padding:20px 22px; font-size:13.5px; line-height:1.75; border-left:3px solid var(--blue-light); background:rgba(127,209,240,0.05); }
+.ai-box .aihead{ display:flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--blue-light); margin-bottom:10px; }
+.note-box{ padding:16px 20px; font-size:12.5px; color:var(--muted); line-height:1.6; border-left:3px solid var(--o); background:rgba(240,150,75,0.05); border-radius:0 10px 10px 0; }
+.alert-box{ padding:16px 20px; font-size:12.5px; color:var(--ink); line-height:1.6; border-left:3px solid var(--r); background:rgba(240,82,75,0.07); border-radius:0 10px 10px 0; }
+.doc-block{ background:var(--navy-3); border-radius:10px; padding:12px 14px; margin-bottom:8px; }
+.doc-block .dk{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--blue-light); margin-bottom:5px; }
+.doc-block p{ margin:0; font-size:12.5px; line-height:1.6; white-space:pre-line; color:var(--ink); }
+.highlight-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+@media(max-width:800px){ .highlight-grid{ grid-template-columns:1fr 1fr; } }
+.hl-card{ padding:18px; text-align:center; }
+.hl-card .stars{ color:var(--y); font-size:13px; margin-bottom:8px; }
+.hl-card .hn{ font-weight:800; font-size:15px; margin-bottom:4px; }
+.hl-card .hv{ font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--blue-light); margin-bottom:6px; }
+.hl-card .hl{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+.team-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+@media(max-width:800px){ .team-grid{ grid-template-columns:1fr 1fr; } }
+.team-card{ padding:18px; cursor:pointer; transition:border-color .15s, transform .15s; }
+.team-card:hover{ border-color:rgba(127,209,240,0.35); transform:translateY(-2px); }
+.avatar{ width:42px; height:42px; border-radius:50%; background:var(--navy-3); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; color:var(--blue-light); margin-bottom:10px; }
+.team-card .tn{ font-weight:700; font-size:13.5px; margin-bottom:2px; }
+.team-card .tp{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--muted); margin-bottom:10px; }
+.team-card .tv{ font-weight:800; font-size:22px; }
+.team-card .stars{ color:var(--y); font-size:11px; margin:4px 0 8px; }
+.team-card .tlink{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--blue-light); text-transform:uppercase; letter-spacing:.05em; }
+.heat-table{ width:100%; border-collapse:collapse; font-size:12px; }
+.heat-table th{ font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; color:var(--muted); padding:7px 8px; text-align:center; }
+.heat-table th:first-child{ text-align:left; }
+.heat-table td{ padding:6px 8px; text-align:center; border-bottom:1px solid var(--line); }
+.heat-table td:first-child{ text-align:left; font-weight:600; }
+.heat-cell{ display:inline-block; min-width:38px; padding:5px 7px; border-radius:6px; font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:11.5px; }
+.persist-card{ padding:18px 20px; }
+.persist-steps{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:10px 0; }
+.persist-step{ background:var(--navy-3); border-radius:8px; padding:8px 12px; font-size:12px; max-width:240px; }
+.persist-step .pl{ font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--muted); text-transform:uppercase; }
+.subgroup-label{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--blue-light); margin:26px 0 12px; }
+.subgroup-label:first-child{ margin-top:0; }
+.hist-shell{ display:grid; grid-template-columns:230px 1fr; gap:24px; }
+@media(max-width:800px){ .hist-shell{ grid-template-columns:1fr; } }
+.hist-list{ display:flex; flex-direction:column; gap:4px; }
+.hist-item{ padding:10px 14px; border-radius:9px; cursor:pointer; font-size:13px; display:flex; justify-content:space-between; align-items:center; }
+.hist-item:hover{ background:var(--navy-3); }
+.hist-item.active{ background:rgba(127,209,240,0.1); color:var(--blue-light); font-weight:700; }
+.expediente-header{ display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:14px; padding:20px 22px; }
+.expediente-header .av-lg{ width:56px; height:56px; border-radius:50%; background:var(--navy-3); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:19px; color:var(--blue-light); }
+.exp-meta{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; padding:0 22px 20px; }
+@media(max-width:650px){ .exp-meta{ grid-template-columns:1fr 1fr; } }
+.exp-meta .em{ background:var(--navy-3); border-radius:9px; padding:10px 12px; }
+.exp-meta .ek{ font-family:'IBM Plex Mono',monospace; font-size:9px; text-transform:uppercase; color:var(--muted); margin-bottom:3px; }
+.exp-meta .ev{ font-weight:700; font-size:13px; }
+.btn-pdf{ font-family:'Manrope',sans-serif; font-weight:700; font-size:12.5px; color:#06101F; background:var(--blue-light); border:none; border-radius:9px; padding:10px 16px; cursor:pointer; }
+@media print{
+  :root{
+    --navy:#ffffff; --navy-2:#ffffff; --navy-3:#f2f3f5;
+    --line:#c9ccd2; --ink:#0a0a0a; --muted:#3f4147;
+    --blue-light:#1d4ed8; --blue:#1d4ed8;
+    --g:#15803d; --y:#92660b; --r:#b91c1c; --o:#b45309;
+  }
+  body *{ visibility:hidden; }
+  #printArea, #printArea *{ visibility:visible; }
+  #printArea{ position:absolute; left:0; top:0; width:100%; }
+  .tabs, .btn-pdf, .hist-list{ display:none !important; }
+  body{ background:#fff; color:#0a0a0a; }
+  .card{ border:1px solid #c9ccd2 !important; box-shadow:none !important; }
+  .doc-block, .ai-box{ background:#f2f3f5 !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <p class="eyebrow">Capital Humano · Grupo Vanguardia · División Automotriz KIA</p>
+  <h1 class="hero-title">KIA Altaria — Centro de Inteligencia del Desempeño</h1>
+  <p class="hero-sub">Reporte para Sergio López Ramírez, Gerente General de KIA Altaria — agencia completa, 70 colaboradores. Ventas Autos Nuevos, Mercadotecnia, Seminuevos y Servicio (con Octavio Cervantes) reportan a Sergio directamente. Calidad, Administración, Refacciones, Comercial, Contabilidad y Soporte de TI reportan a jefes corporativos fuera de la agencia, pero se incluyen por estar físicamente en KIA Altaria.</p>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="resumen">🏠 Resumen Ejecutivo</button>
+    <button class="tab-btn" data-tab="equipo">👥 Mi Equipo</button>
+    <button class="tab-btn" data-tab="ia">🧠 Análisis IA</button>
+    <button class="tab-btn" data-tab="tendencias">📈 Tendencias</button>
+    <button class="tab-btn" data-tab="historial">📁 Historial</button>
+  </div>
+</header>
+
+<main>
+
+<div class="panel active" id="panel-resumen">
+
+<section style="padding-top:30px;">
+  <div class="alert-box">
+    <b style="color:var(--r);">Alerta principal.</b> Su Gerente de Ventas, <b>Christopher Iván Espíritu</b>, lleva tres periodos consecutivos a la baja (100→93.75→83.56), cruzando a Insatisfactorio. La mayoría del resto del equipo mantiene resultados razonables — el patrón de baja está concentrado en ese puesto y en algunos de sus reportes directos.
+  </div>
+</section>
+
+<section>
+  <div class="kpi-grid" id="kpiGrid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Vista clara</p><h2 class="section-title">Calificación promedio por indicador</h2></div>
+    <p class="section-note">Equipo completo. Variación vs. periodo anterior.</p>
+  </div>
+  <div class="card" style="padding:26px;"><div id="circleRowTeam"></div></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Sergio López Ramírez · Gerente General</p><h2 class="section-title">Cumplimiento de aplicación de evaluaciones</h2></div>
+  </div>
+  <div class="kpi-grid" style="grid-template-columns:repeat(2,1fr);" id="cumplimientoAplicacionGrid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Reconocimiento</p><h2 class="section-title">Lo mejor del equipo</h2></div>
+  </div>
+  <div class="highlight-grid" id="highlightGrid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Vista rápida</p><h2 class="section-title">Mapa de calor PAEI — 2026 (jefes y equipo directo)</h2></div>
+    <p class="section-note">Muestra a los 4 jefes/gerentes; el detalle de los 19 vendedores está en Historial.</p>
+  </div>
+  <div class="card" style="padding:14px 16px; overflow-x:auto;">
+    <table class="heat-table" id="heatTable"></table>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Vista general</p><h2 class="section-title">Calificación y cumplimiento por departamento</h2></div>
+  </div>
+  <div class="card" style="padding:6px 16px; overflow-x:auto;">
+    <table class="rtable" id="deptoTable"></table>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Vista general</p><h2 class="section-title">Calificación y cumplimiento por jefe</h2></div>
+    <p class="section-note">Incluye a todos los que tienen al menos una persona a cargo en este reporte.</p>
+  </div>
+  <div class="card" style="padding:6px 16px; overflow-x:auto;">
+    <table class="rtable" id="jefeTable"></table>
+  </div>
+</section>
+
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Roster completo</p><h2 class="section-title">Toda la agencia — 70 colaboradores</h2></div>
+    <p class="section-note" id="rosterCounterNote"></p>
+  </div>
+  <div class="filter-row" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px;">
+    <select class="filter-select" id="filtroDepto" style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; padding:8px 12px; border-radius:8px; background:var(--navy-3); color:var(--ink); border:1px solid var(--line);"><option value="">Todos los departamentos</option></select>
+    <select class="filter-select" id="filtroJefe" style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; padding:8px 12px; border-radius:8px; background:var(--navy-3); color:var(--ink); border:1px solid var(--line);"><option value="">Todos los jefes</option></select>
+    <select class="filter-select" id="filtroPuesto" style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; padding:8px 12px; border-radius:8px; background:var(--navy-3); color:var(--ink); border:1px solid var(--line);"><option value="">Todos los puestos</option></select>
+    <select class="filter-select" id="filtroColaborador" style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; padding:8px 12px; border-radius:8px; background:var(--navy-3); color:var(--ink); border:1px solid var(--line);"><option value="">Todos los colaboradores</option></select>
+    <button class="filter-btn" onclick="limpiarFiltrosRoster()" style="font-family:'IBM Plex Mono',monospace; font-size:11px; padding:8px 14px; border-radius:8px; background:var(--navy-3); color:var(--blue-light); border:1px solid var(--line); cursor:pointer;">Limpiar filtros</button>
+  </div>
+  <div class="card" style="padding:6px 16px; overflow-x:auto;">
+    <table class="rtable" id="rosterFullTable"></table>
+  </div>
+</section>
+
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Lectura automática</p><h2 class="section-title">Comentario ejecutivo</h2></div>
+  </div>
+  <div class="card ai-box" id="comentarioBox"></div>
+</section>
+
+</div>
+
+<div class="panel" id="panel-equipo">
+<section style="padding-top:30px; border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Estructura</p><h2 class="section-title">70 colaboradores</h2></div>
+    <p class="section-note">Da clic en una tarjeta para abrir su expediente completo.</p>
+  </div>
+  <div class="subgroup-label">Reportes directos de Sergio</div>
+  <div class="team-grid" id="teamGridDirecto"></div>
+  <div class="subgroup-label">Equipo de Christopher Iván Espíritu (Ventas Autos Nuevos)</div>
+  <div class="team-grid" id="teamGridChristopher"></div>
+  <div class="subgroup-label">Equipo de Kevin Bejines (Seminuevos)</div>
+  <div class="team-grid" id="teamGridKevin"></div>
+  <div class="subgroup-label">Equipo de Octavio Abraham Cervantes (Servicio Técnico, Ventas Servicio, Laminado y Pintura, Mantenimiento)</div>
+  <div class="team-grid" id="teamGridOctavio"></div>
+  <div class="subgroup-label">Calidad (Brounie Prado Muñoz, reporta fuera de la agencia)</div>
+  <div class="team-grid" id="teamGridCalidad"></div>
+  <div class="subgroup-label">Administración (Nataly Bautista Romo, reporta fuera de la agencia)</div>
+  <div class="team-grid" id="teamGridAdmin"></div>
+  <div class="subgroup-label">Otros departamentos (Refacciones, Comercial, Contabilidad, Soporte de TI — cada uno reporta a un jefe fuera de la agencia)</div>
+  <div class="team-grid" id="teamGridOtros"></div>
+</section>
+</div>
+
+<div class="panel" id="panel-ia">
+<section style="padding-top:30px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Prioridad</p><h2 class="section-title">Casos de atención</h2></div>
+  </div>
+  <div id="casosAtencion" style="display:flex; flex-direction:column; gap:14px;"></div>
+</section>
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Un mismo tema, varias personas</p><h2 class="section-title">Patrones compartidos en el equipo</h2></div>
+  </div>
+  <div id="patronList" style="display:flex; flex-direction:column; gap:14px;"></div>
+</section>
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Automático</p><h2 class="section-title">Colaboradores con potencial para desarrollo</h2></div>
+  </div>
+  <div id="promoList" class="highlight-grid"></div>
+</section>
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Para el gerente</p><h2 class="section-title">Plan de Acción Gerencial</h2></div>
+  </div>
+  <div class="card" style="padding:6px 16px; overflow-x:auto;"><table class="rtable" id="planGerencialTable"></table></div>
+</section>
+</div>
+
+<div class="panel" id="panel-tendencias">
+<section style="padding-top:30px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Tendencia</p><h2 class="section-title">Del equipo — por periodo</h2></div>
+    <p class="section-note">Solo quienes tienen dato comparable.</p>
+  </div>
+  <div class="card" style="padding:22px;"><div id="lineTeam" style="display:flex; justify-content:center;"></div></div>
+</section>
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Tendencia</p><h2 class="section-title">Por indicador PAEI — (P) (A) (E) (I) juntas</h2></div>
+  </div>
+  <div class="card" style="padding:22px;"><div id="linePaei" style="display:flex; justify-content:center;"></div><div id="paeiLegend" style="display:flex; gap:16px; justify-content:center; margin-top:14px; flex-wrap:wrap;"></div></div>
+</section>
+</div>
+
+<div class="panel" id="panel-historial">
+<section style="padding-top:30px; border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Expediente</p><h2 class="section-title">Historial por colaborador</h2></div>
+  </div>
+  <div class="hist-shell">
+    <div class="hist-list" id="histList"></div>
+    <div id="printArea"><div class="card" id="expedienteCard"></div></div>
+  </div>
+</section>
+</div>
+
+</main>
+
+<script>
+const PAEI_LABEL = {P:'(P) Eficacia', A:'(A) Eficiencia', E:'(E) Proactividad', I:'(I) Colaboración'};
+const PAEI_HEX = {P:'#2E8FE0', A:'#E8C547', E:'#34C77B', I:'#A78BFA'};
+
+const DEPTO_MAP = {david:"Mercadotecnia", christopher:"Ventas Autos Nuevos", kevin:"Ventas Autos Seminuevos", octavio:"Dirección", brenda:"Ventas Autos Seminuevos", diego:"Ventas Autos Seminuevos", justin:"Ventas Autos Seminuevos", adrian:"Ventas Autos Nuevos", alfonso:"Ventas Autos Nuevos", alfredo:"Ventas Autos Nuevos", diana:"Ventas Autos Nuevos", elisa:"Ventas Autos Nuevos", gabriel:"Ventas Autos Nuevos", ivanyair:"Ventas Autos Nuevos", jessica:"Ventas Autos Nuevos", josearturo:"Ventas Autos Nuevos", josemanuel:"Ventas Autos Nuevos", juanantonio:"Ventas Autos Nuevos", luis:"Ventas Autos Nuevos", marco:"Ventas Autos Nuevos", mariafernanda:"Ventas Autos Nuevos", mariaguadalupe:"Ventas Autos Nuevos", omar:"Ventas Autos Nuevos", patricia:"Ventas Autos Nuevos", ricardo:"Ventas Autos Nuevos", citlali:"Ventas Autos Nuevos", jacquelineestefania:"Calidad", lizbethnatali:"Ventas Autos Nuevos", lizbethmonserrat:"Calidad", carlosisrael:"Mantenimiento", josuerodriguez:"Ventas Refacciones", magraciela:"Ventas Autos Nuevos", natalybautista:"Administracion", albertofernandez:"Comercial", juanjose:"Contabilidad", leticiaguzman:"Calidad", cristinaalejandra:"Administracion", jessicahernandez:"Administracion", sandraluevano:"Administracion", abrahamalvarado:"Laminado Y Pintura", damelysmaria:"Laminado Y Pintura", efrainalejandro:"Laminado Y Pintura", juanmanuel:"Laminado Y Pintura", mariafernandalechuga:"Laminado Y Pintura", martinbenitez:"Laminado Y Pintura", melissaabigail:"Laminado Y Pintura", rodrigomarquez:"Laminado Y Pintura", alejandroaraiza:"Servicio Tecnico", alejandronoe:"Servicio Tecnico", brauliode:"Servicio Tecnico", christianarturo:"Servicio Tecnico", fernandoemmanuel:"Servicio Tecnico", jonathanmartin:"Servicio Tecnico", joseeduardo:"Servicio Tecnico", luisdaniel:"Servicio Tecnico", pabloguadalupe:"Servicio Tecnico", yeremijoseluis:"Servicio Tecnico", adrianade:"Ventas Servicio", alvaroricardo:"Ventas Servicio", christianmateos:"Ventas Servicio", claudiaalondra:"Ventas Servicio", karlajanette:"Ventas Servicio", luisangel:"Ventas Servicio", mayranoemi:"Ventas Servicio", orlandoantonio:"Ventas Servicio", priscilasarai:"Ventas Servicio", rigobertorodriguez:"Ventas Servicio", rubenornelas:"Ventas Servicio", josefernando:"Soporte De Ti", brouniecasandra:"Calidad"};
+
+const PUESTO_DEF = {
+  'Gerente General': { P:'Porcentaje de cumplimiento de las metas mensuales (venta y post venta).', A:'KDP y VDP (+85% Sobresaliente, 75-84% Adecuado, menor a 74% Insatisfactorio).', E:'Llevar al día todos los reporteos y solicitudes de planta; reporte de MOU vs. WS dos veces por semana; participación en proyectos especiales del grupo.', I:'Seguimiento al plan de acción derivado de GPTW; reconocimiento mensual a colaboradores por logros demostrables.' },
+  'Coordinador de Mercadotecnia': { P:'Porcentaje de cumplimiento de metas mensuales; ejecución de activaciones mensuales según prioridades de la agencia.', A:'Cumplimiento de evaluaciones KMX; auditorías de grupo y marca; Google Reviews; estándares y tiempos de entrega; tráfico en piso y digital.', E:'Propuestas de posicionamiento de la agencia; acciones para impulsar venta de stock; impulso a la fuerza de ventas en estrategias de mercadotecnia.', I:'Trabajo conjunto con otros departamentos; reconocimiento mensual a su equipo; seguimiento al plan de acción GPTW.' },
+  'Gerente de Ventas': { P:'Objetivo de ventas; funnel; cumplimiento de presupuesto.', A:'KDP; DCA; procesos comerciales.', E:'Ejecución de métricas y proyectos especiales.', I:'Reuniones gerenciales; integración con otros líderes de la agencia.' },
+  'Jefe de Seminuevos': { P:'Porcentaje de cumplimiento de metas mensuales.', A:'KDP ventas; stock antiguo en 0 (150 días); SSI; seguimiento de unidades facturadas no entregadas (máx. 30 días); VDP ventas.', E:'Propuesta e implementación de estrategias comerciales; identificación de áreas de oportunidad de su equipo con planes de acción demostrables.', I:'Trabajo conjunto con otros departamentos; reconocimiento mensual a su equipo; seguimiento al plan de acción GPTW.' },
+  'Vendedor Comisionista': { P:'Cumplimiento del objetivo de ventas mensual; funnel de ventas (VPP); cumplimiento de avalúos; cumplimiento de solicitudes (+50%).', A:'Seguimiento puntual a leads de VPP; actividades en SalesForce; objetivo de facturación mensual; avalúos de post venta.', E:'Propuestas de exhibición y prospección externa; iniciativas de contenido digital; participación en dinámicas de cliente.', I:'Validación de Experiencia Vanguardia; guardias de piso y externas puntuales; apoyo en actividades de venta y toma del seminuevo.' },
+  'Asesor Web': { P:'Métrica comercial; funnel de ventas (VPP).', A:'SSI; aprobación de Mystery Shopper; actividades e inactivos del CRM.', E:'Propuestas para prospección de nuevos clientes; iniciativas en contenido digital; participación en dinámicas enfocadas a clientes.', I:'Validación de Experiencia Vanguardia; comunicación con el equipo y otras áreas.' },
+  'Coordinador de VPP': { P:'Cumplimiento de objetivo de citas asistidas; ventas digitales por metodología CDK Global; seguimiento en CRM.', A:'Presentación ejecutiva de resultados; plan de trabajo; Happy Call, No Show y seguimiento a No Vendidos; referidos, recompras e internet.', E:'Seguimiento al proceso de CDK con asesores; asignación de base de datos.', I:'Trabajo con otros departamentos; seguimiento al plan de acción de GPTW.' },
+  'Asistente de Gerencia': { P:'Reporte a planta; localización de unidades; actualización en Total Dealer; expedientes de seminuevos.', A:'Cumplimiento de estándares de tiempo; checklist de expedientes; auditorías de proceso.', E:'Propuestas de mejora de procesos; reporte activo y oportuno de resultados.', I:'Validación de Experiencia Vanguardia; comunicación con equipo comercial y otros departamentos.' },
+  'KIA Expert': { P:'Plan de trabajo; demostraciones; pruebas de manejo; entregas.', A:'My KIA+; SSI; aprobación de Mystery Shopper; atención a clientes de alta gama.', E:'Iniciativas en contenido digital; propuestas de activaciones para Test Drive.', I:'Validación de Experiencia Vanguardia; SSI global; capacitación a fuerza de ventas.' },
+  'Gerente de F&I': { P:'Ingreso y seguimiento de solicitudes de financiamiento; Share KIA Finance; Póliza Vanguardia.', A:'Generación de contratos y captura de solicitudes en tiempo y forma.', E:'Rescate de operaciones con otros bancos; estrategias de financiamiento.', I:'Comunicación con fuerza de ventas; trabajo con Vanrenta.' },
+  'Auxiliar de F&I': { P:'Ingreso y seguimiento de solicitudes de financiamiento; Share KIA Finance; Póliza Vanguardia.', A:'Generación de contratos y captura de solicitudes en tiempo y forma.', E:'Rescate de operaciones con otros bancos; estrategias de financiamiento.', I:'Comunicación con fuerza de ventas; trabajo con Vanrenta.' },
+  'Coordinador de Piso': { P:'Control de piso y llamadas al día; preciadores actualizados; stock de insumos; atención a clientes.', A:'Seguimiento a facturas de proveedores; Mystery Shopper; puntualidad.', E:'Participación en eventos de marca; propuestas de mejora demostrables.', I:'Validación de Experiencia Vanguardia; proactividad en atención a clientes.' },
+  'Auxiliar de Previas': { P:'Recepción de unidades nuevas (madrinas); auditoría constante de unidades nuevas; cumplimiento del plan de detallado.', A:'Reporte oportuno de daños en la recepción; PDI mínimo 2 horas antes de entrega en showroom.', E:'Implementación de ideas de mejora, automatización; cumplimiento y propuesta de capacitación.', I:'Validación de Experiencia Vanguardia; apoyo en la operación; comunicación con su equipo.' },
+};
+
+const PERSONAS = [
+{ id:'david', nombre:"David Ibarra Juárez", puesto:"Coordinador de Mercadotecnia", jefe:"Sergio López Ramírez", antiguedad:"2.1 años", grupo:"directo",
+  periods:[
+    {label:"Ene–Jun 2025", global:88.75, clasif:"ADECUADO", paei:{P:85,A:100,E:85,I:85}, comentarios:{P:"Reportes de tráfico en piso, leads, mkt digital, etc.",A:"Reportes de tráfico en piso, leads, mkt digital, etc.",E:"Reportes de tráfico en piso, leads, mkt digital, etc.",I:"Reportes de tráfico en piso, leads, mkt digital, etc."}, acuerdos:"Tienes muy buenas ideas y un enfoque creativo que aporta valor a la marca. Para llevar tu trabajo al siguiente nivel, ese talento creativo debe estar más alineado al objetivo comercial: que cada campaña tenga claro qué queremos vender, a quién y cómo medir resultados. También fortalecer la organización: planeación de campañas, calendarios, prioridades y seguimiento."},
+    {label:"Ene–Jun 2026", global:84.85, clasif:"INSATISFACTORIO", paei:{P:83,A:85,E:84,I:90}, comentarios:{P:"Continuar y perfeccionar reuniones de trabajo con los líderes de los departamentos para buscar y satisfacer necesidades de cada área.",A:"Realizar resumen semanal con lo realizado y próximas actividades.",E:"En conjunto con VPP implementar estrategias de acuerdo a plan de trabajo.",I:"Integración con todo el personal de la agencia, buscando cubrir necesidades de los departamentos."}, acuerdos:null},
+  ], atendido:"Parcialmente. El acuerdo de 2025 pedía alinear su creatividad al objetivo comercial y fortalecer la organización (calendarios, seguimiento) — en 2026 ese mismo tema de organización reaparece (\"resumen semanal\", \"reuniones con líderes de departamento\"). También cambió de jefe directo: en 2025 reportaba a Christopher, ahora reporta directo a Sergio.",
+  reco_full:[{texto:"El tema de organización y seguimiento estructurado se repite en ambos años — dar seguimiento cercano ahora que reporta directo a Sergio.", categoria:"Coaching del jefe"}], reco_accion:"Seguimiento cercano al plan de organización semanal" },
+{ id:'christopher', nombre:"Christopher Iván Espíritu Rodríguez", puesto:"Gerente de Ventas", jefe:"Sergio López Ramírez", antiguedad:"7.2 años", grupo:"directo",
+  periods:[
+    {label:"Ene–Jun 2025", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"DCA.",A:"Reporte de VDP y KDP, así como DCA.",E:"Logro de objetivos.",I:"Sin información."}, acuerdos:"Cumplir el compromiso de leer el libro de Jorge Valdano, integración activa con otros líderes de la agencia."},
+    {label:"Jul–Dic 2025", global:93.75, clasif:"ADECUADO", paei:{P:100,A:85,E:100,I:90}, comentarios:{P:"Presupuesto.",A:"KDP Semestral 90 pts.",E:"Ninguna solicitud adicional de planta.",I:"Junta mensual."}, acuerdos:"Leer el libro \"Los 11 poderes del líder\" de Jorge Valdano."},
+    {label:"Ene–Jun 2026", global:83.56, clasif:"INSATISFACTORIO", paei:{P:87,A:75,E:90,I:90}, comentarios:{P:"Seguir enfocado en recuperar las ventas que nos faltan.",A:"Realizar plan de acción personal para corregir desviaciones en los procesos siendo asertivos con los KPIs.",E:"Continuar con la ejecución de las métricas.",I:"Realizar reuniones gerenciales para buscar acuerdos de apoyo."}, acuerdos:null},
+  ], atendido:"No — tres periodos consecutivos a la baja (100→93.75→83.56), cruzando a Insatisfactorio. El acuerdo de leer el libro de liderazgo de Jorge Valdano se repitió en dos periodos de 2025 sin confirmarse si se cumplió, y en 2026 ya aparece un \"plan de acción personal para corregir desviaciones\" — un nivel de intervención más formal que antes.",
+  reco_full:[
+    {texto:"Tres periodos consecutivos a la baja, con un plan de acción personal ya mencionado en su propio comentario 2026 — es el caso de mayor prioridad de todo el reporte, tanto por su rol (Gerente de Ventas) como por la tendencia.", categoria:"Coaching del jefe"},
+    {texto:"Confirmar si finalmente tomó la lectura de liderazgo acordada en 2025, dado que el compromiso se repitió dos veces sin confirmación.", categoria:"Capacitación formal — Liderazgo"},
+  ], reco_accion:"Plan de acción formal — 3 periodos consecutivos a la baja" },
+{ id:'kevin', nombre:"Kevin Brian Bejines Loza", puesto:"Jefe de Seminuevos", jefe:"Sergio López Ramírez", antiguedad:"5.5 años", grupo:"directo",
+  periods:[
+    {label:"Ene–Jun 2026", global:87.8, clasif:"ADECUADO", paei:{P:94.5,A:75,E:95,I:95}, comentarios:{P:"Supervisión digital del equipo.",A:"Continuar con la estrategia de no dejar unidades hacerse viejas.",E:"Buscar más oportunidades de venta.",I:"Seguir con ese compromiso."}, acuerdos:null},
+  ], atendido:"Sin registro 2025 disponible para comparar. Resultado sólido en su primer registro visible, con Eficiencia (75) como su punto más bajo frente a Eficacia, Proactividad y Colaboración.",
+  reco_full:[{texto:"Su indicador de Eficiencia (75) es notablemente más bajo que sus otros tres — vale la pena entender si está ligado al mismo tema de organización que aparece en su equipo (Brenda y Justin comparten un tema similar de seguimiento).", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador de Eficiencia (75)",
+  nota:"La calificación global en el archivo original tenía un error de formato (\"87825\"); el valor correcto, recalculado desde sus 4 indicadores, es 87.8." },
+{ id:'octavio', nombre:"Octavio Abraham Cervantes Hernández", puesto:"Gerente de Servicio", jefe:"Sergio López Ramírez", antiguedad:"—", grupo:"directo", noAplica:true,
+  periods:[{label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}],
+  atendido:"Sin evaluación todavía — cambió de puesto recientemente a Gerente de Servicio, así que aún no le toca su primer ciclo de evaluación en ese rol.",
+  reco_full:[{texto:"Dar seguimiento a que su primera evaluación como Gerente de Servicio se capture en el próximo ciclo.", categoria:"Coaching del jefe"}], reco_accion:"Primera evaluación pendiente por cambio de puesto reciente" },
+{ id:'brenda', nombre:"Brenda Tapia Ruiz", puesto:"Vendedor Comisionista", jefe:"Kevin Brian Bejines Loza", antiguedad:"2.5 años", grupo:"kevinteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:85, clasif:"ADECUADO", paei:{P:30,A:30,E:85,I:100}, comentarios:{P:"Se llega al compromiso de meter más solicitudes para poder tener un mejor número de cierre y así estar llegando al objetivo.",A:"Se llega al compromiso de no dejar pasar ni un solo seguimiento el día que corresponde, al igual que mes con mes estar llegando al objetivo de facturación.",E:"Se proponen nuevas ideas, sin embargo no se lleva a cabo en la prospección. Queda el compromiso de hacer prospección externa.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Sin registro 2025 disponible para comparar. Eficacia y Eficiencia son notablemente bajas (30 cada una) pese a que el global queda en Adecuado gracias a Proactividad y Colaboración — el propio comentario de Eficacia reconoce que hacen falta más solicitudes para llegar al objetivo de cierre.",
+  reco_full:[{texto:"Sus indicadores de Eficacia y Eficiencia (30 cada uno) son los más bajos del equipo de Kevin — el compromiso de \"meter más solicitudes\" y \"no dejar pasar seguimientos\" necesita seguimiento cercano, ya que son temas de proceso diario, no de una sola acción.", categoria:"Coaching del jefe"}], reco_accion:"Seguimiento cercano a solicitudes y seguimientos diarios" },
+{ id:'diego', nombre:"Diego Esquivias Gómez", puesto:"Auxiliar de Previas", jefe:"Kevin Brian Bejines Loza", antiguedad:"3.7 años", grupo:"kevinteam",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:76.5, clasif:"INSATISFACTORIO", paei:{P:85,A:85,E:85,I:0}, comentarios:{P:"Revisión antes de la entrega.",A:"Reporte de auditoría - inventario revisable cada sábado.",E:"Sin información.",I:"Tiene 2 reportes de junio, no se presentan reincidencias, sin embargo sigue activo hasta junio de este año."}, acuerdos:"Seguir con esa proactividad y mantener inventariado el material, estar más alerta de la limpieza de las unidades en demostración, no reincidir en las faltas de las cuales se tiene el reporte."},
+    {label:"Ene–Jun 2026", global:95.5, clasif:"SOBRESALIENTE", paei:{P:35,A:35,E:100,I:95}, comentarios:{P:"Nos hace falta trabajar más en el inventario, tenerlo más limpio, debemos encontrar los momentos para hacerlo.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Queda como compromiso trabajar más en la puntualidad, se tiene, sin embargo existen momentos donde no se cumple."}, acuerdos:null},
+  ], atendido:"Sí, en gran parte. Es la mayor recuperación de todo el reporte (76.5→95.5, +19.0), saliendo de Insatisfactorio con Colaboración en 0 (por reportes de conducta) a Sobresaliente. El tema de puntualidad de 2025 (\"no reincidir en las faltas\") se repite casi igual en el comentario de Colaboración de 2026 — mejoró mucho pero ese punto específico sigue sin resolverse del todo.",
+  reco_full:[{texto:"Reconocer la recuperación de +19.0, la más grande del reporte — y dar seguimiento puntual al tema de puntualidad, que sigue apareciendo aunque ya no afecta tanto su calificación.", categoria:"Reconocimiento"}], reco_accion:"Reconocer recuperación; seguimiento a puntualidad" },
+{ id:'justin', nombre:"Justin Sinuhé Nava Rodríguez", puesto:"Vendedor Comisionista", jefe:"Kevin Brian Bejines Loza", antiguedad:"0.8 años", grupo:"kevinteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:86.5, clasif:"ADECUADO", paei:{P:30,A:30,E:85,I:85}, comentarios:{P:"Compromiso: hacer un plan de trabajo para mejorar el cierre.",A:"Sin comentario capturado.",E:"Compromiso: hacer prospección externa.",I:"Compromiso: se está trabajando y mejorando en la puntualidad de entrada y de regreso de comer."}, acuerdos:null},
+  ], atendido:"Primera evaluación (ingreso reciente, menos de 1 año). Mismo patrón que su compañera Brenda: Eficacia y Eficiencia son sus indicadores más bajos (30 cada uno), con compromisos de plan de trabajo y prospección externa todavía pendientes de confirmar.",
+  reco_full:[{texto:"Comparte con Brenda Tapia (mismo puesto, mismo jefe) el mismo patrón de Eficacia/Eficiencia bajas — considerar una capacitación conjunta para ambos vendedores de Seminuevos en vez de dos planes separados.", categoria:"Capacitación formal — Cierre y seguimiento de solicitudes"}], reco_accion:"Capacitación conjunta con Brenda en cierre y seguimiento" },
+
+{ id:'adrian', nombre:"Adrián Hernández Díaz de León", puesto:"Vendedor Comisionista", jefe:"Christopher Iván Espíritu Rodríguez", antiguedad:"1.8 años", grupo:"christopherteam",
+  periods:[
+    {label:"Ene–Jun 2025", global:86, clasif:"ADECUADO", paei:{P:85.7,A:86.7,E:84.0,I:85.0}, comentarios:{P:"Reporte de ventas, métrica, carpeta coaching.",A:"Reporte de ventas, métrica, carpeta coaching.",E:"Tiene buenas propuestas, destaca con la proactividad que tiene con su trabajo y con el equipo.",I:"Siempre con disposición de atender bien a sus clientes y estar disponible para sus clientes."}, acuerdos:"Cuenta con una amplia experiencia y una sólida cartera de clientes que represaentan un gran potencial. Sin embargo, aún no se refleja completamente en los resultados esperados. Es importante fortalecer el enfoque y la constancia para provechar al máximo sus relaciones comerciales y experiencia en el sector. Con una estrategia más dirigida y consistente , podrá capitalizar plenamente sus fortalezas y alcanzar sus metas de manera sostenida."},
+    {label:"Ene–Jun 2026", global:85.15, clasif:"ADECUADO", paei:{P:86,A:85,E:85,I:84}, comentarios:{P:"Tu volumen de ventas es competitivo, pero actualmente está por debajo del objetivo esperado (83%). Elaborar un plan semanal de seguimiento a su embudo de ventas y alcanzar la meta mensual de manera sostenida.",A:"Conoces el proceso comercial y tienes experiencia. Mantener disciplina en el proceso comercial y enfocarse en las actividades bajo su control.",E:"Tienes iniciativa y experiencia; presentar propuestas de mejora de manera constructiva y participar activamente en las iniciativas del equipo.",I:"Mantener una comunicación propositiva, expresar inquietudes por los canales adecuados y contribuir a un ambiente de colaboración."}, acuerdos:null},
+  ], atendido:"No del todo. El acuerdo de 2025 (\"fortalecer el enfoque y la constancia\") se repite casi igual en 2026 (\"mantener mayor enfoque y consistencia\") — es el mismo tema, sin resolver, aunque la calificación se mantuvo estable (86→85.15).",
+  reco_full:[{texto:"Elaborar un plan semanal de seguimiento a su embudo de ventas — es el punto más concreto señalado y coincide con lo que mide su indicador de Eficacia.", categoria:"Coaching del jefe"}], reco_accion:"Plan semanal de seguimiento a embudo de ventas" },
+{ id:'alfonso', nombre:"Alfonso Contreras Tenorio", puesto:"Asesor Web", jefe:"Christopher Iván Espíritu Rodríguez", antiguedad:"6.6 años", grupo:"christopherteam",
+  periods:[
+    {label:"Ene–Jun 2025", global:89.5, clasif:"ADECUADO", paei:{P:100,A:100,E:68.0,I:75.0}, comentarios:{P:"Reporte de ventas, carpetas coaching, etc.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:"Es un colaborador con un desempeño sobresaliente y dominio de su trabajo, destacando como uno de los mejores en su área. Sin embargo, su estilo de comunicación puede limitar la interacción con algunos miembros del equipo. AUnque no se trata de una mala actitud, sería positivo fortalecer su apertura y trabajar en comunicación más equitativa y directa con todos. Esto le perminitirá consolidar aún más su liderazgo y fortalecer la cohesión del grupo."},
+    {label:"Ene–Jun 2026", global:92.6, clasif:"ADECUADO", paei:{P:95,A:95,E:87,I:87}, comentarios:{P:"Tienes muy claros tus objetivos y cumples de manera consistente. Mantener el nivel y seguir buscando oportunidades para mejorar la conversión de leads digitales.",A:"Trabajas de forma ordenada, disciplinada y con buena calidad. Compartir las mejores prácticas que utilizas para administrar tus oportunidades.",E:"Cumples bien tus responsabilidades; oportunidad de involucrarte más en iniciativas del equipo y proponer mejoras al proceso.",I:"Incrementar la colaboración con Ventas, BDC, Financiamiento y Mercadotecnia en proyectos interdepartamentales."}, acuerdos:null},
+  ], atendido:"Parcialmente. El acuerdo de 2025 señalaba que \"su estilo de comunicación puede limitar la interacción con algunos miembros del equipo\" y pedía \"comunicación más equitativa y directa con todos\" — en 2026 ese mismo tema reaparece como oportunidad de \"incrementar la colaboración con Ventas, BDC, Financiamiento y Mercadotecnia\". Mejoró en número (89.5→92.6), pero el tema de fondo sigue siendo el mismo.",
+  reco_full:[{texto:"Formalizar el compartir sus mejores prácticas de administración de oportunidades con el resto del equipo digital.", categoria:"Mentoría interna"}], reco_accion:"Compartir mejores prácticas con el equipo digital" },
+{ id:'alfredo', nombre:"Alfredo de los Ríos Chiquito", puesto:"Vendedor Comisionista", jefe:"Christopher Iván Espíritu Rodríguez", antiguedad:"4.5 años", grupo:"christopherteam",
+  periods:[
+    {label:"Ene–Jun 2025", global:89, clasif:"ADECUADO", paei:{P:83.3,A:85.0,E:100,I:100}, comentarios:{P:"Reporte de ventas, métrica, carpeta coaching.",A:"Reporte de ventas, métrica, carpeta coaching, SalesForce.",E:"De manera constructiva, trabaja en la parte digital, mkt digital.",I:"Reporte de ventas, métrica, carpeta coaching, SalesForce."}, acuerdos:"Su conocimiento y trayectoria en la marca son un gran aporte para el equipo. Aunque los resultados han sido variables, tiene el potencial para mejorar su desempeño fortaleciendo su enfoque en cierres de venta y en el seguimiento de su base de datos. Su actitud colaborativa y disposición para apoyar siempre suman y son ejemplo positivo para el resto del grupo."},
+    {label:"Ene–Jun 2026", global:80.5, clasif:"INSATISFACTORIO", paei:{P:70,A:85,E:70,I:100}, comentarios:{P:"Tu desempeño ha sido irregular — meses buenos y otros por debajo de lo esperado. Dar seguimiento semanal a tu avance contra la meta para evitar depender del cierre de fin de mes.",A:"Conoces el proceso comercial, pero cuando pierdes el enfoque disminuye la calidad del seguimiento. Mantener un control diario del CRM y una agenda organizada.",E:"Tienes disposición, pero en ocasiones el estado de ánimo influye en tu ritmo de trabajo. Mantener una rutina diaria de prospección aun en días de menor actividad.",I:"Mantienes buena relación con el equipo. El reto es una actitud estable y enfocada, buscando apoyo cuando pierda motivación o dirección."}, acuerdos:null},
+  ], atendido:"No. El acuerdo de 2025 ya señalaba \"resultados variables\" y pedía fortalecer el enfoque en cierres — el mismo patrón de irregularidad se repite en 2026, ahora descrito explícitamente como ligado al estado de ánimo, y la calificación cruzó a Insatisfactorio (89→80.5). Es un tema documentado en dos periodos consecutivos, sin resolver.",
+  reco_full:[{texto:"El patrón descrito (\"cuando pierdes el enfoque\", \"el estado de ánimo influye\") se repite en tres de cuatro indicadores — esto amerita una conversación directa y de seguimiento cercano, más que solo un plan de ventas.", categoria:"Coaching del jefe"}], reco_accion:"Conversación directa y seguimiento cercano — irregularidad ligada al ánimo" },
+{ id:'diana', nombre:"Diana Araceli Sánchez Mejía", puesto:"Coordinador de VPP", jefe:"Christopher Iván Espíritu Rodríguez", antiguedad:"5.9 años", grupo:"christopherteam",
+  periods:[
+    {label:"Ene–Jun 2025", global:96, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:84.0,I:100}, comentarios:{P:"Dashboard de VPP.",A:"Reporte de ventas acumuludas, ventas por fuente, etc.",E:"Seguimiento en SalesForce.",I:"Siempre con disposición de apoyar y aportar más allá de lo que se le requiere."}, acuerdos:"Araceli se ha desarroollado como parte y pieza fundamental del éxito de nuestro equipo, siempre con la actitud y apoyo para apuntar hacia arriba. En el tema emocional es algo que en conjunto vamos a trabajar para que brille aún más excelente su trabajo."},
+    {label:"Ene–Jun 2026", global:95.75, clasif:"SOBRESALIENTE", paei:{P:95,A:100,E:90,I:100}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Seguir trabajando con el equipo y explotar en conjunto los proyectos."}, acuerdos:null},
+  ], atendido:"Se mantiene Sobresaliente (96→95.75), sin comentarios detallados por indicador salvo Colaboración.",
+  reco_full:[{texto:"Ya tiene una reporte directa (Citlali) con excelente resultado — formalizar su rol de mentoría dentro del equipo de VPP.", categoria:"Mentoría interna"}], reco_accion:"Formalizar rol de mentoría en equipo de VPP" },
+{ id:'elisa', nombre:"Elisa Adriana Caraveo Frescas", puesto:"Vendedor Comisionista", jefe:"Christopher Iván Espíritu Rodríguez", antiguedad:"8.3 años", grupo:"christopherteam",
+  periods:[
+    {label:"Ene–Jun 2025", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Reporte de ventas, carpetas coaching, etc.",A:"Reporte de ventas, carpetas coaching, etc.",E:"Tiene buenas propuestas, destaca con la proactividad que tiene con su trabajo y con el equipo.",I:"Siempre con disposición de atender bien a sus clientes y estar disponible para sus clientes."}, acuerdos:"Su desempeño es sobresaliente y su colaboración en el equipo aporta gran valor, posee habilidades que la hacen destacar, para seguir creciendo y consolidar su desempeño, es importante que refuerce la constancia en sus resulatados y en la aplicación de sus fortalezas con mayor continuidad, podrá alcanzar un nivel aún más alto de efectividad y liderazgo."},
+    {label:"Ene–Jun 2026", global:89.75, clasif:"ADECUADO", paei:{P:90,A:95,E:80,I:85}, comentarios:{P:"Mantener un cumplimiento constante de la meta y establecer objetivos personales que la lleven a un nivel de desempeño superior.",A:"Mantener una agenda de trabajo con prioridades claras y revisar diariamente el avance de oportunidades comerciales.",E:"Muestras disposición y actitud positiva; el siguiente paso es anticiparte más a las necesidades del negocio.",I:"Mantienes una actitud positiva y buena relación con el equipo, favoreciendo un buen ambiente de trabajo."}, acuerdos:null},
+  ], atendido:"No. En 2025 tuvo calificación perfecta (100) y el acuerdo pedía \"reforzar la constancia\" para consolidar ese nivel — en cambio bajó a 89.75 (-10.25), la mayor caída del equipo. El comentario 2026 no explica la causa, pero el contraste con el acuerdo de 2025 sugiere que la constancia fue justamente lo que faltó.",
+  reco_full:[{texto:"La caída de -10.25 desde una calificación perfecta amerita entender la causa directamente con ella — el comentario actual no explica qué cambió.", categoria:"Coaching del jefe"}], reco_accion:"Entender causa de la caída desde calificación perfecta" },
+{ id:'gabriel', nombre:"Gabriel García Briseño", puesto:"Vendedor Comisionista", jefe:"Christopher Iván Espíritu Rodríguez", antiguedad:"5.9 años", grupo:"christopherteam",
+  periods:[
+    {label:"Ene–Jun 2025", global:85.5, clasif:"ADECUADO", paei:{P:85.7,A:86.7,E:84.0,I:85.0}, comentarios:{P:"Reporte de ventas, carpetas coaching DCA.",A:"SalesForce / Reporte de ventas.",E:"Apoyo más sin necesidad de que se le solicite.",I:"Le invito a tener más apertura paraapoyar a sus compañeros, es un ejemplo desde lo individual, ahora toca hacerlo en lo colectivo."}, acuerdos:"Gabriel es un referente en la venta y lo ha logrado de los primeros 6 meses, le ha costado un poco por los cambios acelerados que hemos tenido en el equipo, sim embargo se mantiene, y se nota en sus resultados, efoque, a seguir creciendo en el resultado!"},
+    {label:"Ene–Jun 2026", global:77, clasif:"INSATISFACTORIO", paei:{P:70,A:80,E:80,I:80}, comentarios:{P:"Tu desempeño ha sido más regular que sobresaliente, aunque ya has demostrado tener la capacidad de estar entre los mejores. El reto no es alcanzar ese nivel una vez, sino sostenerlo mes tras mes.",A:"Conoces el proceso comercial, pero cuando pierdes el enfoque disminuye la calidad y constancia. La disciplina diaria será la clave para recuperar tu mejor versión.",E:"Has demostrado ser proactivo y generar iniciativas, pero no de forma constante. El reto es convertir esas buenas prácticas en hábitos permanentes.",I:"El principal punto de desarrollo está en la actitud y la influencia que ejerces en el equipo — en ocasiones los comentarios pueden generar un ambiente poco positivo."}, acuerdos:null},
+  ], atendido:"No, y hay una escalada real del mismo tema. En 2025 ya se le decía \"le invito a tener más apertura para apoyar a sus compañeros... ahora toca hacerlo en lo colectivo\" — en 2026 ese mismo tema de Colaboración se agravó a comentarios que \"generan un ambiente poco positivo\" en el equipo. Es el mismo problema, un año después, empeorado, y su calificación cruzó a Insatisfactorio (85.5→77).",
+  reco_full:[{texto:"El comentario de Colaboración es el más directo del equipo sobre impacto negativo en el ambiente — amerita una conversación explícita sobre cómo canaliza sus inconformidades, antes de que afecte a más compañeros.", categoria:"Coaching del jefe"}], reco_accion:"Conversación sobre impacto en el ambiente del equipo" },
+{ id:'ivanyair', nombre:"Iván Yair Ibarra Amargo", puesto:"Vendedor Comisionista", jefe:"Christopher Iván Espíritu Rodríguez", antiguedad:"0.8 años", grupo:"christopherteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:83.25, clasif:"INSATISFACTORIO", paei:{P:70,A:90,E:85,I:90}, comentarios:{P:"Has mostrado avances durante tus primeros meses, pero el alcance de objetivos está alrededor del 60%. El principal reto es incrementar la generación de oportunidades.",A:"Existe oportunidad para aprovechar mejor el tiempo y las herramientas — trabajar activamente cada oportunidad y dar seguimiento hasta encontrar respuesta comercial.",E:"Es el principal punto de desarrollo: buscar de manera más activa nuevas oportunidades de negocio, no depender solo de los clientes que llegan por canales actuales.",I:"Has mostrado disposición para integrarte al equipo. El siguiente paso es aprovechar más el conocimiento de tus compañeros y buscar retroalimentación."}, acuerdos:null},
+  ], atendido:"Primera evaluación (ingreso reciente, menos de 1 año). Insatisfactorio, pero el comentario reconoce avances y lo enmarca como parte del proceso de adaptación, no como un problema de actitud.",
+  reco_full:[{texto:"Es su primer registro, en adaptación — Proactividad (generar oportunidades propias) es el punto de desarrollo explícito según su propio comentario.", categoria:"Capacitación formal — Prospección activa"}], reco_accion:"Capacitación en prospección activa (primer registro)" },
+{ id:'jessica', nombre:"Jessica Lizbeth Berumen Macías", puesto:"Asistente de Gerencia", jefe:"Christopher Iván Espíritu Rodríguez", antiguedad:"2.3 años", grupo:"christopherteam",
+  periods:[
+    {label:"Jul–Dic 2025", global:90.8, clasif:"ADECUADO", paei:{P:90.0,A:90.0,E:85.2,I:100}, comentarios:{P:"Reportes entregados (Inventarios, soportes, programaciones, necesidades de planta, etc.)",A:"Reportes evitando retrabajos.",E:"Alo largo del años se han perfeccionado reportes para mayor practividad en la información.",I:"Participación activa en cualquier actividad solicitada."}, acuerdos:"Complementar descriptivo y actividades del puesto, continuar con capacitación y dando ideas de mejora diaria."},
+    {label:"Ene–Jun 2026", global:95.5, clasif:"SOBRESALIENTE", paei:{P:90,A:100,E:100,I:95}, comentarios:{P:"Cumples adecuadamente con las necesidades del departamento y das seguimiento a temas administrativos e intercambios. Eres confiable para mantener el funcionamiento del área.",A:"Has mostrado una mejora importante en tu enfoque y concentración, logrando mayor disciplina y atención en tus responsabilidades.",E:"Tienes buena disposición para atender las necesidades del departamento. El siguiente paso es anticiparte a algunas necesidades antes de que se conviertan en pendientes.",I:"Has mostrado evolución positiva en tu integración. Área de oportunidad: cuidar la forma de comunicarte, evitando un tono que pueda percibirse como fuerte o poco cordial."}, acuerdos:null},
+  ], atendido:"Sí. Mejoró de Adecuado a Sobresaliente (90.8→95.5), con mejora explícita reconocida en Eficiencia (\"mejora importante en tu enfoque y concentración... anteriormente existían distracciones\").",
+  reco_full:[{texto:"El comentario de Colaboración señala cuidar el tono de comunicación — es un tema puntual dentro de un resultado ya sólido.", categoria:"Coaching del jefe"}], reco_accion:"Reforzar tono de comunicación" },
+{ id:'josearturo', nombre:"José Arturo Wong Anchondo", puesto:"Vendedor Comisionista", jefe:"Christopher Iván Espíritu Rodríguez", antiguedad:"2.2 años", grupo:"christopherteam",
+  periods:[
+    {label:"Ene–Jun 2025", global:92, clasif:"ADECUADO", paei:{P:100,A:85.0,E:86.7,I:100}, comentarios:{P:"Reporte de ventas, métrica.",A:"Métrica, reporte de ventas.",E:"Métrica, reporte de ventas.",I:"Métrica, reporte de ventas."}, acuerdos:"Tiene buenos números, siempre con la siposición de hacer y ganar más. En la responsabilidad y la disciplina lo vamos trabajando en conjunto, tenemos que lograr la visión de ventas que tiene para el próximo año"},
+    {label:"Ene–Jun 2026", global:87.35, clasif:"ADECUADO", paei:{P:90,A:89,E:95,I:70}, comentarios:{P:"Cumples con buen nivel de resultados, muy cerca del objetivo de ventas. El reto es convertir ese desempeño en un cumplimiento constante por encima de la meta.",A:"Tienes capacidad para hacer las cosas muy bien, pero la organización y el apego al proceso no son consistentes, generando retrabajos.",E:"Eres una persona con iniciativa y facilidad para resolver situaciones; orientar esa capacidad a fortalecer el proceso del equipo, no solo situaciones individuales.",I:"Existe una oportunidad importante en la actitud y la forma de enfrentar procesos o indicaciones — priorizar el objetivo del equipo por encima de preferencias personales."}, acuerdos:null},
+  ], atendido:"Parcialmente. El acuerdo de 2025 (\"en la responsabilidad y la disciplina lo vamos trabajando en conjunto\") anticipaba justo el tema que en 2026 aparece como su indicador más bajo (Colaboración, 70, sobre actitud ante procesos e indicaciones) — el mismo tema, sin resolver del todo, con una baja real (92→87.35).",
+  reco_full:[{texto:"Colaboración es su indicador más bajo (70) con un comentario directo sobre actitud ante procesos — priorizar esta conversación antes que temas de organización.", categoria:"Coaching del jefe"}], reco_accion:"Conversación sobre actitud ante procesos del equipo" },
+{ id:'josemanuel', nombre:"José Manuel Moreno Delgado", puesto:"KIA Expert", jefe:"Christopher Iván Espíritu Rodríguez", antiguedad:"5.9 años", grupo:"christopherteam",
+  periods:[
+    {label:"Ene–Jun 2025", global:100, clasif:"SOBRESALIENTE", paei:{P:100,A:100,E:100,I:100}, comentarios:{P:"Reporte de ventas, carpetas coaching, etc.",A:"Reporte de ventas, carpetas coaching, etc.",E:"Tiene buenas propuestas, destaca con la proactividad que tiene con su trabajo y con el equipo.",I:"Siempre con disposición de atender bien a sus clientes, y estar disponible para sus clientes."}, acuerdos:"Es un colaborador con profundo conocimiento del producto, lo que aporta gran valor al equipo de ventas. Aunque no tiene una función directa de venta, su apoyo en la atención y acompañamiento a clientes contribuye significativamente al cierre de operaciones. Su experiencia y disposición fortalecen el trabajo en equipo y generan confianza tanto en los clientes como en sus compañeros. MUY BUEN TRABAJO."},
+    {label:"Ene–Jun 2026", global:90.65, clasif:"ADECUADO", paei:{P:89,A:100,E:87,I:80}, comentarios:{P:"Destacas por el dominio de tu función como KIA Expert. Explicación de equipamiento, pruebas de manejo y entregas con alto nivel de detalle y profesionalismo.",A:"Ejecutas tus actividades con conocimiento, calidad y profesionalismo. Tu dominio de producto permite que el cliente comprenda el valor de la unidad.",E:"Has demostrado iniciativa destacable construyendo una comunidad de ~11 mil seguidores en TikTok — oportunidad importante para la presencia digital de KIA y la agencia.",I:"Tu conocimiento representa valor para el equipo. Área de oportunidad: comunicación abierta y profesional ante diferencias personales o de criterio."}, acuerdos:null},
+  ], atendido:"No. En 2025 fue reconocido explícitamente como \"MUY BUEN TRABAJO\", con calificación perfecta. En 2026 bajó a Adecuado (-9.35), concentrado en Colaboración, con un comentario nuevo sobre manejo de diferencias con el equipo que no aparecía en 2025.",
+  reco_full:[{texto:"Tiene un activo digital valioso (11 mil seguidores en TikTok) identificado explícitamente como oportunidad para la marca — formalizarlo como proyecto, no dejarlo como iniciativa personal.", categoria:"Experiencia de desarrollo"},{texto:"El tema de Colaboración (manejo de diferencias con el equipo) es la causa más probable de su baja — abordarlo directamente.", categoria:"Coaching del jefe"}], reco_accion:"Formalizar proyecto de contenido digital; atender tema de colaboración" },
+{ id:'juanantonio', nombre:"Juan Antonio Gómez Córdova", puesto:"Vendedor Comisionista", jefe:"Christopher Iván Espíritu Rodríguez", antiguedad:"5.6 años", grupo:"christopherteam",
+  periods:[
+    {label:"Ene–Jun 2025", global:91, clasif:"ADECUADO", paei:{P:85.7,A:86.7,E:100,I:100}, comentarios:{P:"Reporte de ventas, carpetas coaching, etc.",A:"Reporte de ventas, carpetas coaching, etc.",E:"Tiene buenas propuestas, destaca con la proactividad que tiene con su trabajo y con el equipo.",I:"Siempre con disposición de atender bien a sus clientes y estar disponible para sus clientes."}, acuerdos:"Ser más persistente con el cliente, en el seguimiento, seguimiento en el proceso con el cliente después de la facturación, tiene buenas propuestas, destaca con la proactividad que tiene en su trabajo y con el equipo/con Tony, tenemos que trabajar en lo que sucede después de la entrega, en el seguimiento con sus clientes."},
+    {label:"Ene–Jun 2026", global:88.5, clasif:"ADECUADO", paei:{P:80,A:90,E:95,I:95}, comentarios:{P:"Buena capacidad comercial y normalmente alcanzas tus objetivos; facilidad para generar resultados y aprovechar oportunidades.",A:"Capacidad para organizar tu trabajo. Mantener mayor constancia en horarios, seguimiento y atención de oportunidades comerciales.",E:"Persona con iniciativa y capacidad para resolver; proponer soluciones y mantener apertura a nuevas estrategias.",I:"Personalidad fuerte y forma definida de trabajar — aprovechar esa seguridad para generar influencia positiva, manteniendo apertura a retroalimentación."}, acuerdos:null},
+  ], atendido:"Parcialmente. El acuerdo de 2025 pedía \"ser más persistente con el cliente... trabajar en el seguimiento después de la entrega\" — en 2026 ese mismo tema de seguimiento aparece como su oportunidad en Eficacia (80, la más baja), con una ligera baja general (91→88.5).",
+  reco_full:[{texto:"Reforzar constancia en horarios y seguimiento de oportunidades — es el único indicador claramente por debajo del resto de su propio perfil.", categoria:"Coaching del jefe"}], reco_accion:"Reforzar constancia en horarios y seguimiento" },
+{ id:'luis', nombre:"Luis Gerardo Menchaca Ortega", puesto:"Vendedor Comisionista", jefe:"Christopher Iván Espíritu Rodríguez", antiguedad:"2.4 años", grupo:"christopherteam",
+  periods:[
+    {label:"Ene–Jun 2025", global:96, clasif:"SOBRESALIENTE", paei:{P:100,A:86.7,E:100,I:100}, comentarios:{P:"Reporte de ventas, carpetas coaching, etc.",A:"Reporte de ventas, carpetas coaching, etc.",E:"Tiene buenas propuestas, destaca con la proactividad que tiene con su trabajo y con el equipo.",I:"Siempre con disposición de atender bien a sus clientes, y estar disponible para sus clientes."}, acuerdos:"Son muy destacables sus resultados en ventas, se vuelve un referente para sus comapñeros, esto refleja su esfuerzo y compromiso, para seguir avanzando, es importante cuidar la calidad del trabajo y fortalecer la gestión de la presión y el estrés, al lograr este equilibrio, su desempeño podra alzanzar un nivel aún más alto y sostenible."},
+    {label:"Ene–Jun 2026", global:99.3, clasif:"SOBRESALIENTE", paei:{P:99,A:99,E:100,I:100}, comentarios:{P:"Eres actualmente el referente del equipo en volumen y cumplimiento, con un promedio cercano a 10 unidades mensuales.",A:"Alto enfoque en resultados y capacidad comprobada para llevar oportunidades hasta el cierre.",E:"Constantemente buscas resultados, tomas iniciativa y enfrentas retos con determinación — tu actitud de \"echarte para adelante\" es una de tus principales fortalezas.",I:"Has desarrollado un liderazgo natural dentro del equipo. El siguiente paso es fortalecer la paciencia y el manejo de la frustración."}, acuerdos:null},
+  ], atendido:"Sí, de sobra. Mejora sostenida (96→99.3), la calificación más alta del equipo. Ya identificado explícitamente como \"el referente del equipo\" y con \"liderazgo natural\".",
+  reco_full:[{texto:"Es el referente del equipo en volumen y ya muestra liderazgo natural — candidato claro para un rol formal de mentor de ventas, trabajando primero su manejo de la frustración según el propio comentario.", categoria:"Experiencia de desarrollo"}], reco_accion:"Formalizar como mentor de ventas del equipo" },
+{ id:'marco', nombre:"Marco Antonio Ávalos Martínez", puesto:"Vendedor Comisionista", jefe:"Christopher Iván Espíritu Rodríguez", antiguedad:"10.2 años", grupo:"christopherteam",
+  periods:[
+    {label:"Ene–Jun 2025", global:89.5, clasif:"ADECUADO", paei:{P:85.7,A:100,E:84.0,I:85.0}, comentarios:{P:"Reporte de ventas, carpetas coaching, etc.",A:"Reporte de ventas, carpetas coaching, etc.",E:"Tiene buenas propuestas, destaca con la proactividad que tiene con su trabajo y con el equipo.",I:"Siempre con disposición de atender bien a sus clientes, y estar disponible para sus clientes."}, acuerdos:"Durante este periodo representó un reto personal que imapctó ligeramente sus resultados, sinembargosu actitud y determinación son evidencia de que está en camino de recuperar su nivel habitual, con el enfoque y constancia que lo distinguen, estoy seguro de que volverá a alcanzar y superar sus objetivos."},
+    {label:"Ene–Jun 2026", global:90.05, clasif:"ADECUADO", paei:{P:85,A:95,E:90,I:87}, comentarios:{P:"Tu principal oportunidad está en la consistencia del volumen — tienes meses muy buenos, pero aún no logras mantener un nivel constante.",A:"Destacas por trabajar con orden, calidad y disciplina. Tus expedientes y seguimiento son ejemplo para el equipo.",E:"Demuestras iniciativa para mantener actualizado tu trabajo. El siguiente paso es llevar esa iniciativa a generar nuevas oportunidades de negocio.",I:"Buena disposición para trabajar con distintas áreas — continuar siendo referente en disciplina y apoyar a compañeros."}, acuerdos:null},
+  ], atendido:"Sí, en gran parte. El acuerdo de 2025 mencionaba explícitamente que \"representó un reto personal que impactó ligeramente sus resultados\" — en 2026 ya se recuperó y se le reconoce como \"ejemplo para el equipo\" en organización, con calificación estable (89.5→90.05).",
+  reco_full:[{texto:"Ya es \"ejemplo para el equipo\" en organización — formalizar que comparta sus prácticas de manejo de expedientes con los vendedores de menor antigüedad.", categoria:"Mentoría interna"}], reco_accion:"Compartir prácticas de organización con el equipo" },
+{ id:'mariafernanda', nombre:"María Fernanda de la Torre Hermosillo", puesto:"Vendedor Comisionista", jefe:"Christopher Iván Espíritu Rodríguez", antiguedad:"3.0 años", grupo:"christopherteam",
+  periods:[
+    {label:"Ene–Jun 2025", global:89, clasif:"ADECUADO", paei:{P:83.3,A:100,E:80.0,I:80.0}, comentarios:{P:"Reporte de ventas, métrica, carpeta coaching.",A:"Reporte de ventas, métrica, carpeta coaching, SalesForce.",E:"De manera constructiva, trabaja en la parte digital, mkt digital.",I:"Reporte de ventas, métrica, carpeta coaching, SalesForce."}, acuerdos:"Revisión semanal de sus avances en su plan de trabajo. lectura de libro \"Capacitaciones en técnicas de cierre\""},
+    {label:"Ene–Jun 2026", global:85.5, clasif:"ADECUADO", paei:{P:80,A:90,E:80,I:90}, comentarios:{P:"Evolución positiva; tu atención al cliente genera confianza. El siguiente paso es convertir esa buena experiencia en mayor volumen de ventas de forma consistente.",A:"Tu trato con los clientes es una de tus principales fortalezas. Fortalecer el conocimiento de producto y argumentos comerciales.",E:"Disposición para aprender y mejorar. Desarrollar un estilo propio de venta que te diferencie y sea más consistente.",I:"Actitud positiva que genera un ambiente positivo con clientes y compañeros."}, acuerdos:null},
+  ], atendido:"No se puede confirmar del todo. El acuerdo de 2025 fue concreto: revisión semanal de avances y leer el libro \"Capacitaciones en técnicas de cierre\" — el comentario de 2026 no confirma si lo hizo, aunque sigue señalando conocimiento de producto como su oportunidad, con una ligera baja (89→85.5).",
+  reco_full:[{texto:"Dedicar tiempo semanal al estudio de producto y argumentos comerciales, señalado explícitamente — aprovechar que su fortaleza (trato al cliente) ya está consolidada.", categoria:"Capacitación formal — Conocimiento de producto"}], reco_accion:"Capacitación en conocimiento de producto" },
+{ id:'mariaguadalupe', nombre:"María Guadalupe Luévano Esparza", puesto:"Vendedor Comisionista", jefe:"Christopher Iván Espíritu Rodríguez", antiguedad:"5.2 años", grupo:"christopherteam",
+  periods:[
+    {label:"Ene–Jun 2025", global:89.5, clasif:"ADECUADO", paei:{P:85.7,A:100,E:84.0,I:85.0}, comentarios:{P:"Reporte de ventas, carpetas coaching, etc.",A:"Reporte de ventas, carpetas coaching, etc.",E:"Tiene buenas propuestas, destaca con la proactividad que tiene con su trabajo y con el equipo.",I:"Siempre con disposición de atender bien a sus clientes y estar disponible para sus clientes."}, acuerdos:"Ha alcanzado buenos resultados, demostrando conocimiento y experiencia en su labor. Sin embargo, es importante trabajar en la calidad del trabajo para asegurar que los resultados sean sostenibles y de mayor impacto. Con su nuvel de experiencia, tiene el potencial no solo de mejorar, sino incluso de duplicar sus resultados si enfoca sus esfuerzos en la excelencia operativa y la atención al detalle."},
+    {label:"Ene–Jun 2026", global:88.5, clasif:"ADECUADO", paei:{P:85,A:90,E:90,I:90}, comentarios:{P:"Cumples de forma consistente con tus objetivos, contribuyendo en financiamiento, accesorios y volumen. El siguiente paso es buscar mayor consistencia para ser referente del equipo.",A:"Mejora importante en el manejo de clientes y disminución de incidencias en los últimos meses.",E:"Cumples tus responsabilidades; oportunidad de involucrarte más en propuestas que beneficien al equipo.",I:"Este es el principal punto de desarrollo — en el pasado hubo comentarios que generaron un ambiente interno poco favorable, aunque se reconoce mejora reciente y un cambio positivo."}, acuerdos:null},
+  ], atendido:"Estable (89.5→88.5). El propio comentario de Colaboración reconoce mejora reciente respecto a un patrón previo de comentarios que afectaban el ambiente — es una historia de progreso real, aunque sigue siendo su punto de desarrollo.",
+  reco_full:[{texto:"El comentario de Colaboración reconoce explícitamente una mejora reciente — reforzar y consolidar ese cambio con seguimiento positivo, no solo señalar el pendiente.", categoria:"Coaching del jefe"}], reco_accion:"Reforzar y consolidar mejora reciente en colaboración" },
+{ id:'omar', nombre:"Omar Fabián Ruiz Velasco Padilla", puesto:"Gerente de F&I", jefe:"Christopher Iván Espíritu Rodríguez", antiguedad:"8.9 años", grupo:"christopherteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:90.3, clasif:"ADECUADO", paei:{P:88,A:100,E:90,I:88}, comentarios:{P:"Fuerte enfoque en resultados; el share ha mostrado variaciones, el reto es generar mayor estabilidad y consistencia.",A:"Has logrado combinar el control operativo con mejor orientación al negocio — la administración del área es sólida.",E:"La transición hacia un perfil más comercial ha sido muy positiva; anticiparse aún más a las necesidades del negocio.",I:"Evolución importante en el manejo de emociones y relación con el equipo comercial — eres hoy un pilar importante para el área de ventas."}, acuerdos:null},
+  ], atendido:"Sin registro 2025 con calificación válida. El comentario reconoce explícitamente una evolución positiva en manejo de emociones frente a periodos anteriores.",
+  reco_full:[{texto:"Diseñar estrategias para estabilizar el share, señalado como su punto de mayor variación.", categoria:"Coaching del jefe"}], reco_accion:"Estabilizar variaciones en el share" },
+{ id:'patricia', nombre:"Patricia Aracely Cardona Alcántar", puesto:"Auxiliar de F&I", jefe:"Christopher Iván Espíritu Rodríguez", antiguedad:"0.9 años", grupo:"christopherteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:91.35, clasif:"ADECUADO", paei:{P:92,A:95,E:90,I:89}, comentarios:{P:"Tienes muy buena organización en tareas administrativas diarias, así como apoyo en diversos departamentos que requieran el apoyo.",A:"Tareas diarias de desembolsos a caja y registro de reportes en Excel y en plataforma Evabel; apoyo al departamento de intercambios con las cancelaciones y devoluciones.",E:"Apoyo en aportar ideas para mejora en los procesos del departamento de financiamiento, iniciativa para realizar cambios si considera que serán para beneficio del área.",I:"Tiene una buena disposición y flexibilidad con los compañeros en diversos departamentos; podemos mejorar un poco en manejo de las emociones."}, acuerdos:null},
+  ], atendido:"Primera evaluación (ingreso reciente, menos de 1 año). Arranque sólido en Adecuado.",
+  reco_full:[{texto:"Reforzar manejo de emociones, único punto de desarrollo señalado en su propio comentario de Colaboración.", categoria:"Coaching del jefe"}], reco_accion:"Reforzar manejo de emociones" },
+{ id:'ricardo', nombre:"Ricardo Mireles Fletes", puesto:"Vendedor Comisionista", jefe:"Christopher Iván Espíritu Rodríguez", antiguedad:"9.4 años", grupo:"christopherteam",
+  periods:[
+    {label:"Ene–Jun 2025", global:80, clasif:"INSATISFACTORIO", paei:{P:85.7,A:66.7,E:84.0,I:85.0}, comentarios:{P:"Reporte de ventas, carpetas coaching, etc.",A:"Mucho que trabajar.",E:"Tiene buenas propuestas, destaca con la proactividad que tiene con su trabajo y con el equipo.",I:"Siempre con disposición de atender bien a sus clientes y estar disponible para sus clientes."}, acuerdos:"Está retomando un buen ritmo en sus resultados de ventas, respaldado por su experiencia y amplio conocimiento de la marca. Sin embargo, es importnate reforzar su disciplina, puntualidad y compromiso con los procesos diarios, ya que requiere constante seguimiento para mantener el enfoque y la motivación. Su excelente trato con los clientes es una fortaleza que puede potenciar aún más si se logra constancia y autodisciplina en su desempeño."},
+    {label:"Ene–Jun 2026", global:73, clasif:"INSATISFACTORIO", paei:{P:70,A:70,E:70,I:90}, comentarios:{P:"Has mostrado una evolución positiva y tu desempeño ha ido de menos a más. Tu buena actitud y disposición te han permitido avanzar y generar mejores resultados. El siguiente reto es mantener esa tendencia y convertirla en resultados cada vez más consistentes.",A:"Tienes buena disposición y capacidad para realizar el trabajo, pero existe una oportunidad importante en la organización y el orden de tus actividades. Mejorar la administración de clientes, pendientes y seguimiento.",E:"Mantienes una actitud positiva y disposición para participar y aprender. El siguiente paso es anticiparte más a tus pendientes y oportunidades, sin esperar siempre a que alguien te indique qué hacer.",I:"Mantienes constantemente una buena actitud y disposición con el equipo. Tu forma de relacionarte contribuye a un ambiente positivo."}, acuerdos:null},
+  ], atendido:"No. El acuerdo de 2025 ya pedía \"reforzar su disciplina, puntualidad y compromiso con los procesos diarios\" — el mismo tema reaparece en 2026 como \"oportunidad importante en la organización y el orden de tus actividades\". Es el mismo problema en dos periodos consecutivos, sin resolver, y la calificación bajó (80→73). Su trato con clientes sí se mantiene como fortaleza reconocida en ambos años.",
+  reco_full:[{texto:"Hay una discrepancia entre el comentario (\"evolución positiva\", \"de menos a más\") y la calificación real, que bajó (80→73) y sigue en Insatisfactorio — conversación directa para entender qué está pasando realmente.", categoria:"Coaching del jefe"},{texto:"Reforzar organización y seguimiento de clientes, señalado como su oportunidad más concreta.", categoria:"Capacitación formal — Organización y seguimiento de clientes"}], reco_accion:"Conversación directa — discrepancia entre comentario y calificación real" },
+{ id:'citlali', nombre:"Citlali Guadalupe Díaz Martínez", puesto:"Coordinador de Piso", jefe:"Diana Araceli Sánchez Mejía", antiguedad:"0.5 años", grupo:"christopherteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:97.75, clasif:"SOBRESALIENTE", paei:{P:100,A:95,E:95,I:100}, comentarios:{P:"Tener mejor control con los asesores para el llenado del formato de demos.",A:"Continuar con el speech de recepción y enfocarlo al Mystery Shopper, para tener una mejor atención con los clientes.",E:"Desarrollarse más en producto; pedir capacitación con trainer y KIA Expert para su conocimiento.",I:"Continuar con la disponibilidad con el equipo y apoyo en las demás áreas."}, acuerdos:null},
+  ], atendido:"Primera evaluación (ingreso enero 2026). Arranque muy fuerte, con un plan de desarrollo claro en producto ya sugerido por su jefa.",
+  reco_full:[{texto:"Dar seguimiento a la capacitación con trainer y KIA Expert que ella misma solicitó, señalado en su propio comentario.", categoria:"Capacitación formal — Conocimiento de producto"}], reco_accion:"Dar seguimiento a capacitación con trainer/KIA Expert" },
+{ id:'jacquelineestefania', nombre:"Jacqueline Estefania Lira Palos", puesto:"Auxiliar De Limpieza", jefe:"Brounie Casandra Guadalupe Prado Muñoz", antiguedad:"1.4 años", grupo:"calidad",
+  periods:[
+    {label:"Ene–Jun 2026", global:86, clasif:"ADECUADO", paei:{P:75.0,A:95.0,E:90.0,I:90.0}, comentarios:{P:"Tu apoyo es clave, pero para que el equipo funcione bien necesitamos que respetes los tiempos de descanso y tu permanencia en el puesto; equilibrar tu buena actitud con una presencia constante",A:"Haces un trabajo impecable manteniendo todo en orden, pero para que tu desempeño sea perfecto, es necesario que seas más constante con tus horarios y presencia; si logras equilibrar tu gran eficacia con el respeto a los tiempos de jornada, tu aporte al equipo será excepcional",E:"Demuestras un firme compromiso con la mejora continua y una gran iniciativa",I:"valoro mucho tu apoyo y actitud con el equipo, pero es necesario que tu gran disposición se traduzca también en constancia horaria y reposición de tiempo, para que tu compromiso sea tan sólido como tu talento"}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es P (75). Tu apoyo es clave, pero para que el equipo funcione bien necesitamos que respetes los tiempos de descanso y tu permanencia en el puesto; equilibrar tu buena actitud con una presenc", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador P" },
+{ id:'lizbethnatali', nombre:"Lizbeth Natali Garcia Ibarra", puesto:"Auxiliar De Limpieza", jefe:"Brounie Casandra Guadalupe Prado Muñoz", antiguedad:"4.9 años", grupo:"otros",
+  periods:[
+    {label:"Ene–Jun 2026", global:92, clasif:"ADECUADO", paei:{P:95.0,A:90.0,E:90.0,I:90.0}, comentarios:{P:"Tu progreso es evidente y tus resultados mensuales lo confirman. Has superado las expectativas de mejora; continúa con ese excelente ritmo",A:"Realizas un trabajo impecable manteniendo todo en orden, lo cual refleja tu alto nivel de organización y el cuidado que pones en cada detalle de tus responsabilidades",E:"Me encanta ver tu iniciativa y cómo te superas día con día. Ese compromiso con la mejora continua es lo que te hace destacar",I:"Tu esfuerzo por reponer tiempo y trabajar en conjunto es evidente; esa actitud es la que necesitamos para mantener el ritmo de excelencia."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es A (90). Realizas un trabajo impecable manteniendo todo en orden, lo cual refleja tu alto nivel de organización y el cuidado que pones en cada detalle de tus responsabilidades", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador A" },
+{ id:'lizbethmonserrat', nombre:"Lizbeth Monserrat Rivera Luna", puesto:"Auxiliar De Calidad", jefe:"Brounie Casandra Guadalupe Prado Muñoz", antiguedad:"1.0 años", grupo:"calidad",
+  periods:[
+    {label:"Ene–Jun 2026", global:92.775, clasif:"ADECUADO", paei:{P:90.0,A:100.0,E:88.5,I:90.0}, comentarios:{P:"Se nota una gran evolución en Calidad y Mercadotecnia. Tu cambio de actitud este año ha sido notable y te lo agradezco; ahora, el reto es mantener esa misma intensidad y comunicación en todas tus áreas. ¡Sigue así y nobajes la guardia",A:"Se nota el compromiso que tienes en la busqueda de tus KPI mensuales Sigue asi! Los clientes hablan excelente de ti.",E:"Cuentas con el perfil necesario; solo falta enfocar tu iniciativa en propuestas mensuales y juntas creativas para equilibrar tu impacto entre Mercadotecnia y Calidad",I:"Sigue apostando por la mejora continua; tienes un potencial increíble. Tu reto ahora es integrar la flexibilidad en tu día a día para que tu talento brille por igual en todas tus áreas"}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es E (88). Cuentas con el perfil necesario; solo falta enfocar tu iniciativa en propuestas mensuales y juntas creativas para equilibrar tu impacto entre Mercadotecnia y Calidad", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador E" },
+{ id:'carlosisrael', nombre:"Carlos Israel Perez Silva", puesto:"Encargado De Mantenimiento", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"0.8 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:89.8, clasif:"ADECUADO", paei:{P:90.0,A:80.0,E:95.0,I:100.0}, comentarios:{P:"Sin comentario capturado.",A:"Recorrido semanal",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es A (80). Recorrido semanal", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador A" },
+{ id:'josuerodriguez', nombre:"Josue Rodriguez Pedroza", puesto:"Vendedor De Refacciones Taller", jefe:"Carmen Natalia Laguna Rivera", antiguedad:"1.2 años", grupo:"otros",
+  periods:[
+    {label:"Ene–Jun 2026", global:100, clasif:"SOBRESALIENTE", paei:{P:100.0,A:100.0,E:100.0,I:100.0}, comentarios:{P:"Todo bien, se empeña en buscar soluciones en las piezas que tenemos en existencia",A:"usa su gafete, auditoria de deloitte cumple",E:"Control de inventario de LYP, apoya los diversos canales de venta",I:"si cumple su area de trabajo esta limpia y organizada."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es P (100). Todo bien, se empeña en buscar soluciones en las piezas que tenemos en existencia", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador P" },
+{ id:'magraciela', nombre:"Ma Graciela Cervantes Marquez", puesto:"Encargado De Cafeteria", jefe:"Brounie Casandra Guadalupe Prado Muñoz", antiguedad:"5.5 años", grupo:"calidad",
+  periods:[
+    {label:"Ene–Jun 2026", global:85.4, clasif:"ADECUADO", paei:{P:83.0,A:83.0,E:100.0,I:90.0}, comentarios:{P:"Aprecio mucho tu cambio de actitud este año; ahora, el reto es proyectar esa misma atención y comunicación de Servicio también en el área de Ventas.",A:"Has tenido una evolución excelente, ¡felicidades! Ahora, te pido que ese mismo compromiso se refleje en el orden de la bodega compartida. Mantener ese espacio limpio y organizado no solo facilita tu trabajo,",E:"Me encanta el compromiso que muestras al proponer ideas y tu capacidad para prevenir riesgos. Tu habilidad para anticiparte a las situaciones en tu área es un valor agregado que fortalece mucho al equipo",I:"Tu disposición y el interés que muestras por los resultados globales son excelentes. Para potenciar este impacto, debemos trabajar en una comunicación más fluida y constante con los demás departamentos, garantizando que la información llegue con la misma claridad a todos"}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es P (83). Aprecio mucho tu cambio de actitud este año; ahora, el reto es proyectar esa misma atención y comunicación de Servicio también en el área de Ventas.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador P" },
+{ id:'natalybautista', nombre:"Nataly Bautista Romo", puesto:"Gerente Administrativo", jefe:"Erika Paulina Godoy Haro", antiguedad:"0.7 años", grupo:"administracion",
+  periods:[{label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}], atendido:"Sin evaluación 2026 capturada en el archivo (marcado sin calificación).",
+  reco_full:[{texto:"Confirmar estatus de evaluación pendiente.", categoria:"Coaching del jefe"}], reco_accion:"Confirmar evaluación pendiente" },
+{ id:'albertofernandez', nombre:"Alberto Fernandez Jimenez", puesto:"Ejecutivo Comercial", jefe:"Fernando Romo Godinez", antiguedad:"2.2 años", grupo:"otros",
+  periods:[
+    {label:"Ene–Jun 2026", global:92, clasif:"ADECUADO", paei:{P:87.0,A:95.0,E:90.0,I:100.0}, comentarios:{P:"Con un GAP aún de cumplimiento e meta a pesar del ajuste realizado, es importante empujar una mayor colocación.",A:"Te auto gestionas eficientemente, cumples con tus entregables, cuida los tiempos y formas.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es P (87). Con un GAP aún de cumplimiento e meta a pesar del ajuste realizado, es importante empujar una mayor colocación.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador P" },
+{ id:'juanjose', nombre:"Juan Jose Tavarez Sandoval", puesto:"Contador", jefe:"Gerardo Ornelas Aldana", antiguedad:"2.3 años", grupo:"otros",
+  periods:[
+    {label:"Ene–Jun 2026", global:96, clasif:"SOBRESALIENTE", paei:{P:100.0,A:90.0,E:95.0,I:100.0}, comentarios:{P:"TODO OK",A:"Did Cuentas puente refacciones",E:"3.-Armar plan de accion de iniciativas de mejora",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es A (90). Did Cuentas puente refacciones", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador A" },
+{ id:'leticiaguzman', nombre:"Leticia Guzman Garcia", puesto:"Auxiliar De Limpieza", jefe:"Brounie Casandra Guadalupe Prado Muñoz", antiguedad:"3.7 años", grupo:"calidad",
+  periods:[
+    {label:"Ene–Jun 2026", global:88.25, clasif:"ADECUADO", paei:{P:90.0,A:90.0,E:85.0,I:80.0}, comentarios:{P:"Es gratificante ver cómo tus resultados mensuales respaldan tu evolució sigue.",A:"Estoy muy a gusto con tu desempeño, especialmente por tu disciplina. Mantener siempre las auditorías en orden, portar el uniforme con orgullo y lograr esos altos puntajes de satisfacción del cliente refleja el gran respeto que tienes por tu trabajo.",E:"Veo una oportunidad de mejora en la rapidez de ejecución y en la puesta en marcha de nuevas iniciativas. Al agilizar tus tiempos y compartir tus ideas de trabajo, lograremos una mejor sincronía con el resto del departamento, fortaleciendo el resultado colectivo. Vamos por ese objetivo",I:"Aprecio mucho tu flexibilidad, pero debemos mejorar la proactividad en las tareas compartidas. He notado que, ante ciertos retrasos, tus compañeras terminan realizando actividades que nos corresponden a todos. Aunque siempre estás dispuesto a ayudar en cosas nuevas, es fundamental que tomes el liderazgo de tus responsabilidades actuales sin necesidad de supervisión constante. Menos \"esperar instrucciones' y más 'acción por iniciativa propia."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es I (80). Aprecio mucho tu flexibilidad, pero debemos mejorar la proactividad en las tareas compartidas. He notado que, ante ciertos retrasos, tus compañeras terminan realizando actividades", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador I" },
+{ id:'cristinaalejandra', nombre:"Cristina Alejandra Hernandez Rodriguez", puesto:"Jefe Administrativo", jefe:"Nataly Bautista Romo", antiguedad:"6.6 años", grupo:"administracion",
+  periods:[
+    {label:"Ene–Jun 2026", global:86.98, clasif:"ADECUADO", paei:{P:83.3,A:83.3,E:100.0,I:85.0}, comentarios:{P:"Entender y Enseñarce a ciertos procesos de areas de oprtunidad para su revision.",A:"Dar seguimiento a las observaciones",E:"Se compromete a organizar mas los tiempos para poder implementar mejoras en su area",I:"Trabajaremos para ser mas para terner ma integracion y cumplir mas con capacitacion"}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es P (83). Entender y Enseñarce a ciertos procesos de areas de oprtunidad para su revision.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador P" },
+{ id:'jessicahernandez', nombre:"Jessica Hernandez Gutierrez", puesto:"Administracion Ventas", jefe:"Nataly Bautista Romo", antiguedad:"3.8 años", grupo:"administracion",
+  periods:[
+    {label:"Ene–Jun 2026", global:77, clasif:"INSATISFACTORIO", paei:{P:75.0,A:87.5,E:50.0,I:70.0}, comentarios:{P:"Tener mayor concenracion en mis reportes asignados para tener el menor error posible",A:"Minimizar los errores como estar ams concentrada al momento de hacer mis actividades",E:"Buscar opciones para proponer mejorar las actividades",I:"Aprender mas del concoimiento de facturacion hacerme mas analista y colabrar mas con mis compañeras"}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es E (50). Buscar opciones para proponer mejorar las actividades", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador E" },
+{ id:'sandraluevano', nombre:"Sandra Luevano Lopez", puesto:"Administracion Ventas", jefe:"Nataly Bautista Romo", antiguedad:"2.5 años", grupo:"administracion",
+  periods:[
+    {label:"Ene–Jun 2026", global:86, clasif:"ADECUADO", paei:{P:87.5,A:87.5,E:70.0,I:90.0}, comentarios:{P:"Ser mas meticulosa",A:"Ser mas analiticas al momento de generar los documentos de entrega",E:"Investigar, capacitarme mas en lo respectivo y tener mas inciativa.",I:"Mejorar comunicación con mi equipo involucrarme mas en las areas de admon ventas"}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es E (70). Investigar, capacitarme mas en lo respectivo y tener mas inciativa.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador E" },
+{ id:'abrahamalvarado', nombre:"Abraham Alvarado Torija", puesto:"Pintor", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"1.4 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:77, clasif:"ADECUADO", paei:{P:80.0,A:75.0,E:80.0,I:75.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es A (75). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador A" },
+{ id:'damelysmaria', nombre:"Damelys Maria Hernandez Parra", puesto:"Valuador Web", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"9.2 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:99, clasif:"SOBRESALIENTE", paei:{P:100.0,A:100.0,E:95.0,I:95.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es E (95). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador E" },
+{ id:'efrainalejandro', nombre:"Efrain Alejandro Cruz Marin", puesto:"Preparador", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"2.0 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:87.5, clasif:"ADECUADO", paei:{P:85.0,A:90.0,E:85.0,I:85.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es P (85). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador P" },
+{ id:'juanmanuel', nombre:"Juan Manuel Mendoza Torales", puesto:"Tecnico De Reparaciones Especiales", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"1.9 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:100, clasif:"SOBRESALIENTE", paei:{P:100.0,A:100.0,E:100.0,I:100.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es P (100). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador P" },
+{ id:'mariafernandalechuga', nombre:"Maria Fernanda Lechuga Becerra", puesto:"Valuador Web", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"1.9 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:93.7, clasif:"ADECUADO", paei:{P:98.0,A:90.0,E:98.0,I:95.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es A (90). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador A" },
+{ id:'martinbenitez', nombre:"Martin Benitez Guerrero", puesto:"Laminero", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"3.3 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:89, clasif:"ADECUADO", paei:{P:90.0,A:90.0,E:85.0,I:85.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es E (85). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador E" },
+{ id:'melissaabigail', nombre:"Melissa Abigail Gutierrez Guerrero", puesto:"Asesor De Laminado Y Pintura", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"3.5 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:100, clasif:"SOBRESALIENTE", paei:{P:100.0,A:100.0,E:100.0,I:100.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es P (100). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador P" },
+{ id:'rodrigomarquez', nombre:"Rodrigo Marquez Montoya", puesto:"Jefe De Taller De Laminado Y Pintura", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"9.5 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:99, clasif:"SOBRESALIENTE", paei:{P:100.0,A:100.0,E:100.0,I:95.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es I (95). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador I" },
+{ id:'alejandroaraiza', nombre:"Alejandro Araiza Lopez", puesto:"Detallador", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"0.7 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:87, clasif:"ADECUADO", paei:{P:80.0,A:90.0,E:90.0,I:100.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es P (80). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador P" },
+{ id:'alejandronoe', nombre:"Alejandro Noe De Luna Martinez", puesto:"Tecnico Diagnosta", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"2.0 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:87, clasif:"ADECUADO", paei:{P:100.0,A:63.0,E:95.0,I:95.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es A (63). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador A" },
+{ id:'brauliode', nombre:"Braulio De La Cruz Garay", puesto:"Tecnico Diagnosta", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"3.0 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:89, clasif:"ADECUADO", paei:{P:86.6,A:90.0,E:90.0,I:90.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es P (87). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador P" },
+{ id:'christianarturo', nombre:"Christian Arturo Hernandez Gonzalez", puesto:"Lavador", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"1.4 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:92, clasif:"ADECUADO", paei:{P:100.0,A:80.0,E:100.0,I:100.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es A (80). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador A" },
+{ id:'fernandoemmanuel', nombre:"Fernando Emmanuel Espinoza Cervantes", puesto:"Tecnico De Mantenimiento", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"3.0 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:92, clasif:"ADECUADO", paei:{P:95.0,A:92.5,E:88.6,I:80.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es I (80). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador I" },
+{ id:'jonathanmartin', nombre:"Jonathan Martin Yañez Mora", puesto:"Tecnico De Mantenimiento", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"3.1 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:93, clasif:"ADECUADO", paei:{P:92.5,A:92.5,E:93.3,I:100.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es P (92). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador P" },
+{ id:'joseeduardo', nombre:"Jose Eduardo Lopez Lopez", puesto:"Tecnico De Mantenimiento", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"0.8 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:92, clasif:"ADECUADO", paei:{P:92.5,A:95.0,E:86.6,I:80.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es I (80). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador I" },
+{ id:'luisdaniel', nombre:"Luis Daniel Bustos Zapata", puesto:"Lavador", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"3.2 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:88, clasif:"ADECUADO", paei:{P:80.0,A:90.0,E:100.0,I:100.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es P (80). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador P" },
+{ id:'pabloguadalupe', nombre:"Pablo Guadalupe Lara Loera", puesto:"Lavador", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"0.9 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:76, clasif:"INSATISFACTORIO", paei:{P:82.0,A:60.0,E:100.0,I:100.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es A (60). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador A" },
+{ id:'yeremijoseluis', nombre:"Yeremi Joseluis Diaz De La Cruz", puesto:"Lavador", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"0.7 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:72, clasif:"INSATISFACTORIO", paei:{P:70.0,A:60.0,E:100.0,I:100.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es A (60). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador A" },
+{ id:'adrianade', nombre:"Adriana De La Cruz Camacho", puesto:"Auxiliar De Garantias", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"1.6 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:98.5, clasif:"SOBRESALIENTE", paei:{P:100.0,A:100.0,E:90.0,I:100.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es E (90). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador E" },
+{ id:'alvaroricardo', nombre:"Alvaro Ricardo Morales Suarez", puesto:"Auxiliar De Previas", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"4.2 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:97.5, clasif:"SOBRESALIENTE", paei:{P:100.0,A:95.0,E:100.0,I:95.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es A (95). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador A" },
+{ id:'christianmateos', nombre:"Christian Mateos Castro", puesto:"Asesor De Servicio", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"1.3 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:83.5, clasif:"INSATISFACTORIO", paei:{P:65.0,A:100.0,E:80.0,I:100.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es P (65). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador P" },
+{ id:'claudiaalondra', nombre:"Claudia Alondra Marquez Ubario", puesto:"Asesor De Servicio", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"3.2 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:88, clasif:"ADECUADO", paei:{P:100.0,A:80.0,E:80.0,I:100.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es A (80). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador A" },
+{ id:'karlajanette', nombre:"Karla Janette Lara Montoya", puesto:"Atencion A Clientes", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"1.2 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:70, clasif:"INSATISFACTORIO", paei:{P:50.0,A:80.0,E:80.0,I:100.0}, comentarios:{P:"Constancia",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es P (50). Constancia", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador P" },
+{ id:'luisangel', nombre:"Luis Angel Flores Gomez", puesto:"Auxiliar De Recepción", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"3.1 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:85, clasif:"ADECUADO", paei:{P:70.0,A:80.0,E:100.0,I:100.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es P (70). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador P" },
+{ id:'mayranoemi', nombre:"Mayra Noemi Hernandez Gutierrez", puesto:"Administrador De Garantias", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"8.0 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:88, clasif:"ADECUADO", paei:{P:100.0,A:70.0,E:90.0,I:100.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es A (70). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador A" },
+{ id:'orlandoantonio', nombre:"Orlando Antonio Lara Alba", puesto:"Administrador De Garantias", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"5.3 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:94, clasif:"ADECUADO", paei:{P:100.0,A:90.0,E:100.0,I:80.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es I (80). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador I" },
+{ id:'priscilasarai', nombre:"Priscila Sarai Flores Ramirez", puesto:"Atencion A Clientes", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"1.6 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:89.5, clasif:"ADECUADO", paei:{P:75.0,A:100.0,E:95.0,I:100.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es P (75). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador P" },
+{ id:'rigobertorodriguez', nombre:"Rigoberto Rodriguez Gallegos", puesto:"Asesor De Servicio", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"5.0 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:89, clasif:"ADECUADO", paei:{P:100.0,A:90.0,E:80.0,I:80.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es E (80). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador E" },
+{ id:'rubenornelas', nombre:"Ruben Ornelas Aguayo", puesto:"Jefe De Taller", jefe:"Octavio Abraham Cervantes Hernandez", antiguedad:"10.8 años", grupo:"octavioteam",
+  periods:[
+    {label:"Ene–Jun 2026", global:98.5, clasif:"SOBRESALIENTE", paei:{P:100.0,A:95.0,E:100.0,I:100.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"Sin comentario capturado.",I:"Sin comentario capturado."}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es A (95). Sin comentario capturado.", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador A" },
+{ id:'josefernando', nombre:"Jose Fernando Garcia Castañon", puesto:"Tecnico De Soporte", jefe:"Pablo Guillen Medina", antiguedad:"3.1 años", grupo:"otros",
+  periods:[
+    {label:"Ene–Jun 2026", global:95.5, clasif:"SOBRESALIENTE", paei:{P:100.0,A:100.0,E:90.0,I:90.0}, comentarios:{P:"Sin comentario capturado.",A:"Sin comentario capturado.",E:"revisión de lineamientos TI",I:"ofrecer planes de proyectos para trabajo en conjunto"}, acuerdos:null},
+  ], atendido:"Primera evaluación capturada en este reporte, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Su indicador más bajo es E (90). revisión de lineamientos TI", categoria:"Coaching del jefe"}], reco_accion:"Revisar indicador E" },
+{ id:'brouniecasandra', nombre:"Brounie Casandra Guadalupe Prado Muñoz", puesto:"Trainer", jefe:"Tonatzin Araceli Leon Loera", antiguedad:"1.6 años", grupo:"calidad",
+  periods:[{label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}], atendido:"Sin evaluación 2026 capturada en el archivo (marcado sin calificación).",
+  reco_full:[{texto:"Confirmar estatus de evaluación pendiente.", categoria:"Coaching del jefe"}], reco_accion:"Confirmar evaluación pendiente" },
+];
+
+function fmt(v){ return (v===null||v===undefined) ? '—' : (Number.isInteger(v) ? v.toString() : v.toFixed(2)); }
+function initials(name){ return name.split(' ').filter(w=>w.length>2||/[A-ZÁÉÍÓÚÑ]/.test(w[0])).slice(0,2).map(w=>w[0]).join('').toUpperCase().slice(0,2); }
+function tier(g){ if(g===null||g===undefined) return null; return g>=95?'SOBRESALIENTE':g>=85?'ADECUADO':'INSATISFACTORIO'; }
+function stars(g){ const n = g>=98?5:g>=95?5:g>=90?4:g>=85?3:g>=75?2:1; return '★'.repeat(n) + '☆'.repeat(5-n); }
+function deltaSpan(d){
+  if (d===null||d===undefined) return '<span class="delta-flat">—</span>';
+  if (d > 0.05) return `<span class="delta-up">▲ +${d.toFixed(1)}</span>`;
+  if (d < -0.05) return `<span class="delta-down">▼ ${d.toFixed(1)}</span>`;
+  return `<span class="delta-flat">▬ 0.0</span>`;
+}
+function curPeriod(p){ return p.periods[p.periods.length-1]; }
+function prevPeriod(p){ return p.periods.length>1 ? p.periods[p.periods.length-2] : null; }
+function personDelta(p){ const prev=prevPeriod(p); return prev ? curPeriod(p).global - prev.global : null; }
+
+function paeiCircleSvg(letter, value, size){
+  size = size||130;
+  const r = size/2-13, cx=size/2, cy=size/2, circ=2*Math.PI*r;
+  const frac = Math.max(0, Math.min(1, (value||0)/100));
+  const dash = frac*circ;
+  const color = PAEI_HEX[letter];
+  return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--navy-3)" stroke-width="13"/>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="13" stroke-linecap="round" stroke-dasharray="${dash} ${circ-dash}" transform="rotate(-90 ${cx} ${cy})"/>
+    <text x="${cx}" y="${cy-4}" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="25" fill="var(--ink)">${value!==null?value.toFixed(1):'—'}</text>
+    <text x="${cx}" y="${cy+20}" text-anchor="middle" font-family="IBM Plex Mono" font-weight="700" font-size="15" fill="${color}">(${letter})</text>
+  </svg>`;
+}
+function renderCircleRow(containerId, items, deltaLabel){
+  deltaLabel = deltaLabel || 'vs. periodo anterior';
+  document.getElementById(containerId).innerHTML = `<div style="display:flex; gap:28px; justify-content:center; flex-wrap:wrap;">` +
+    items.map(it=>`<div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+      ${paeiCircleSvg(it.letter, it.value)}
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--muted); text-align:center; max-width:130px;">${PAEI_LABEL[it.letter]}</div>
+      ${it.delta!==undefined ? `<div style="font-size:12px;">${deltaSpan(it.delta)} <span style="color:var(--muted); font-size:10.5px;">${deltaLabel}</span></div>` : ''}
+    </div>`).join('') + `</div>`;
+}
+
+function lineChartSvg(series, opts){
+  opts = opts || {};
+  const n = opts.n || 2;
+  const W = opts.w||620, H = opts.h||280, padL=44, padR = opts.endLabels? 54:18, padT=16, padB=36;
+  const plotW=W-padL-padR, plotH=H-padT-padB;
+  const yMin = opts.yMin!==undefined?opts.yMin:0, yMax = opts.yMax!==undefined?opts.yMax:100;
+  const xPos = i => padL + (i/(n-1))*plotW;
+  const yPos = v => padT + plotH - ((v-yMin)/(yMax-yMin))*plotH;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">`;
+  const gridVals = opts.gridVals || [yMin, (yMin+yMax)/2, yMax];
+  gridVals.forEach(v=>{
+    const y = yPos(v);
+    svg += `<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="var(--line)" stroke-width="1"/>
+      <text x="${padL-8}" y="${y+4}" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="var(--muted)">${v.toFixed(0)}</text>`;
+  });
+  const xLabels = opts.xLabels || ['1','2'];
+  xLabels.forEach((lbl,i)=> svg += `<text x="${xPos(i)}" y="${H-12}" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="var(--muted)">${lbl}</text>`);
+  series.forEach(s=>{
+    const pts = s.values.map((v,i)=> v!==null ? `${xPos(i)},${yPos(v)}` : null).filter(Boolean);
+    svg += `<polyline points="${pts.join(' ')}" fill="none" stroke="${s.color}" stroke-width="${s.width||2.5}"/>`;
+    s.values.forEach((v,i)=>{ if(v!==null){
+      svg += `<circle cx="${xPos(i)}" cy="${yPos(v)}" r="4" fill="${s.color}"/>`;
+      if (s.showLabel) svg += `<text x="${xPos(i)}" y="${yPos(v)-11}" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="11" fill="var(--ink)">${v.toFixed(1)}</text>`;
+    }});
+  });
+  if (opts.endLabels){
+    let ends = series.map(s=>{
+      const lastIdx = s.values.map((v,i)=>v!==null?i:-1).filter(i=>i>=0).pop();
+      return lastIdx===undefined ? null : {y: yPos(s.values[lastIdx]), val:s.values[lastIdx], color:s.color, letter:s.letter};
+    }).filter(Boolean).sort((a,b)=>a.y-b.y);
+    for (let i=1;i<ends.length;i++){ if (ends[i].y-ends[i-1].y<16) ends[i].y = ends[i-1].y+16; }
+    ends.forEach(e=>{
+      svg += `<text x="${W-padR+8}" y="${e.y+4}" font-family="IBM Plex Mono" font-weight="700" font-size="11" fill="${e.color}">(${e.letter}) ${e.val.toFixed(1)}</text>`;
+    });
+  }
+  svg += `</svg>`;
+  return svg;
+}
+
+function renderKpis(){
+  const total = PERSONAS.length;
+  const valid = PERSONAS.filter(p=>curPeriod(p).global!==null);
+  const avg2026 = valid.reduce((s,p)=>s+curPeriod(p).global,0)/valid.length;
+  const withPrev = PERSONAS.filter(p=>prevPeriod(p) && prevPeriod(p).global!==null && curPeriod(p).global!==null);
+  const avgPrev = withPrev.length ? withPrev.reduce((s,p)=>s+prevPeriod(p).global,0)/withPrev.length : null;
+  const avg2026Comp = withPrev.length ? withPrev.reduce((s,p)=>s+curPeriod(p).global,0)/withPrev.length : null;
+  const delta = (avgPrev!==null) ? avg2026Comp - avgPrev : null;
+  const insatisfactorios = valid.filter(p=>tier(curPeriod(p).global)==='INSATISFACTORIO').length;
+  const pendientes = PERSONAS.filter(p=>curPeriod(p).global===null && !p.noAplica).length;
+  const tiles = [
+    {l:'Equipo', n:total, sub:`${valid.length} evaluados, ${pendientes} pendientes${PERSONAS.some(p=>p.noAplica)?', 1 no aplica este ciclo':''}`},
+    {l:'Promedio 2026', n:avg2026.toFixed(1), sub:`${valid.length} colaboradores`},
+    {l:'vs. periodo anterior', n: delta!==null ? `${delta>=0?'+':''}${delta.toFixed(1)}` : '—', sub:`${withPrev.length} con dato comparable`, cls: delta!==null ? (delta>=0?'delta-up':'delta-down') : ''},
+    {l:'En riesgo', n:`${insatisfactorios}/${valid.length}`, sub:'Insatisfactorio'},
+  ];
+  document.getElementById('kpiGrid').innerHTML = tiles.map(t=>`
+    <div class="card kpi"><div class="l">${t.l}</div><div class="n ${t.cls||''}">${t.n}</div><div class="sub">${t.sub}</div></div>`).join('');
+}
+
+function renderTeamCircles(){
+  const validPaei = PERSONAS.filter(p=>curPeriod(p).paei.P!==null);
+  const withPrevPaei = PERSONAS.filter(p=>prevPeriod(p) && prevPeriod(p).paei.P!==null && curPeriod(p).paei.P!==null);
+  const cur={P:0,A:0,E:0,I:0}; validPaei.forEach(p=>{ ['P','A','E','I'].forEach(k=>cur[k]+=curPeriod(p).paei[k]); });
+  ['P','A','E','I'].forEach(k=>cur[k]/=validPaei.length);
+  const prev={P:0,A:0,E:0,I:0}; withPrevPaei.forEach(p=>{ ['P','A','E','I'].forEach(k=>prev[k]+=prevPeriod(p).paei[k]); });
+  ['P','A','E','I'].forEach(k=>prev[k]/=(withPrevPaei.length||1));
+  const items = ['P','A','E','I'].map(k=>({letter:k, value:cur[k], delta: withPrevPaei.length ? cur[k]-prev[k] : undefined}));
+  renderCircleRow('circleRowTeam', items, 'vs. periodo anterior');
+}
+
+function renderCumplimientoAplicacion(){
+  const aplican = PERSONAS.filter(p=>!p.noAplica).length;
+  const withPrev = PERSONAS.filter(p=>prevPeriod(p) && !p.noAplica).length;
+  const tiles = [
+    {l:'2026', n:'100%', sub:`confirmado por Sergio — ${aplican} aplicables (Octavio no le toca este ciclo)`},
+    {l:'2025 (KIA Altaria)', n:'100%', sub:'confirmado — cumplimiento de aplicación'},
+  ];
+  document.getElementById('cumplimientoAplicacionGrid').innerHTML = tiles.map(t=>`
+    <div class="card kpi"><div class="l">${t.l}</div><div class="n">${t.n}</div><div class="sub">${t.sub}</div></div>`).join('');
+}
+
+function renderHighlights(){
+  const items = [
+    {label:'Mayor recuperación', nombre:'Diego Esquivias', valor:'76.5 → 95.5', person:'diego'},
+    {label:'Referente del equipo', nombre:'Luis Menchaca', valor:'96 → 99.3', person:'luis'},
+    {label:'Arranque sobresaliente', nombre:'Citlali Díaz', valor:'97.75', person:'citlali'},
+  ];
+  document.getElementById('highlightGrid').innerHTML = items.map(it=>`
+    <div class="card hl-card" onclick="openHistorial('${it.person}')">
+      <div class="stars">★★★</div>
+      <div class="hn">${it.nombre}</div>
+      <div class="hv">${it.valor}</div>
+      <div class="hl">${it.label}</div>
+    </div>`).join('');
+}
+
+function heatColor(v){ if(v===null) return 'rgba(255,255,255,0.05)'; if(v>=95) return 'rgba(52,199,123,0.28)'; if(v>=85) return 'rgba(232,197,71,0.28)'; return 'rgba(240,82,75,0.28)'; }
+function heatTextColor(v){ if(v===null) return 'var(--muted)'; if(v>=95) return 'var(--g)'; if(v>=85) return 'var(--y)'; return 'var(--r)'; }
+function renderHeat(){
+  const jefesIds = ['david','christopher','kevin','octavio'];
+  let html = '<thead><tr><th>Colaborador</th><th>P</th><th>A</th><th>E</th><th>I</th><th>Global</th></tr></thead><tbody>';
+  jefesIds.forEach(id=>{
+    const p = PERSONAS.find(x=>x.id===id);
+    const s = curPeriod(p);
+    html += `<tr><td>${p.nombre.split(' ')[0]} ${p.nombre.split(' ')[1]||''}</td>`;
+    ['P','A','E','I'].forEach(k=>{ const v=s.paei[k]; html += `<td>${v!==null ? `<span class="heat-cell" style="background:${heatColor(v)};color:${heatTextColor(v)};">${v}</span>` : '<span class="pill-warn">—</span>'}</td>`; });
+    html += `<td>${s.global!==null ? `<span class="heat-cell" style="background:${heatColor(s.global)};color:${heatTextColor(s.global)};">${fmt(s.global)}</span>` : '<span class="pill-warn">Pendiente</span>'}</td></tr>`;
+  });
+  document.getElementById('heatTable').innerHTML = html + '</tbody>';
+}
+
+function renderDeptoTable(){
+  const depts = [...new Set(PERSONAS.filter(p=>!p.noAplica).map(p=>DEPTO_MAP[p.id]))].sort();
+  let html = '<thead><tr><th>Departamento</th><th style="text-align:right">Gente</th><th style="text-align:right">Evaluados</th><th style="text-align:right">Cumplimiento</th><th style="text-align:right">Promedio</th><th style="text-align:right">En riesgo</th></tr></thead><tbody>';
+  depts.forEach(d=>{
+    const allRows = PERSONAS.filter(p=>DEPTO_MAP[p.id]===d);
+    const rows = allRows.filter(p=>!p.noAplica);
+    const valid = rows.filter(p=>curPeriod(p).global!==null);
+    const avgD = valid.length ? valid.reduce((s,p)=>s+curPeriod(p).global,0)/valid.length : null;
+    const insat = valid.filter(p=>tier(curPeriod(p).global)==='INSATISFACTORIO').length;
+    const cumplimiento = rows.length ? Math.round(valid.length/rows.length*100) : 100;
+    html += `<tr>
+      <td><b>${d}</b></td>
+      <td class="num">${allRows.length}</td>
+      <td class="num">${valid.length}</td>
+      <td class="num" style="color:${cumplimiento<100?'var(--o)':'var(--g)'};">${cumplimiento}%</td>
+      <td class="num" style="font-weight:800;">${avgD!==null?avgD.toFixed(1):'—'}</td>
+      <td class="num">${insat>0?`<span style="color:var(--r);font-weight:700;">${insat}</span>`:'0'}</td>
+    </tr>`;
+  });
+  document.getElementById('deptoTable').innerHTML = html + '</tbody>';
+}
+
+function renderJefeTable(){
+  const jefes = [...new Set(PERSONAS.map(p=>p.jefe))].filter(j=>j && j!=='—').sort();
+  let html = '<thead><tr><th>Jefe</th><th style="text-align:right">Gente a cargo</th><th style="text-align:right">Evaluados</th><th style="text-align:right">Cumplimiento</th><th style="text-align:right">Promedio equipo</th><th style="text-align:right">En riesgo</th></tr></thead><tbody>';
+  jefes.forEach(j=>{
+    const allRows = PERSONAS.filter(p=>p.jefe===j);
+    const rows = allRows.filter(p=>!p.noAplica);
+    const valid = rows.filter(p=>curPeriod(p).global!==null);
+    const avgJ = valid.length ? valid.reduce((s,p)=>s+curPeriod(p).global,0)/valid.length : null;
+    const insat = valid.filter(p=>tier(curPeriod(p).global)==='INSATISFACTORIO').length;
+    const cumplimiento = rows.length ? Math.round(valid.length/rows.length*100) : 100;
+    html += `<tr>
+      <td><b>${j}</b></td>
+      <td class="num">${allRows.length}</td>
+      <td class="num">${valid.length}</td>
+      <td class="num" style="color:${cumplimiento<100?'var(--o)':'var(--g)'};">${cumplimiento}%</td>
+      <td class="num" style="font-weight:800;">${avgJ!==null?avgJ.toFixed(1):'—'}</td>
+      <td class="num">${insat>0?`<span style="color:var(--r);font-weight:700;">${insat}</span>`:'0'}</td>
+    </tr>`;
+  });
+  document.getElementById('jefeTable').innerHTML = html + '</tbody>';
+}
+
+// ===== Roster completo con filtros de lista desplegable y orden por columna =====
+let rosterFiltros = { depto:'', jefe:'', puesto:'', colaborador:'' };
+let rosterOrden = { col:'nombre', dir:1 };
+
+function poblarFiltrosRoster(){
+  const deptos = [...new Set(PERSONAS.map(p=>DEPTO_MAP[p.id]))].sort();
+  const jefes = [...new Set(PERSONAS.map(p=>p.jefe))].filter(j=>j && j!=='—').sort();
+  const puestos = [...new Set(PERSONAS.map(p=>p.puesto))].sort();
+  const nombres = [...PERSONAS].map(p=>p.nombre).sort();
+  document.getElementById('filtroDepto').innerHTML = '<option value="">Todos los departamentos</option>' + deptos.map(d=>`<option value="${d}">${d}</option>`).join('');
+  document.getElementById('filtroJefe').innerHTML = '<option value="">Todos los jefes</option>' + jefes.map(j=>`<option value="${j}">${j}</option>`).join('');
+  document.getElementById('filtroPuesto').innerHTML = '<option value="">Todos los puestos</option>' + puestos.map(p=>`<option value="${p}">${p}</option>`).join('');
+  document.getElementById('filtroColaborador').innerHTML = '<option value="">Todos los colaboradores</option>' + nombres.map(n=>`<option value="${n}">${n}</option>`).join('');
+
+  document.getElementById('filtroDepto').addEventListener('change', e=>{ rosterFiltros.depto = e.target.value; renderRosterFullTable(); });
+  document.getElementById('filtroJefe').addEventListener('change', e=>{ rosterFiltros.jefe = e.target.value; renderRosterFullTable(); });
+  document.getElementById('filtroPuesto').addEventListener('change', e=>{ rosterFiltros.puesto = e.target.value; renderRosterFullTable(); });
+  document.getElementById('filtroColaborador').addEventListener('change', e=>{ rosterFiltros.colaborador = e.target.value; renderRosterFullTable(); });
+}
+function limpiarFiltrosRoster(){
+  rosterFiltros = { depto:'', jefe:'', puesto:'', colaborador:'' };
+  document.getElementById('filtroDepto').value = '';
+  document.getElementById('filtroJefe').value = '';
+  document.getElementById('filtroPuesto').value = '';
+  document.getElementById('filtroColaborador').value = '';
+  renderRosterFullTable();
+}
+function ordenarRosterPor(col){
+  if (rosterOrden.col===col) rosterOrden.dir *= -1; else { rosterOrden.col=col; rosterOrden.dir = (col==='nombre'||col==='puesto'||col==='depto'||col==='jefe') ? 1 : -1; }
+  renderRosterFullTable();
+}
+function renderRosterFullTable(){
+  let rows = PERSONAS.slice();
+  if (rosterFiltros.depto) rows = rows.filter(p=>DEPTO_MAP[p.id]===rosterFiltros.depto);
+  if (rosterFiltros.jefe) rows = rows.filter(p=>p.jefe===rosterFiltros.jefe);
+  if (rosterFiltros.puesto) rows = rows.filter(p=>p.puesto===rosterFiltros.puesto);
+  if (rosterFiltros.colaborador) rows = rows.filter(p=>p.nombre===rosterFiltros.colaborador);
+
+  rows.sort((a,b)=>{
+    let av, bv;
+    const col = rosterOrden.col;
+    if (col==='nombre'){ av=a.nombre; bv=b.nombre; return av.localeCompare(bv)*rosterOrden.dir; }
+    if (col==='puesto'){ av=a.puesto; bv=b.puesto; return av.localeCompare(bv)*rosterOrden.dir; }
+    if (col==='depto'){ av=DEPTO_MAP[a.id]; bv=DEPTO_MAP[b.id]; return av.localeCompare(bv)*rosterOrden.dir; }
+    if (col==='jefe'){ av=a.jefe||''; bv=b.jefe||''; return av.localeCompare(bv)*rosterOrden.dir; }
+    if (col==='g2026'){ av=curPeriod(a).global; bv=curPeriod(b).global; av=(av===null?-1:av); bv=(bv===null?-1:bv); return (av-bv)*rosterOrden.dir; }
+    if (col==='g2025'){ av=prevPeriod(a)?prevPeriod(a).global:null; bv=prevPeriod(b)?prevPeriod(b).global:null; av=(av===null?-1:av); bv=(bv===null?-1:bv); return (av-bv)*rosterOrden.dir; }
+    if (col==='delta'){ av=personDelta(a); bv=personDelta(b); av=(av===null?-999:av); bv=(bv===null?-999:bv); return (av-bv)*rosterOrden.dir; }
+    return 0;
+  });
+
+  const th = (label, col) => `<th onclick="ordenarRosterPor('${col}')" style="cursor:pointer; white-space:nowrap;">${label} ${rosterOrden.col===col ? (rosterOrden.dir===1?'▲':'▼') : ''}</th>`;
+  let html = `<thead><tr>
+    ${th('Colaborador','nombre')}
+    ${th('Puesto','puesto')}
+    ${th('Departamento','depto')}
+    ${th('Jefe','jefe')}
+    <th style="text-align:right; cursor:pointer;" onclick="ordenarRosterPor('g2025')">2025 ${rosterOrden.col==='g2025'?(rosterOrden.dir===1?'▲':'▼'):''}</th>
+    <th style="text-align:right; cursor:pointer;" onclick="ordenarRosterPor('g2026')">2026 ${rosterOrden.col==='g2026'?(rosterOrden.dir===1?'▲':'▼'):''}</th>
+    <th style="text-align:right; cursor:pointer;" onclick="ordenarRosterPor('delta')">Diferencia ${rosterOrden.col==='delta'?(rosterOrden.dir===1?'▲':'▼'):''}</th>
+  </tr></thead><tbody>`;
+  rows.forEach(p=>{
+    const cur = curPeriod(p);
+    const prev = prevPeriod(p);
+    html += `<tr onclick="openHistorial('${p.id}')">
+      <td><b>${p.nombre}</b></td>
+      <td style="font-size:11.5px;">${p.puesto}</td>
+      <td style="font-size:11.5px; color:var(--muted);">${DEPTO_MAP[p.id]}</td>
+      <td style="font-size:11.5px; color:var(--muted);">${p.jefe||'—'}</td>
+      <td class="num">${prev ? fmt(prev.global) : (p.noAplica ? '—' : 'Sin comparable')}</td>
+      <td class="num" style="font-weight:800;">${p.noAplica ? '<span class="pill-warn">No aplica</span>' : fmt(cur.global)}</td>
+      <td class="num">${p.noAplica ? '—' : deltaSpan(personDelta(p))}</td>
+    </tr>`;
+  });
+  html += '</tbody>';
+  document.getElementById('rosterFullTable').innerHTML = html;
+  document.getElementById('rosterCounterNote').textContent = `Mostrando ${rows.length} de ${PERSONAS.length} colaboradores. Clic en un encabezado para ordenar; clic en una fila para ver su expediente.`;
+}
+
+
+function teamCardHtml(p){
+  const s = curPeriod(p); const g = s.global; const d = personDelta(p);
+  const arrow = d===null?'':(d>0.5?'<span class="delta-up">↑</span>':d<-0.5?'<span class="delta-down">↓</span>':'<span class="delta-flat">→</span>');
+  return `<div class="card team-card" onclick="openHistorial('${p.id}')">
+    <div class="avatar">${initials(p.nombre)}</div>
+    <div class="tn">${p.nombre}</div>
+    <div class="tp">${p.puesto}</div>
+    <div class="tv">${fmt(g)} ${arrow}</div>
+    <div class="stars">${g!==null ? stars(g) : '<span class="pill-warn">Pendiente</span>'}</div>
+    <div class="tlink">Ver expediente →</div>
+  </div>`;
+}
+function renderTeamCards(){
+  document.getElementById('teamGridDirecto').innerHTML = PERSONAS.filter(p=>p.grupo==='directo').map(teamCardHtml).join('');
+  document.getElementById('teamGridChristopher').innerHTML = PERSONAS.filter(p=>p.grupo==='christopherteam').map(teamCardHtml).join('');
+  document.getElementById('teamGridKevin').innerHTML = PERSONAS.filter(p=>p.grupo==='kevinteam').map(teamCardHtml).join('');
+  document.getElementById('teamGridOctavio').innerHTML = PERSONAS.filter(p=>p.grupo==='octavioteam').map(teamCardHtml).join('');
+  document.getElementById('teamGridCalidad').innerHTML = PERSONAS.filter(p=>p.grupo==='calidad').map(teamCardHtml).join('');
+  document.getElementById('teamGridAdmin').innerHTML = PERSONAS.filter(p=>p.grupo==='administracion').map(teamCardHtml).join('');
+  document.getElementById('teamGridOtros').innerHTML = PERSONAS.filter(p=>p.grupo==='otros').map(teamCardHtml).join('');
+}
+
+function renderComentario(){
+  const validComentario = PERSONAS.filter(p=>curPeriod(p).global!==null);
+  const avg2026 = validComentario.reduce((s,p)=>s+curPeriod(p).global,0)/validComentario.length;
+  document.getElementById('comentarioBox').innerHTML = `<div class="aihead">🧠 Generado a partir de los datos del periodo</div>
+    KIA Altaria, agencia completa bajo Sergio López Ramírez, cierra el semestre con un promedio de <b>${avg2026.toFixed(1)}</b> en 67 colaboradores evaluados (3 pendientes de calificación: Nataly Bautista y Brounie Prado sin registro capturado, y <b>Octavio Cervantes</b> — jefe de 31 personas, el equipo más grande de la agencia — sin evaluación porque cambió recientemente a Gerente de Servicio y aún no le toca su primer ciclo en ese rol). El hallazgo de liderazgo más importante viene del área comercial: su Gerente de Ventas, <b>Christopher Iván Espíritu</b>, venía de calificación perfecta (100) en 2025 pero lleva tres periodos consecutivos a la baja (100→93.75→83.56), cruzando a Insatisfactorio.<br><br>
+    El área de <b>Servicio Técnico y Ventas Servicio</b> (bajo Octavio Cervantes, 31 personas) tiene el mayor número de casos en Insatisfactorio de la agencia: Yeremi Díaz de la Cruz (72), Karla Janette Lara (70), Pablo Guadalupe Lara (76) y Christian Mateos Castro (83.5) — todos Lavadores o Asesores de Servicio. En contraste, <b>Laminado y Pintura</b> (mismo jefe) tiene varios de los mejores resultados de toda la agencia: Juan Manuel Mendoza Torales y Melissa Abigail Gutiérrez con calificación perfecta (100), y Rodrigo Márquez (Jefe de Taller) con 99.<br><br>
+    En el equipo de ventas de Christopher, el patrón es mixto: <b>Luis Gerardo Menchaca</b> es el referente (99.3, ya descrito como líder natural), pero <b>Ricardo Mireles</b> sigue en Insatisfactorio con una discrepancia entre su comentario ("evolución positiva") y su calificación real (73, a la baja). <b>Elisa Caraveo</b> y <b>José Manuel Moreno</b> bajaron desde calificación perfecta.<br><br>
+    El hallazgo más positivo es <b>Diego Esquivias Gómez</b> (equipo de Kevin, Seminuevos): la mayor recuperación de todo el reporte (76.5→95.5, +19.0), saliendo de Insatisfactorio — aunque el tema de puntualidad de 2025 sigue apareciendo en su comentario 2026, ya sin afectar tanto su resultado.`;
+}
+
+function renderCasosAtencion(){
+  document.getElementById('casosAtencion').innerHTML = `
+    <div class="alert-box">
+      <b style="color:var(--r);">Christopher Iván Espíritu Rodríguez</b> — tres periodos consecutivos a la baja (100→93.75→83.56), cruzando a Insatisfactorio. El compromiso de leer un libro de liderazgo (Jorge Valdano) se repitió dos veces en 2025 sin confirmarse; en 2026 ya aparece un "plan de acción personal para corregir desviaciones". <b>Recomendación:</b> es el caso de mayor prioridad del reporte — amerita una conversación formal, no solo retroalimentación de rutina.
+    </div>
+    <div class="note-box">
+      <b style="color:var(--o);">Octavio Abraham Cervantes Hernández</b> — es el jefe con más gente a cargo de toda la agencia (31 personas: Servicio Técnico, Ventas Servicio, Laminado y Pintura, Mantenimiento). No tiene evaluación 2026 porque cambió de puesto recientemente a Gerente de Servicio — todavía no le toca su primer ciclo en ese rol.
+    </div>
+    <div class="alert-box">
+      <b style="color:var(--r);">Karla Janette Lara Montoya</b> (Atención a Clientes, Ventas Servicio) — la calificación más baja de toda la agencia (70). Su único comentario capturado, en todo el semestre, es una palabra: "Constancia". <b>Recomendación:</b> antes de cualquier plan de acción, se necesita una evaluación con evidencia real — el archivo no documenta qué pasó.
+    </div>
+    <div class="alert-box">
+      <b style="color:var(--r);">Yeremi Joseluis Díaz de la Cruz</b> (Lavador, Servicio Técnico) — 72, Insatisfactorio, sin ningún comentario capturado en los 4 indicadores. Mismo problema que Karla: no hay evidencia documentada que sustente ni explique la calificación.
+    </div>
+    <div class="note-box">
+      <b style="color:var(--o);">Jessica Hernández Gutiérrez</b> (Administración Ventas) — 77, Insatisfactorio, con comentarios reales y concretos: necesita "mayor concentración en los reportes para reducir errores" y "aprender más de facturación para colaborar más con sus compañeras" — a diferencia de los casos anteriores, aquí sí hay una base clara para un plan de desarrollo.
+    </div>
+    <div class="note-box">
+      <b style="color:var(--o);">Ricardo Mireles Fletes</b> — sigue en Insatisfactorio (73, bajó desde 80), con una discrepancia entre su comentario ("evolución positiva, de menos a más") y el número real, que va en sentido contrario.
+    </div>`;
+}
+
+function renderPatronList(){
+  document.getElementById('patronList').innerHTML = `
+    <div class="card persist-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <b style="font-size:14px;">Brenda Tapia Ruiz y Justin Sinuhé Nava Rodríguez</b>
+        <span class="pill-warn">⚠ Mismo puesto, mismo jefe, mismo patrón</span>
+      </div>
+      <p style="font-size:12.5px; margin:8px 0 0;">Ambos Vendedores Comisionistas de Seminuevos, bajo Kevin Bejines, comparten el mismo patrón: Eficacia y Eficiencia en 30 (sus indicadores más bajos), con compromisos de "plan de trabajo para mejorar el cierre" y "prospección externa" todavía pendientes de confirmar.</p>
+    </div>
+    <div class="card persist-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <b style="font-size:14px;">El equipo de Octavio Cervantes (31 personas)</b>
+        <span class="pill-warn">⚠ Sin evidencia documentada, en ambos extremos</span>
+      </div>
+      <p style="font-size:12.5px; margin:8px 0 0;">Es el equipo más grande de la agencia y el que tiene menos comentarios capturados. Ni los tres casos de calificación perfecta (Juan Manuel Mendoza, Melissa Abigail Gutiérrez, Rubén Ornelas) ni los de menor calificación (Yeremi Díaz de la Cruz, Pablo Guadalupe Lara) tienen ningún comentario por indicador — no hay forma de saber, desde el archivo, qué explica ninguno de los dos extremos. Vale la pena pedirle a Octavio que documente evidencia en el próximo ciclo, para todo el equipo.</p>
+    </div>
+    <div class="card persist-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <b style="font-size:14px;">Lizbeth Monserrat Rivera Luna y Leticia Guzmán García</b>
+        <span class="pill-warn">⚠ Mismo equipo, mismo tema de Colaboración</span>
+      </div>
+      <p style="font-size:12.5px; margin:8px 0 0;">Ambas en Calidad, bajo Brounie Prado. El comentario de Leticia señala directamente que "ante ciertos retrasos, tus compañeras terminan realizando actividades que nos corresponden" — y el de Lizbeth Monserrat pide "integrar la flexibilidad en tu día a día para que tu talento brille por igual en todas tus áreas". Es el mismo tema de reparto de carga de trabajo dentro del mismo equipo pequeño.</p>
+    </div>`;
+}
+
+function renderPromoCoach(){
+  const ids = ['diego','luis','citlali','juanmanuel','melissaabigail','josuerodriguez'];
+  document.getElementById('promoList').innerHTML = ids.map(id=>{
+    const p = PERSONAS.find(x=>x.id===id);
+    const g = curPeriod(p).global;
+    const labels = {diego:'Mayor recuperación (+19.0)', luis:'Liderazgo natural reconocido', citlali:'Arranque muy fuerte', juanmanuel:'Calificación perfecta (Laminado y Pintura)', melissaabigail:'Calificación perfecta (Laminado y Pintura)', josuerodriguez:'Calificación perfecta (Refacciones)'};
+    return `<div class="card hl-card" onclick="openHistorial('${id}')">
+      <div class="stars">${stars(g)}</div>
+      <div class="hn">${p.nombre.split(' ')[0]} ${p.nombre.split(' ')[1]||''}</div>
+      <div class="hv">${fmt(g)}</div>
+      <div class="hl">${labels[id]}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderPlanGerencial(){
+  const PRIORIDAD = {christopher:'Alta', ricardo:'Alta', gabriel:'Alta', alfredo:'Media', david:'Media', ivanyair:'Media', brenda:'Media', justin:'Media', diego:'Baja', luis:'Baja', citlali:'Baja', elisa:'Media', josemanuel:'Media', josearturo:'Baja', kevin:'Baja', diana:'Baja', jessica:'Baja', juanantonio:'Baja', marco:'Baja', mariafernanda:'Baja', mariaguadalupe:'Baja', omar:'Baja', patricia:'Baja', adrian:'Baja', alfonso:'Baja'};
+  const TIPO = {christopher:'3 periodos a la baja, ahora Insatisfactorio', ricardo:'Discrepancia comentario vs. calificación real', gabriel:'Insatisfactorio, impacto en ambiente del equipo', alfredo:'Insatisfactorio, patrón de ánimo', david:'Cambió de jefe, mismo tema de organización', ivanyair:'Primer registro, en adaptación', brenda:'Eficacia/Eficiencia bajas, mismo patrón que Justin', justin:'Eficacia/Eficiencia bajas, mismo patrón que Brenda', diego:'Mayor recuperación del reporte', luis:'Referente del equipo', citlali:'Arranque sobresaliente', elisa:'Mayor caída individual (-10.25)', josemanuel:'Bajó de perfecto, tema de colaboración', josearturo:'Colaboración es su punto más bajo', kevin:'Revisar indicador de Eficiencia (75)', diana:'Estable, ya lidera a Citlali', jessica:'Mejoró a Sobresaliente', juanantonio:'Ligera baja, constancia en seguimiento', marco:'Estable, referente en organización', mariafernanda:'Ligera baja, conocimiento de producto', mariaguadalupe:'Mejora reciente en colaboración', omar:'Primer registro, evolución positiva reconocida', patricia:'Primer registro, arranque sólido', adrian:'Estable, plan de seguimiento', alfonso:'Mejora sostenida'};
+  const prioColor = {Alta:'var(--r)', Media:'var(--o)', Baja:'var(--g)'};
+  document.getElementById('planGerencialTable').innerHTML =
+    `<thead><tr><th>Colaborador</th><th>Situación</th><th>Acción sugerida</th><th>Prioridad</th></tr></thead><tbody>` +
+    PERSONAS.map(p=>`<tr>
+      <td>${p.nombre}</td><td>${TIPO[p.id]||'—'}</td>
+      <td><span class="pill-action">${p.reco_accion||'—'}</span></td>
+      <td><span style="color:${prioColor[PRIORIDAD[p.id]||'Baja']}; font-weight:700; font-family:'IBM Plex Mono',monospace; font-size:11px;">${PRIORIDAD[p.id]||'Baja'}</span></td>
+    </tr>`).join('') + `</tbody>`;
+}
+
+function renderTendenciaEquipo(){
+  const withPrev = PERSONAS.filter(p=>prevPeriod(p));
+  const vals = [
+    withPrev.reduce((s,p)=>s+prevPeriod(p).global,0)/withPrev.length,
+    withPrev.reduce((s,p)=>s+curPeriod(p).global,0)/withPrev.length,
+  ];
+  document.getElementById('lineTeam').innerHTML = lineChartSvg([{values:vals, color:'var(--blue-light)', width:3, showLabel:true}], {n:2, xLabels:['Periodo anterior','2026'], yMin:75, yMax:100});
+}
+
+function renderTendenciaPaei(){
+  const withPrev = PERSONAS.filter(p=>prevPeriod(p) && prevPeriod(p).paei.P!==null);
+  const series = ['P','A','E','I'].map(k=>{
+    const values = [
+      withPrev.reduce((s,p)=>s+prevPeriod(p).paei[k],0)/withPrev.length,
+      withPrev.reduce((s,p)=>s+curPeriod(p).paei[k],0)/withPrev.length,
+    ];
+    return {values, color:PAEI_HEX[k], width:2.75, letter:k};
+  });
+  document.getElementById('linePaei').innerHTML = lineChartSvg(series, {n:2, xLabels:['Periodo anterior','2026'], endLabels:true, yMin:75, yMax:100});
+  document.getElementById('paeiLegend').innerHTML = ['P','A','E','I'].map(k=>`
+    <div style="display:flex; align-items:center; gap:6px; font-size:12px;">
+      <span style="width:16px; height:3px; background:${PAEI_HEX[k]}; display:inline-block; border-radius:2px;"></span>${PAEI_LABEL[k]}
+    </div>`).join('');
+}
+
+let currentHistId = PERSONAS[0].id;
+function renderHistList(){
+  document.getElementById('histList').innerHTML = PERSONAS.map(p=>`
+    <div class="hist-item ${p.id===currentHistId?'active':''}" data-id="${p.id}">
+      <span>${p.nombre}</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;">${fmt(curPeriod(p).global)}</span>
+    </div>`).join('');
+  document.getElementById('histList').querySelectorAll('.hist-item').forEach(el=>{
+    el.addEventListener('click', ()=>{ currentHistId = el.dataset.id; renderHistList(); renderExpediente(); });
+  });
+}
+function openHistorial(id){
+  currentHistId = id;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelector('.tab-btn[data-tab="historial"]').classList.add('active');
+  document.getElementById('panel-historial').classList.add('active');
+  renderHistList(); renderExpediente();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function renderExpediente(){
+  const p = PERSONAS.find(x=>x.id===currentHistId);
+  const s = p.periods;
+  const cur = curPeriod(p); const g = cur.global; const t = tier(g);
+  const prev = prevPeriod(p);
+  const ranking = [...PERSONAS].sort((a,b)=>curPeriod(b).global-curPeriod(a).global);
+  const rankPos = ranking.findIndex(x=>x.id===p.id)+1;
+
+  const n = s.length;
+  const lineHtml = n>1 ? lineChartSvg([{values:s.map(x=>x.global), color:'var(--blue-light)', width:3, showLabel:true}], {n:n, xLabels:s.map(x=>x.label), yMin:70, yMax:100}) : '';
+  const circleItems = ['P','A','E','I'].map(k=>({letter:k, value:cur.paei[k], delta: (prev && prev.paei[k]!==null) ? cur.paei[k]-prev.paei[k] : undefined}));
+
+  const periodsTableHtml = `<div style="overflow-x:auto;"><table class="rtable" style="min-width:760px;">
+    <thead><tr><th>Periodo</th><th style="text-align:right">General</th><th style="text-align:right">(P)</th><th style="text-align:right">(A)</th><th style="text-align:right">(E)</th><th style="text-align:right">(I)</th><th style="min-width:300px;">Comentarios</th></tr></thead>
+    <tbody>${s.map(per=>{
+      const com = `<b style="color:var(--blue-light);">(P)</b> ${per.comentarios.P}<br><b style="color:var(--blue-light);">(A)</b> ${per.comentarios.A}<br><b style="color:var(--blue-light);">(E)</b> ${per.comentarios.E}<br><b style="color:var(--blue-light);">(I)</b> ${per.comentarios.I}${per.acuerdos&&per.acuerdos!=="Sin información."?`<br><b style="color:var(--blue-light);">Acuerdo:</b> ${per.acuerdos}`:''}`;
+      return `<tr>
+        <td><b>${per.label}</b><br>${per.clasif ? `<span class="tier-pill ${per.clasif}" style="margin-top:4px;display:inline-block;">${per.clasif.charAt(0)+per.clasif.slice(1).toLowerCase()}</span>` : '<span class="pill-warn" style="margin-top:4px;display:inline-block;">Pendiente</span>'}</td>
+        <td class="num" style="font-weight:800;">${fmt(per.global)}</td>
+        <td class="num">${fmt(per.paei.P)}</td><td class="num">${fmt(per.paei.A)}</td><td class="num">${fmt(per.paei.E)}</td><td class="num">${fmt(per.paei.I)}</td>
+        <td style="font-size:12px; line-height:1.55;">${com}</td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table></div>`;
+
+  document.getElementById('expedienteCard').innerHTML = `
+    <div class="expediente-header">
+      <div style="display:flex; gap:14px; align-items:center;">
+        <div class="av-lg">${initials(p.nombre)}</div>
+        <div><div style="font-weight:800; font-size:18px;">${p.nombre}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted);">${p.puesto}</div></div>
+      </div>
+      <button class="btn-pdf" onclick="window.print()">⬇ Descargar PDF</button>
+    </div>
+    <div class="exp-meta">
+      <div class="em"><div class="ek">Antigüedad</div><div class="ev">${p.antiguedad}</div></div>
+      <div class="em"><div class="ek">Jefe</div><div class="ev" style="font-size:11.5px;">${p.jefe}</div></div>
+      <div class="em"><div class="ek">Calificación actual</div><div class="ev">${fmt(g)} ${t ? `<span class="tier-pill ${t}">${t.charAt(0)+t.slice(1).toLowerCase()}</span>` : '<span class="pill-warn">Pendiente</span>'}</div></div>
+      <div class="em"><div class="ek">Ranking equipo</div><div class="ev">#${rankPos} de ${ranking.length}</div></div>
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">Calificación por indicador (vs. periodo anterior)</div>
+      <div id="circleRowPerson"></div>
+    </div>
+    ${lineHtml ? `<div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">Evolución de calificación</div>
+      <div style="display:flex; justify-content:center;">${lineHtml}</div>
+    </div>` : ''}
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">¿Se atendieron los puntos?</div>
+      <p style="font-size:13px; line-height:1.65; margin:0 0 14px;">${p.atendido}</p>
+      <div class="section-kicker" style="margin-bottom:10px;">Concentrado general</div>
+      ${periodsTableHtml}
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">Qué mide cada indicador en su puesto</div>
+      ${PUESTO_DEF[p.puesto] ? `<div class="doc-block"><p><b>P</b> — ${PUESTO_DEF[p.puesto].P}<br><b>A</b> — ${PUESTO_DEF[p.puesto].A}<br><b>E</b> — ${PUESTO_DEF[p.puesto].E}<br><b>I</b> — ${PUESTO_DEF[p.puesto].I}</p><p style="margin-top:8px; color:var(--muted); font-size:11px;">Fuente: Matriz de Ponderación oficial, plantillas PAEI Grupo Vanguardia.</p></div>` : `<div class="doc-block"><p style="color:var(--muted);">Definición de indicadores por puesto no disponible en este reporte para "${p.puesto}".</p></div>`}
+    </div>
+    ${p.nota ? `<div style="padding:0 22px 24px;"><div class="pill-warn">Nota</div><p style="font-size:12.5px; color:var(--muted); margin-top:6px;">${p.nota}</p></div>` : ''}
+    <div style="padding:0 22px 24px;">
+      <div class="card ai-box"><div class="aihead">🧠 Recomendación IA</div>
+        <ul style="margin:0; padding-left:18px;">${p.reco_full.map(r=>`<li style="margin-bottom:8px;"><span class="pill-action" style="margin-bottom:4px;display:inline-block;">${r.categoria}</span><br>${r.texto}</li>`).join('')}</ul>
+      </div>
+    </div>
+  `;
+  renderCircleRow('circleRowPerson', circleItems, 'vs. periodo anterior');
+}
+
+function initAll(){
+  renderKpis();
+  renderTeamCircles();
+  renderCumplimientoAplicacion();
+  renderHighlights();
+  renderHeat();
+  renderDeptoTable();
+  renderJefeTable();
+  poblarFiltrosRoster();
+  renderRosterFullTable();
+  renderComentario();
+  renderTeamCards();
+  renderCasosAtencion();
+  renderPatronList();
+  renderPromoCoach();
+  renderPlanGerencial();
+  renderTendenciaEquipo();
+  renderTendenciaPaei();
+  renderHistList();
+  renderExpediente();
+}
+initAll();
+
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>
