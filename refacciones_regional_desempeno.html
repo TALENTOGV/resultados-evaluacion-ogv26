@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Refacciones Regional · Centro de Inteligencia del Desempeño</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+:root{
+  --navy:#060B1F; --navy-2:#0B1330; --navy-3:#121B42;
+  --line:rgba(255,255,255,0.09); --ink:#F4F6FA; --muted:rgba(244,246,250,0.55);
+  --blue-light:#7FD1F0; --blue:#2E8FE0;
+  --g:#34C77B; --y:#E8C547; --r:#F0524B; --o:#F0964B;
+  --paei-p:#2E8FE0; --paei-a:#E8C547; --paei-e:#34C77B; --paei-i:#A78BFA;
+  --shadow:0 1px 2px rgba(0,0,0,0.2), 0 12px 32px -16px rgba(0,0,0,0.55);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--navy);color:var(--ink);font-family:'Manrope',sans-serif;-webkit-font-smoothing:antialiased;}
+main{max-width:1150px;margin:0 auto;padding:0 5vw 90px;}
+header.top{ background:radial-gradient(ellipse at 75% -10%, rgba(46,143,224,0.22), transparent 55%), var(--navy); padding:40px 5vw 0; border-bottom:1px solid var(--line); }
+.eyebrow{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--blue-light); margin:0 0 10px; }
+.hero-title{ font-weight:800; font-size:clamp(22px,3vw,32px); margin:0 0 8px; letter-spacing:-.01em; }
+.hero-sub{ font-size:13.5px; color:var(--muted); max-width:700px; line-height:1.6; margin:0 0 26px; }
+.tabs{ display:flex; gap:4px; flex-wrap:wrap; }
+.tab-btn{ font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.03em; text-transform:uppercase; color:var(--muted); background:none; border:none; padding:14px 16px; cursor:pointer; border-bottom:3px solid transparent; transition:color .15s,border-color .15s; white-space:nowrap; }
+.tab-btn:hover{ color:var(--blue-light); }
+.tab-btn.active{ color:var(--ink); border-bottom-color:var(--blue); font-weight:700; }
+.panel{ display:none; } .panel.active{ display:block; }
+section{ padding:34px 0 8px; border-bottom:1px solid var(--line); }
+section:last-of-type{ border-bottom:none; }
+.section-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; margin-bottom:18px; }
+.section-kicker{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--blue-light); margin:0 0 6px; }
+.section-title{ font-weight:800; font-size:clamp(18px,2vw,22px); margin:0; }
+.section-note{ font-size:12.5px; color:var(--muted); max-width:380px; line-height:1.5; text-align:right; }
+.card{ background:var(--navy-2); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); }
+.kpi-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+@media(max-width:800px){ .kpi-grid{ grid-template-columns:1fr 1fr; } }
+.kpi{ padding:18px; }
+.kpi .l{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.kpi .n{ font-weight:800; font-size:24px; }
+.kpi .sub{ margin-top:6px; font-size:11px; color:var(--muted); }
+.delta-up{ color:var(--g); font-weight:700; } .delta-down{ color:var(--r); font-weight:700; } .delta-flat{ color:var(--muted); font-weight:700; }
+.tier-pill{ font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.05em; text-transform:uppercase; padding:3px 9px; border-radius:20px; display:inline-block; }
+.tier-pill.SOBRESALIENTE{ background:rgba(52,199,123,0.15); color:var(--g); }
+.tier-pill.ADECUADO{ background:rgba(232,197,71,0.15); color:var(--y); }
+.tier-pill.INSATISFACTORIO{ background:rgba(240,82,75,0.15); color:var(--r); }
+.pill-warn{ font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.05em; text-transform:uppercase; padding:2px 8px; border-radius:20px; background:rgba(240,150,75,0.13); color:var(--o); display:inline-block; }
+.pill-action{ font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.03em; padding:5px 11px; border-radius:8px; background:var(--navy-3); border:1px solid var(--line); color:var(--ink); display:inline-block; }
+table.rtable{ width:100%; border-collapse:collapse; font-size:12.5px; }
+table.rtable th{ text-align:left; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); padding:9px 10px; border-bottom:1px solid var(--line); }
+table.rtable td{ padding:10px 10px; border-bottom:1px solid var(--line); vertical-align:middle; }
+table.rtable td.num{ font-family:'IBM Plex Mono',monospace; text-align:right; }
+table.rtable tr:last-child td{ border-bottom:none; }
+.ai-box{ padding:20px 22px; font-size:13.5px; line-height:1.75; border-left:3px solid var(--blue-light); background:rgba(127,209,240,0.05); }
+.ai-box .aihead{ display:flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--blue-light); margin-bottom:10px; }
+.note-box{ padding:16px 20px; font-size:12.5px; color:var(--muted); line-height:1.6; border-left:3px solid var(--o); background:rgba(240,150,75,0.05); border-radius:0 10px 10px 0; }
+.alert-box{ padding:16px 20px; font-size:12.5px; color:var(--ink); line-height:1.6; border-left:3px solid var(--r); background:rgba(240,82,75,0.07); border-radius:0 10px 10px 0; }
+.doc-block{ background:var(--navy-3); border-radius:10px; padding:12px 14px; margin-bottom:8px; }
+.doc-block .dk{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--blue-light); margin-bottom:5px; }
+.doc-block p{ margin:0; font-size:12.5px; line-height:1.6; white-space:pre-line; color:var(--ink); }
+.highlight-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+@media(max-width:800px){ .highlight-grid{ grid-template-columns:1fr 1fr; } }
+.hl-card{ padding:18px; text-align:center; cursor:pointer; }
+.hl-card .stars{ color:var(--y); font-size:13px; margin-bottom:8px; }
+.hl-card .hn{ font-weight:800; font-size:15px; margin-bottom:4px; }
+.hl-card .hv{ font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--blue-light); margin-bottom:6px; }
+.hl-card .hl{ font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+.team-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+@media(max-width:800px){ .team-grid{ grid-template-columns:1fr 1fr; } }
+.team-card{ padding:18px; cursor:pointer; transition:border-color .15s, transform .15s; }
+.team-card:hover{ border-color:rgba(127,209,240,0.35); transform:translateY(-2px); }
+.avatar{ width:42px; height:42px; border-radius:50%; background:var(--navy-3); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; color:var(--blue-light); margin-bottom:10px; }
+.team-card .tn{ font-weight:700; font-size:13.5px; margin-bottom:2px; }
+.team-card .tp{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--muted); margin-bottom:10px; }
+.team-card .tv{ font-weight:800; font-size:22px; }
+.team-card .stars{ color:var(--y); font-size:11px; margin:4px 0 8px; }
+.team-card .tlink{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--blue-light); text-transform:uppercase; letter-spacing:.05em; }
+.subgroup-label{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--blue-light); margin:26px 0 12px; }
+.subgroup-label:first-child{ margin-top:0; }
+.hist-shell{ display:grid; grid-template-columns:250px 1fr; gap:24px; }
+@media(max-width:800px){ .hist-shell{ grid-template-columns:1fr; } }
+.hist-list{ display:flex; flex-direction:column; gap:4px; max-height:700px; overflow-y:auto; }
+.hist-item{ padding:10px 14px; border-radius:9px; cursor:pointer; font-size:13px; display:flex; justify-content:space-between; align-items:center; gap:8px; }
+.hist-item:hover{ background:var(--navy-3); }
+.hist-item.active{ background:rgba(127,209,240,0.1); color:var(--blue-light); font-weight:700; }
+.expediente-header{ display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:14px; padding:20px 22px; }
+.expediente-header .av-lg{ width:56px; height:56px; border-radius:50%; background:var(--navy-3); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:19px; color:var(--blue-light); }
+.exp-meta{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; padding:0 22px 20px; }
+@media(max-width:650px){ .exp-meta{ grid-template-columns:1fr 1fr; } }
+.exp-meta .em{ background:var(--navy-3); border-radius:9px; padding:10px 12px; }
+.exp-meta .ek{ font-family:'IBM Plex Mono',monospace; font-size:9px; text-transform:uppercase; color:var(--muted); margin-bottom:3px; }
+.exp-meta .ev{ font-weight:700; font-size:13px; }
+.btn-pdf{ font-family:'Manrope',sans-serif; font-weight:700; font-size:12.5px; color:#06101F; background:var(--blue-light); border:none; border-radius:9px; padding:10px 16px; cursor:pointer; }
+@media print{
+  :root{
+    --navy:#ffffff; --navy-2:#ffffff; --navy-3:#f2f3f5;
+    --line:#c9ccd2; --ink:#0a0a0a; --muted:#3f4147;
+    --blue-light:#1d4ed8; --blue:#1d4ed8;
+    --g:#15803d; --y:#92660b; --r:#b91c1c; --o:#b45309;
+  }
+  body *{ visibility:hidden; }
+  #printArea, #printArea *{ visibility:visible; }
+  #printArea{ position:absolute; left:0; top:0; width:100%; }
+  .tabs, .btn-pdf, .hist-list{ display:none !important; }
+  body{ background:#fff; color:#0a0a0a; }
+  .card{ border:1px solid #c9ccd2 !important; box-shadow:none !important; }
+  .doc-block, .ai-box{ background:#f2f3f5 !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <p class="eyebrow">Capital Humano · Grupo Vanguardia · Refacciones Regional</p>
+  <h1 class="hero-title">Refacciones Regional — Centro de Inteligencia del Desempeño</h1>
+  <p class="hero-sub">Reporte para Mario Iván Castellanos Campos, Gerente de Refacciones Regional. Todo el departamento de Ventas Refacciones a nivel grupo, excepto KIA Altaria, KIA Corregidora y Body Vanguardia. 46 colaboradores en 9 agencias: Audi Center Galerías, BMW Vanguardia Motors, Body BMW, Geely Galerías, Geely González Gallo, Honda González Gallo, Honda Vanguardia Colima, Honda Vanguardia Galerías, Motonova y Renault Américas.</p>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="resumen">🏠 Resumen Ejecutivo</button>
+    <button class="tab-btn" data-tab="equipo">👥 Mi Equipo</button>
+    <button class="tab-btn" data-tab="ia">🧠 Análisis IA</button>
+    <button class="tab-btn" data-tab="tendencias">📈 Tendencias</button>
+    <button class="tab-btn" data-tab="historial">📁 Historial</button>
+  </div>
+</header>
+
+<main>
+
+<div class="panel active" id="panel-resumen">
+
+<section style="padding-top:30px;">
+  <div class="alert-box">
+    <b style="color:var(--r);">Alerta principal — cumplimiento incompleto.</b> 27 de 46 colaboradores (59%) no tienen calificación 2026 capturada todavía, concentrados casi por completo en BMW Vanguardia Motors (8), Renault Américas (7), Motonova (5) y Body BMW (1), además de varios Gerentes de Refacciones por agencia (Mario mismo, Ignacio Castro, Jorge Armando Raudales, Alexis Hernández, Amado González). Es un tema de cumplimiento de aplicación, no de desempeño.
+  </div>
+</section>
+
+<section>
+  <div class="kpi-grid" id="kpiGrid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Mario Iván Castellanos Campos · Gerente de Refacciones Regional</p><h2 class="section-title">Cumplimiento de aplicación de evaluaciones</h2></div>
+  </div>
+  <div class="kpi-grid" style="grid-template-columns:repeat(2,1fr);" id="cumplimientoGrid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Vista clara</p><h2 class="section-title">Calificación promedio por indicador</h2></div>
+    <p class="section-note">Solo los evaluados en 2026.</p>
+  </div>
+  <div class="card" style="padding:26px;"><div id="circleRowTeam"></div></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Vista general</p><h2 class="section-title">Calificación y cumplimiento por agencia</h2></div>
+  </div>
+  <div class="card" style="padding:6px 16px; overflow-x:auto;"><table class="rtable" id="agenciaTable"></table></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Reconocimiento</p><h2 class="section-title">Lo mejor del equipo</h2></div>
+  </div>
+  <div class="highlight-grid" id="highlightGrid"></div>
+</section>
+
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Lectura automática</p><h2 class="section-title">Comentario ejecutivo</h2></div>
+  </div>
+  <div class="card ai-box" id="comentarioBox"></div>
+</section>
+
+</div>
+
+<div class="panel" id="panel-equipo">
+<section style="padding-top:30px; border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Estructura</p><h2 class="section-title">46 colaboradores en 9 agencias</h2></div>
+    <p class="section-note">Da clic en una tarjeta para abrir su expediente completo.</p>
+  </div>
+  <div class="subgroup-label">Gerentes / Jefes de Refacciones por agencia (reportan a Mario)</div>
+  <div class="team-grid" id="teamGridGerentes"></div>
+  <div class="subgroup-label">Audi Center Galerías</div>
+  <div class="team-grid" id="teamGridAudi"></div>
+  <div class="subgroup-label">BMW Vanguardia Motors y Body BMW</div>
+  <div class="team-grid" id="teamGridBmw"></div>
+  <div class="subgroup-label">Geely (Galerías y González Gallo)</div>
+  <div class="team-grid" id="teamGridGeelygal"></div>
+  <div class="subgroup-label">Honda González Gallo</div>
+  <div class="team-grid" id="teamGridHondagg"></div>
+  <div class="subgroup-label">Honda Vanguardia Colima</div>
+  <div class="team-grid" id="teamGridHondacol"></div>
+  <div class="subgroup-label">Honda Vanguardia Galerías</div>
+  <div class="team-grid" id="teamGridHondagal"></div>
+  <div class="subgroup-label">Motonova</div>
+  <div class="team-grid" id="teamGridMotonova"></div>
+  <div class="subgroup-label">Renault Américas</div>
+  <div class="team-grid" id="teamGridRenault"></div>
+</section>
+</div>
+
+<div class="panel" id="panel-ia">
+<section style="padding-top:30px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Prioridad</p><h2 class="section-title">Casos de atención</h2></div>
+  </div>
+  <div id="casosAtencion" style="display:flex; flex-direction:column; gap:14px;"></div>
+</section>
+<section>
+  <div class="section-head">
+    <div><p class="section-kicker">Automático</p><h2 class="section-title">Colaboradores con potencial para desarrollo</h2></div>
+  </div>
+  <div id="promoList" class="highlight-grid"></div>
+</section>
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Para el gerente regional</p><h2 class="section-title">Plan de Acción Gerencial</h2></div>
+  </div>
+  <div class="card" style="padding:6px 16px; overflow-x:auto;"><table class="rtable" id="planGerencialTable"></table></div>
+</section>
+</div>
+
+<div class="panel" id="panel-tendencias">
+<section style="padding-top:30px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Tendencia</p><h2 class="section-title">Del equipo — 2025 vs. 2026</h2></div>
+    <p class="section-note">Solo los con dato comparable en ambos años.</p>
+  </div>
+  <div class="card" style="padding:22px;"><div id="lineTeam" style="display:flex; justify-content:center;"></div></div>
+</section>
+<section style="border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Tendencia</p><h2 class="section-title">Por indicador PAEI — (P) (A) (E) (I) juntas</h2></div>
+  </div>
+  <div class="card" style="padding:22px;"><div id="linePaei" style="display:flex; justify-content:center;"></div><div id="paeiLegend" style="display:flex; gap:16px; justify-content:center; margin-top:14px; flex-wrap:wrap;"></div></div>
+</section>
+</div>
+
+<div class="panel" id="panel-historial">
+<section style="padding-top:30px; border-bottom:none; padding-bottom:50px;">
+  <div class="section-head">
+    <div><p class="section-kicker">Expediente</p><h2 class="section-title">Historial por colaborador</h2></div>
+  </div>
+  <div class="hist-shell">
+    <div class="hist-list" id="histList"></div>
+    <div id="printArea"><div class="card" id="expedienteCard"></div></div>
+  </div>
+</section>
+</div>
+
+</main>
+
+<script>
+const PAEI_LABEL = {P:'(P) Eficacia', A:'(A) Eficiencia', E:'(E) Proactividad', I:'(I) Colaboración'};
+const PAEI_HEX = {P:'#2E8FE0', A:'#E8C547', E:'#34C77B', I:'#A78BFA'};
+
+const PUESTO_DEF = {
+  'Gerente De Refacciones Regional': { P:'Cumplimiento de objetivos de venta de refacciones a nivel regional.', A:'Control de inventario y procesos administrativos en todas las agencias.', E:'Propuestas de mejora de procesos a nivel regional.', I:'Coordinación de los Gerentes de Refacciones de cada agencia.' },
+  'Gerente De Refacciones': { P:'Cumplimiento de objetivo de ventas de refacciones de la agencia.', A:'Control de inventario y procesos administrativos.', E:'Propuestas de mejora en procesos de refacciones.', I:'Coordinación del equipo; validación de Experiencia Vanguardia.' },
+  'Jefe De Refacciones': { P:'Cumplimiento de objetivo de ventas de refacciones.', A:'Control de inventario y procesos administrativos.', E:'Propuestas de mejora en procesos de refacciones.', I:'Coordinación del equipo; validación de Experiencia Vanguardia.' },
+  'Jefe De Almacen': { P:'Cumplimiento de control de inventario y surtido.', A:'Precisión en inventario; documentación correcta.', E:'Propuestas de mejora en procesos de almacén.', I:'Coordinación del equipo de almacén; validación de Experiencia Vanguardia.' },
+  'Almacenista': { P:'Cumplimiento de control de inventario y surtido asignado.', A:'Precisión en inventario; documentación correcta.', E:'Propuestas de mejora en procesos de almacén.', I:'Validación de Experiencia Vanguardia; comunicación con el equipo.' },
+  'Vendedor De Refacciones Taller': { P:'Cumplimiento de objetivo de ventas de refacciones a taller.', A:'Precisión en surtido de piezas; control de inventario.', E:'Propuestas de mejora en el proceso de surtido.', I:'Validación de Experiencia Vanguardia; comunicación con técnicos.' },
+  'Vendedor Refacciones Taller': { P:'Cumplimiento de objetivo de ventas de refacciones a taller.', A:'Precisión en surtido de piezas; control de inventario.', E:'Propuestas de mejora en el proceso de surtido.', I:'Validación de Experiencia Vanguardia; comunicación con técnicos.' },
+  'Vendedor De Refacciones Mostrador': { P:'Cumplimiento de objetivo de ventas de refacciones a mostrador.', A:'Precisión en surtido de piezas; control de inventario.', E:'Propuestas de mejora en el proceso de venta.', I:'Validación de Experiencia Vanguardia; comunicación con clientes.' },
+  'Vendedor Refacciones Mostrador': { P:'Cumplimiento de objetivo de ventas de refacciones a mostrador.', A:'Precisión en surtido de piezas; control de inventario.', E:'Propuestas de mejora en el proceso de venta.', I:'Validación de Experiencia Vanguardia; comunicación con clientes.' },
+  'Vendedor De Refacciones Mayoreo': { P:'Cumplimiento de objetivo de ventas de refacciones a mayoreo.', A:'Precisión en surtido de piezas; control de inventario.', E:'Propuestas de mejora en el proceso de venta a mayoreo.', I:'Validación de Experiencia Vanguardia; comunicación con clientes.' },
+  'Vendedor De Accesorios': { P:'Cumplimiento de objetivo de ventas de accesorios.', A:'Precisión en surtido y documentación.', E:'Propuestas de mejora en el proceso de venta.', I:'Validación de Experiencia Vanguardia; comunicación con clientes.' },
+  'Instalador De Accesorios': { P:'Cumplimiento de instalaciones de accesorios asignadas.', A:'Calidad de la instalación sin retrabajos.', E:'Propuestas de mejora en el proceso de instalación.', I:'Validación de Experiencia Vanguardia; comunicación con ventas.' },
+  'Asesor Web': { P:'Cumplimiento de objetivo de ventas web de refacciones.', A:'Documentación correcta de pedidos y seguimiento.', E:'Propuestas de mejora en el canal digital.', I:'Validación de Experiencia Vanguardia; comunicación con el equipo.' },
+  'Asesor De Laminado Y Pintura': { P:'Cumplimiento de órdenes de laminado y pintura asignadas.', A:'Calidad del trabajo sin retrabajos.', E:'Propuestas de mejora en procesos.', I:'Validación de Experiencia Vanguardia; apoyo al equipo.' },
+  'Chofer': { P:'Cumplimiento de traslados asignados en tiempo y forma.', A:'Cuidado del vehículo y documentación de traslados.', E:'Propuestas de mejora en rutas y tiempos.', I:'Validación de Experiencia Vanguardia; apoyo a otras áreas.' },
+};
+
+const PERSONAS = [
+{ id:'joseguadalupe', nombre:"Jose Guadalupe Aguilar Aguilar", puesto:"Vendedor De Refacciones Taller", jefe:"Alexis Hernandez Garcia", antiguedad:"10.0 años", agencia:"Honda Vanguardia Galerias", grupo:"hondagal",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:97.0, clasif:"SOBRESALIENTE", paei:{P:100.0,A:100.0,E:86.7,I:80.0}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:98.0, clasif:"SOBRESALIENTE", paei:{P:95.0,A:100.0,E:100.0,I:100.0}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'miroslavaverdugo', nombre:"Miroslava Verdugo Castellanos", puesto:"Vendedor De Refacciones Mayoreo", jefe:"Alexis Hernandez Garcia", antiguedad:"3.4 años", agencia:"Honda Vanguardia Galerias", grupo:"hondagal",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:93.25, clasif:"ADECUADO", paei:{P:85.0,A:100.0,E:100.0,I:85.0}, comentarios:{P:"Resultados de ventas.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:96.0, clasif:"SOBRESALIENTE", paei:{P:95.0,A:95.0,E:100.0,I:100.0}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'oscarricardo', nombre:"Oscar Ricardo Trujillo Carrisales", puesto:"Vendedor De Accesorios", jefe:"Alexis Hernandez Garcia", antiguedad:"9.2 años", agencia:"Honda Vanguardia Galerias", grupo:"hondagal",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:94.0, clasif:"ADECUADO", paei:{P:85.0,A:100.0,E:100.0,I:100.0}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:98.0, clasif:"SOBRESALIENTE", paei:{P:100.0,A:95.0,E:100.0,I:100.0}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'silvestreguzman', nombre:"Silvestre Guzman Guzman", puesto:"Instalador De Accesorios", jefe:"Alexis Hernandez Garcia", antiguedad:"20.9 años", agencia:"Honda Vanguardia Galerias", grupo:"hondagal",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:98.0, clasif:"SOBRESALIENTE", paei:{P:100.0,A:100.0,E:86.7,I:100.0}, comentarios:{P:"Resultados de ventas.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:98.0, clasif:"SOBRESALIENTE", paei:{P:100.0,A:95.0,E:100.0,I:100.0}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'marioivan', nombre:"Mario Ivan Castellanos Campos", puesto:"Gerente De Refacciones Regional", jefe:"Alfonso Paramo Ibarra", antiguedad:"11.3 años", agencia:"Honda Vanguardia Galerias", grupo:"hondagal",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:72.5, clasif:"INSATISFACTORIO", paei:{P:85.0,A:100.0,E:0.0,I:85.0}, comentarios:{P:"PRSUPUESTOS.",A:"PRSUPUESTOS.",E:"GENERAR MISION Y VISION DE LOS DEPARTAMENTOS DE REFACCIONE SA TU CARGO EN LAS AREAS DE MOSTRADOR Y MAYOREO.",I:"LA ROTACION SE HA GENERADO POR FALTA DE RESULTADOS DE ALGUNOS COLABORADORES, HACER ENCUESTA GERENCIAL GPTW CON LOS GERENTES A SU CARGO."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'carlosbedoy', nombre:"Carlos Bedoy Gutierrez", puesto:"Vendedor De Refacciones Taller", jefe:"Amado Gonzalez Olayo", antiguedad:"1.5 años", agencia:"Motonova", grupo:"motonova",
+  periods:[
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Sin evaluación 2026 capturada en el archivo.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'edgarjonathan', nombre:"Edgar Jonathan Santillan Ortega", puesto:"Vendedor De Refacciones Mostrador", jefe:"Amado Gonzalez Olayo", antiguedad:"4.3 años", agencia:"Motonova", grupo:"motonova",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:100.0, clasif:"SOBRESALIENTE", paei:{P:100.0,A:100.0,E:100.0,I:100.0}, comentarios:{P:"Reporte de ventas diarias, reporte mensual, mystery shopper.",A:"Reporte de ventas diarias, reporte de auditoría de imagen de calidad, reporte de auditoría de imagen HDM, reporte VDP.",E:"Propuestas: Manejo y control de medios digitales actualizados con novedades y promociones. -Prospección de clientes nuevos. -Seguimiento y control de pedidos especiales de mostrador. -Apoyo y control de invetario en exhibición. -Investiga y propone promociones efectivas.",I:"Reporte del reloj checador, reporte de auditoría de imagen y auditoría de estándares de refacciones, mystery shopper, google reviews."}, acuerdos:"Proponer ser coordinador del departamento para mejorar los procesos internos, apoyar a lo comercial basado en su experiencia, llevar mejor control de los inventarios y apoyar a los direntes canales de ventas."},
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'gabrielalejandro', nombre:"Gabriel Alejandro Mendoza Sanchez", puesto:"Vendedor De Refacciones Mayoreo", jefe:"Amado Gonzalez Olayo", antiguedad:"0.6 años", agencia:"Motonova", grupo:"motonova",
+  periods:[
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Sin evaluación 2026 capturada en el archivo.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'sergioalejandro', nombre:"Sergio Alejandro Covarrubia Claro", puesto:"Almacenista", jefe:"Amado Gonzalez Olayo", antiguedad:"4.3 años", agencia:"Motonova", grupo:"motonova",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:94.0, clasif:"ADECUADO", paei:{P:100.0,A:85.0,E:100.0,I:100.0}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'eduardopulido', nombre:"Eduardo Pulido Sanchez", puesto:"Vendedor Refacciones Taller", jefe:"Ernesto Iberri Martinez", antiguedad:"11.6 años", agencia:"Audi Center Galerias", grupo:"audi",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:93.0, clasif:"ADECUADO", paei:{P:85.7,A:100.0,E:86.7,I:100.0}, comentarios:{P:"Archivo de excel medición colaborador.",A:"Archivo de excel medición colaborador.",E:"Archivo de excel medición colaborador.",I:"Archivo de excel medición colaborador."}, acuerdos:"Mejorar puntualidad."},
+    {label:"Ene–Jun 2026", global:94.05, clasif:"ADECUADO", paei:{P:88.0,A:95.0,E:100.0,I:100.0}, comentarios:{P:"Sin información.",A:"SE COMPROMETE A MEJORAR SU PUNTUALIDAD ,",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'joseraul', nombre:"Jose Raul Diaz Esqueda", puesto:"Vendedor Refacciones Mostrador", jefe:"Ernesto Iberri Martinez", antiguedad:"13.8 años", agencia:"Audi Center Galerias", grupo:"audi",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:91.0, clasif:"ADECUADO", paei:{P:85.7,A:85.7,E:100.0,I:100.0}, comentarios:{P:"Archivo de excel medición colaborador.",A:"Archivo de excel medición colaborador.",E:"Archivo de excel medición colaborador.",I:"Archivo de excel medición colaborador."}, acuerdos:"MEJORAR GENERAR ACCIONES DE TRABAJO EN EQUIPO DESDE SU POSICION , MEJORAR ORGANIZACIÓN."},
+    {label:"Ene–Jun 2026", global:97.0, clasif:"SOBRESALIENTE", paei:{P:98.0,A:96.0,E:94.0,I:100.0}, comentarios:{P:"Compromiso levantar su venta mostrador y seguimiento con clientes mostrador ,aseguradoras adicional hacer nuevos clientes",A:"Sin información.",E:"Sin información.",I:"Le cuesta hacer equipo , mejorar trabajo en equipo con compañero de mostrador , se compromete mejorar este punto para mejorar ambiente y resultado mostrador"}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'juanjose', nombre:"Juan Jose Jimenez Iberri", puesto:"Vendedor De Refacciones Mostrador", jefe:"Ernesto Iberri Martinez", antiguedad:"19.2 años", agencia:"Audi Center Galerias", grupo:"audi",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:95.0, clasif:"SOBRESALIENTE", paei:{P:85.7,A:100.0,E:100.0,I:100.0}, comentarios:{P:"Archivo de excel medición colaborador.",A:"Archivo de excel medición colaborador.",E:"Archivo de excel medición colaborador.",I:"Archivo de excel medición colaborador."}, acuerdos:"SOLO COMO OBSERVACION , SER MAS EXTROVERTIDO EN MOSTRAR ACCIONES DE TRABAJO EN EQUIPO , DETENERSE UN POCO PARA ESCUCHAR A NUESTROS CLIENTES."},
+    {label:"Ene–Jun 2026", global:91.05, clasif:"ADECUADO", paei:{P:87.0,A:93.0,E:90.0,I:97.0}, comentarios:{P:"Mejorar resultado de mostrador , Generar mas clientes prospectando",A:"Sin información.",E:"Sin información.",I:"Hace falta involucrar al equipo desde su persona aportando antes de que le pidan algo , hacer equipo con Raul mostrador"}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'alangerardo', nombre:"Alan Gerardo Martinez Lopez", puesto:"Almacenista", jefe:"Ignacio Gerardo Alexandro Castro Fernandez", antiguedad:"2.2 años", agencia:"Bmw Vanguardia Motors", grupo:"bmw",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:92.75, clasif:"ADECUADO", paei:{P:100.0,A:100.0,E:0.0,I:255.0}, comentarios:{P:"Se realizan inventarios rotativos diarios, firmados por jefe de almacen y almacenista. Se envía por grupo de WhatApp las piezas que llegan de alemania para que se facturen, todo se encuentra con ubicación en alamcen.",A:"Calidad manda acta de visita con la calificaicón obtenida en auditoría de estándares. No se cuenta con facturas pendientes por registro de llegada de material de planta. Ni hay reclamos por daño o errores de envío.",E:"No se han presentado ideas de mejora. No se ha tenido en proyectos especiales. No hay sido necesario reportar situciones que afecten el patrimonio de la empresa.",I:"Lleva una buena relación con jefe de taller y compañeros, realiza trabajo en equipo y se dirige hacia las demás personas por su nombre y con amabilidad. Se complica con el cumplido de la hora de entrada y continuamente se le presentan situaciones por las cuales no se puede preesentar."}, acuerdos:"Se compromete a llegar a la hora puntual de entrada y participar con ideas de mejora para almancen y en eventos especiales."},
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'davidespinoza', nombre:"David Espinoza Garcia", puesto:"Vendedor De Refacciones Mostrador", jefe:"Ignacio Gerardo Alexandro Castro Fernandez", antiguedad:"2.4 años", agencia:"Bmw Vanguardia Motors", grupo:"bmw",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:98.0, clasif:"SOBRESALIENTE", paei:{P:100.0,A:100.0,E:86.7,I:100.0}, comentarios:{P:"Se han logrado y superado los objetivos de venta mensuales. Se lleva el llenado correcto de la base de datos y se da respuesta oportuna a todas las cotizaciones. Seguimiento diario a sus pedidos para notificar a los clientes dela llegada de sus piezas.",A:"Se cuida margen de utilidad de las piezas. Se da respuesta oportuna a las cotizaciones por los diferentes canales. Se ha cumplido con las auditorías de imagen. Se tiene el control de pedidos abiertos.",E:"Se atienden las cotizaciones por diferentes canales. Se realiza la prospección de clientes contactados por WhatsApp. Se participa en el inventario anual. Se comparten las promociones del mes.",I:"Se tiene puntualidad en la apertura del mostrador. Cumple con la cultura de 5s. Promueve la Experiencia Vangaurdia. Cumple con los estándares de refacciones."}, acuerdos:"Estar abierto al cambio de forma positiva."},
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'erikajaqueline', nombre:"Erika Jaqueline Gomez Colunga", puesto:"Asesor Web", jefe:"Ignacio Gerardo Alexandro Castro Fernandez", antiguedad:"4.4 años", agencia:"Bmw Vanguardia Motors", grupo:"bmw",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:97.25, clasif:"SOBRESALIENTE", paei:{P:100.0,A:100.0,E:86.7,I:85.0}, comentarios:{P:"Se da respuesta diaria a todas las cotizaciones y se da seguimiento a las 24 horas. Se da seguimiento a los pedidos para visar oportunamente a los clientes.",A:"Tiene un buen índice de cierre de venta. Se da respuesta oportuna a lassolicitudes por los diferentes medios digitales de contacto. Se tiene un adecuado control de los pedidos abierto.",E:"Se da atención oportuna por los diversos canales. No se han propuesto ideas de mejora. Se empieza a trabajar con el contacto con los clientes para ofrecer productos de estación y accesorios.",I:"Se cumplen con los estándares de refacciones. Se tiene oportunidad en la cultura de 5s. Se tiene oportunidad en la puntualidad de apertura. Se promueve la Experiencia Vamguardia."}, acuerdos:"Se va a trabajar en el cumplimiento de la cultura de 5s, se trabaja en la puntualidad. Se trabaja en ser más propositiva en sus labores."},
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'kevinnayib', nombre:"Kevin Nayib Serna Hernandez", puesto:"Vendedor De Refacciones Taller", jefe:"Ignacio Gerardo Alexandro Castro Fernandez", antiguedad:"5.5 años", agencia:"Bmw Vanguardia Motors", grupo:"bmw",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:87.25, clasif:"ADECUADO", paei:{P:85.0,A:85.0,E:100.0,I:85.0}, comentarios:{P:"Se ha cumplidocon las metas en la mayoría de las ocasiones. Se realiza la revisión de citas para tener listo el material requerido. Se da seguimiento y se actualiza follow",A:"Se revisan los precios para cuidar la utilidad. Se da respuesta a las cotizaciones requeridas diariamente. Se actualiza el follow cada tercer día para información de los asesores de servicio.",E:"Participa en los inventarios anuales. Es proactivo con la localización de piezas que no hay en planta. Se da respuesta oportuna a las solicitudes por diferentes medios.",I:"Tiene como oportunidad la llegada puntual a su lugar de trabajo. Cumple con las 5s. Tiene oportunidad en el control de sus reacciones viserales."}, acuerdos:"Cumplir con la puntualidad en su horario de entrada, y disminuir la llevadera con el personal de servicio para actuar de una manera más profesional, trabajar en su inteligencia emocional."},
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'mariogomez', nombre:"Mario Gomez Martinez", puesto:"Vendedor De Refacciones Mayoreo", jefe:"Ignacio Gerardo Alexandro Castro Fernandez", antiguedad:"13.8 años", agencia:"Bmw Vanguardia Motors", grupo:"bmw",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:98.0, clasif:"SOBRESALIENTE", paei:{P:100.0,A:100.0,E:86.7,I:100.0}, comentarios:{P:"Se ha cumplido y superado en algunas ocasiones con la meta mensual. Todos los días se da respuesta de las cotizaciones, no se deja ninguna pendiente. Se da seguimiento diario a sus pedidos para tener facturación constante.",A:"Se cuida el marcem de utilidad dando descuentos de acuerdo al margen. Se da respuesta a todas las cotizaciones de WhatsApp y portales de aseguradoras. Se tiene bajo control lso pedidos de más de 90 días.",E:"Se atienden los diversos canales de venta. No se han hecho propuestas de mejora para su departamento.",I:"Sin información."}, acuerdos:"Seguir trabajando por el cumplimiento del objetivo del área."},
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'sergioestrada', nombre:"Sergio Estrada Alvarez", puesto:"Jefe De Almacen", jefe:"Ignacio Gerardo Alexandro Castro Fernandez", antiguedad:"26.6 años", agencia:"Bmw Vanguardia Motors", grupo:"bmw",
+  periods:[
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Sin evaluación 2026 capturada en el archivo.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'victormanuel', nombre:"Victor Manuel Reyes Martin Del Campo", puesto:"Vendedor De Refacciones Mayoreo", jefe:"Ignacio Gerardo Alexandro Castro Fernandez", antiguedad:"17.8 años", agencia:"Bmw Vanguardia Motors", grupo:"bmw",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:92.0, clasif:"ADECUADO", paei:{P:100.0,A:85.0,E:86.7,I:100.0}, comentarios:{P:"Se cumplió, y en algunas ocasiones se superó con el objetivo de venta. Se da respuesta a todas las cotizaciones diariamente. Se da seguimeinto diario a sus pedidos para que se realicen los envíos oportunamente.",A:"Se cumplió con el margen de utildiad en este periodo. Se da respuesta a todas las cotizaciones por WhatsApp y portales de aseguradoras. Se tiene pedidos mayores a 90 días que no se han resuelto.",E:"Se da atención oportuna por los diversos canales. No se han propuesto ideas de mejora. Participa en inventario anual.",I:"Atiende puntualmente a sus clientes. Se cumple con las auditorías de estándares y 5s sin problema. Se dirige respetuosamente hacía sus cumpañeros y lleva una buena relación."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'abeltovar', nombre:"Abel Tovar Abelar", puesto:"Vendedor De Refacciones Taller", jefe:"Ignacio Gerardo Alexandro Castro Fernandez", antiguedad:"4.6 años", agencia:"Body Bmw", grupo:"bmw",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:90.75, clasif:"ADECUADO", paei:{P:85.0,A:100.0,E:26.7,I:255.0}, comentarios:{P:"El objetivode venta no se ha logrado en todos los meses. Se da respuesta oportuna a las cotizaciones. Se encuentra en echibición con etiquetado correcto.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:"Se trabaja en los puntos a cumplir en los parámetros de las auditorías para obtener calificaiones aprobatorias y mantenerla. Presentar ideas de mejora en el almacen."},
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'angelsalazar', nombre:"Angel Salazar Vazquez", puesto:"Vendedor De Refacciones Mayoreo", jefe:"Isaac Omar Rodriguez Hernandez", antiguedad:"7.2 años", agencia:"Renault Americas", grupo:"renault",
+  periods:[
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Sin evaluación 2026 capturada en el archivo.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'dafnelivier', nombre:"Dafne Livier Galvan Sandoval", puesto:"Vendedor De Refacciones Mostrador", jefe:"Isaac Omar Rodriguez Hernandez", antiguedad:"1.0 años", agencia:"Renault Americas", grupo:"renault",
+  periods:[
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Sin evaluación 2026 capturada en el archivo.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'josemartin', nombre:"Jose Martin Bravo Rodriguez", puesto:"Vendedor De Refacciones Taller", jefe:"Isaac Omar Rodriguez Hernandez", antiguedad:"1.5 años", agencia:"Renault Americas", grupo:"renault",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'juancarlos', nombre:"Juan Carlos Melgoza Garcia", puesto:"Jefe De Almacen", jefe:"Isaac Omar Rodriguez Hernandez", antiguedad:"3.2 años", agencia:"Renault Americas", grupo:"renault",
+  periods:[
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Sin evaluación 2026 capturada en el archivo.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'salvadorsanchez', nombre:"Salvador Sanchez Mora", puesto:"Asesor De Laminado Y Pintura", jefe:"Isaac Omar Rodriguez Hernandez", antiguedad:"13.3 años", agencia:"Renault Americas", grupo:"renault",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:98.0, clasif:"SOBRESALIENTE", paei:{P:100.0,A:100.0,E:86.7,I:100.0}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'jeshuanoe', nombre:"Jeshua Noe Graciliano Gonzalez", puesto:"Almacenista", jefe:"Jorge Armando Raudales Aguilar", antiguedad:"0.6 años", agencia:"Geely Gonzalez Gallo", grupo:"geelygal",
+  periods:[
+    {label:"Ene–Jun 2026", global:91.0, clasif:"ADECUADO", paei:{P:90.0,A:90.0,E:95.0,I:95.0}, comentarios:{P:"Tener mejor atención con nuestros clientes internos y externos",A:"Atender a todos nuestros clientes de la misma manera",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Primera evaluación capturada en este archivo, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'hectorenrique', nombre:"Hector Enrique Espitia Martinez", puesto:"Asesor De Laminado Y Pintura", jefe:"Jorge Armando Raudales Aguilar", antiguedad:"0.6 años", agencia:"Geely Galerias", grupo:"geelygal",
+  periods:[
+    {label:"Ene–Jun 2026", global:90.75, clasif:"ADECUADO", paei:{P:90.0,A:90.0,E:90.0,I:95.0}, comentarios:{P:"Revisar los pedidos para solicitar lo que esta autorizado, y asi evitar el obsoleto",A:"Los descuento a las aseguradoras no es algo que se pueda controlar ya que es un convenio que la marca les esta dando,",E:"Apoyar a almacen con la depuración de los pedidos a planta para que almacen los reciba con la información necesaria",I:"Mejor comunicación con nuestros compañeros"}, acuerdos:null}
+  ],
+  atendido:"Primera evaluación capturada en este archivo, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'jhaeladonai', nombre:"Jhael Adonai Murga Gonzalez", puesto:"Vendedor De Refacciones Taller", jefe:"Jorge Armando Raudales Aguilar", antiguedad:"6.9 años", agencia:"Geely Galerias", grupo:"geelygal",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:80.8, clasif:"INSATISFACTORIO", paei:{P:85.0,A:85.0,E:85.3,I:0.0}, comentarios:{P:"Reusltados del mes y bitácora de seguimiento a pedidos.",A:"Resultado de presupueestos para utilidad y resultados de auditoría de imagen.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:69.5, clasif:"INSATISFACTORIO", paei:{P:70.0,A:65.0,E:75.0,I:80.0}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'jorgealfredo', nombre:"Jorge Alfredo Palomera Cerda", puesto:"Almacenista", jefe:"Jorge Armando Raudales Aguilar", antiguedad:"1.8 años", agencia:"Geely Galerias", grupo:"geelygal",
+  periods:[
+    {label:"Ene–Jun 2026", global:86.0, clasif:"ADECUADO", paei:{P:90.0,A:80.0,E:90.0,I:90.0}, comentarios:{P:"Tener las ordenes abiertas para ir cargando todo lo que vamos a estar entregando en BODY",A:"El no estar aprobando las auditorias no todo es tu responzabilidad el volumen de trabajo nos esta superando por lo que darte mas apoyo de mi parte nos ayudara con calificaciones aprobatorias",E:"Has comtribuido al crecimiento del departamento por lo que hemos aprendido hasta el momento nos esta ayudando a ir mejorando la operación donde en el proximo Inv. Sacaremos la calificación que estamos esperando todos",I:"Tienes buena relación con todos los compañeros tratas de estar para todos, y el volumen de trabajo que tenemos al momento nos esta superando por lo cual ya se levanto la mano para tener mas gente que nos ayude"}, acuerdos:null}
+  ],
+  atendido:"Primera evaluación capturada en este archivo, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'javieremanuel', nombre:"Javier Emanuel Leal Gonzalez", puesto:"Vendedor De Refacciones Mostrador", jefe:"Jose Alfredo Gomez Delgado", antiguedad:"0.9 años", agencia:"Honda Vanguardia Colima", grupo:"hondacol",
+  periods:[
+    {label:"Ene–Jun 2026", global:90.3, clasif:"ADECUADO", paei:{P:90.0,A:90.0,E:90.0,I:95.0}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Primera evaluación capturada en este archivo, sin dato 2025 disponible para comparar.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'josemanuel', nombre:"Jose Manuel Miramontes Esparza", puesto:"Almacenista", jefe:"Juan Carlos Melgoza Garcia", antiguedad:"1.3 años", agencia:"Renault Americas", grupo:"renault",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'sergioestrada2', nombre:"Sergio Estrada Cajiga", puesto:"Almacenista", jefe:"Juan Carlos Melgoza Garcia", antiguedad:"1.4 años", agencia:"Renault Americas", grupo:"renault",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'ernestoiberri', nombre:"Ernesto Iberri Martinez", puesto:"Gerente De Refacciones", jefe:"Mario Ivan Castellanos Campos", antiguedad:"21.7 años", agencia:"Audi Center Galerias", grupo:"gerentes",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:94.0, clasif:"ADECUADO", paei:{P:85.0,A:100.0,E:100.0,I:100.0}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'ignaciogerardo', nombre:"Ignacio Gerardo Alexandro Castro Fernandez", puesto:"Gerente De Refacciones", jefe:"Mario Ivan Castellanos Campos", antiguedad:"15.3 años", agencia:"Bmw Vanguardia Motors", grupo:"gerentes",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:84.0, clasif:"INSATISFACTORIO", paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'alexishernandez', nombre:"Alexis Hernandez Garcia", puesto:"Gerente De Refacciones", jefe:"Mario Ivan Castellanos Campos", antiguedad:"4.0 años", agencia:"Honda Vanguardia Galerias", grupo:"gerentes",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:94.0, clasif:"ADECUADO", paei:{P:85.0,A:100.0,E:100.0,I:100.0}, comentarios:{P:"VDP / PRESUPUESTO 2025.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:"PLAN DE ACCION A LOS ANALISIS DE LOS NUEVOS CANALES EN CRECIMIENTO (MERCADO LIBRE) PARA VER REFLEJO EN RESULTADOS."},
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'amadogonzalez', nombre:"Amado Gonzalez Olayo", puesto:"Gerente De Refacciones", jefe:"Mario Ivan Castellanos Campos", antiguedad:"0.9 años", agencia:"Motonova", grupo:"gerentes",
+  periods:[
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Sin evaluación 2026 capturada en el archivo.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'josealfredo', nombre:"Jose Alfredo Gomez Delgado", puesto:"Jefe De Refacciones", jefe:"Mario Ivan Castellanos Campos", antiguedad:"24.7 años", agencia:"Honda Vanguardia Colima", grupo:"gerentes",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:8.5, clasif:"INSATISFACTORIO", paei:{P:0.0,A:0.0,E:0.0,I:85.0}, comentarios:{P:"VDP.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'ricardoarmando', nombre:"Ricardo Armando Barba De Anda", puesto:"Gerente De Refacciones", jefe:"Mario Ivan Castellanos Campos", antiguedad:"18.5 años", agencia:"Honda Gonzalez Gallo", grupo:"gerentes",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:98.5, clasif:"SOBRESALIENTE", paei:{P:100.0,A:100.0,E:100.0,I:85.0}, comentarios:{P:"VDP / PRESUPUESTO 2025.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:"DESARROLLO DE SU PERSONAL A CARGO CON ENFOQUE DE LIDERAZGO PARA SU CRECIMIENTO."},
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'jorgearmando', nombre:"Jorge Armando Raudales Aguilar", puesto:"Gerente De Refacciones", jefe:"Mario Ivan Castellanos Campos", antiguedad:"16.4 años", agencia:"Geely Galerias", grupo:"gerentes",
+  periods:[
+    {label:"Ene–Jun 2026", global:null, clasif:null, paei:{P:null,A:null,E:null,I:null}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Sin evaluación 2026 capturada en el archivo.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'alfredoflores', nombre:"Alfredo Flores Perez", puesto:"Vendedor De Refacciones Mostrador", jefe:"Ricardo Armando Barba De Anda", antiguedad:"7.2 años", agencia:"Honda Gonzalez Gallo", grupo:"hondagg",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:97.5, clasif:"SOBRESALIENTE", paei:{P:100.0,A:100.0,E:85.3,I:85.0}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:90.0, clasif:"ADECUADO", paei:{P:90.0,A:90.0,E:90.0,I:90.0}, comentarios:{P:"TRABAJAR EN LOS SEGUIMIENTOS DE LA BASE DE DATOS",A:"MAYOR SEGUIMIENTO EN SEGUIMIENTOS A CLIENTES EN DIGITAL",E:"PROSPECCION Y SEGUIMIENTO DE NUEVOS CLIENTES",I:"COMPROMISO EN EL TEMA DE LAS FALTAS"}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'cesaryarosla', nombre:"Cesar Yarosla Mandujano Morales", puesto:"Almacenista", jefe:"Ricardo Armando Barba De Anda", antiguedad:"0.7 años", agencia:"Honda Gonzalez Gallo", grupo:"hondagg",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:100.0, clasif:"SOBRESALIENTE", paei:{P:100.0,A:100.0,E:100.0,I:100.0}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:96.5, clasif:"SOBRESALIENTE", paei:{P:100.0,A:100.0,E:90.0,I:80.0}, comentarios:{P:"REALIZAR CHEQUEOS SEMANALES DE PEDIDOS DE MAYOREO PARA LOCALIZACION DE PIEZAS VS SISTEMA",A:"INVOLUCRAMIENTO PARA LOS ENVIO FORANEOS PARA TENER MAYOR CONTROL Y MENOS MARGEN DE ERROR EN LOS ENVIOS",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'davidlicona', nombre:"David Licona Cordero", puesto:"Vendedor De Refacciones Mayoreo", jefe:"Ricardo Armando Barba De Anda", antiguedad:"2.5 años", agencia:"Honda Gonzalez Gallo", grupo:"hondagg",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:99.25, clasif:"SOBRESALIENTE", paei:{P:100.0,A:100.0,E:100.0,I:85.0}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:90.0, clasif:"ADECUADO", paei:{P:90.0,A:90.0,E:90.0,I:90.0}, comentarios:{P:"MEJOR SEGUIMIENTO A LOS COTIZADORES DE CHUBB, PROSPECCION A TALLERES DE HYP, Y SEGUIMIENTOS PUNTUALES A LOS PEDIDOS DE DE CHUBB Y TENER UN MAYOR ENFOQUE",A:"PROSPECCION A TALLERES FORANEOS, MEJOR CONTROL DE PEDIDOS EN PROCESO",E:"PROMOVER PIEZAS DE LENTO MOVIMIENTO, PROPONER MEJORAS PARA EL EL CANAL",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'marthapatricia', nombre:"Martha Patricia Castañeda Rodriguez", puesto:"Asesor Web", jefe:"Ricardo Armando Barba De Anda", antiguedad:"3.1 años", agencia:"Honda Gonzalez Gallo", grupo:"hondagg",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:100.0, clasif:"SOBRESALIENTE", paei:{P:100.0,A:100.0,E:100.0,I:100.0}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:96.0, clasif:"SOBRESALIENTE", paei:{P:100.0,A:90.0,E:100.0,I:100.0}, comentarios:{P:"Sin información.",A:"CREACION Y PROSPECCION A CARTERA DE CLIENTES",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'omarde', nombre:"Omar De La Torre Gonzalez", puesto:"Chofer", jefe:"Ricardo Armando Barba De Anda", antiguedad:"1.2 años", agencia:"Honda Gonzalez Gallo", grupo:"hondagg",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:94.0, clasif:"ADECUADO", paei:{P:100.0,A:85.0,E:100.0,I:100.0}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:91.0, clasif:"ADECUADO", paei:{P:90.0,A:90.0,E:90.0,I:100.0}, comentarios:{P:"se realiza un mapeo de paqueteria para que no generar margen de error en los envios",A:"realizar el lavado de la kanggo todos los dias sabados. Llenado de bitacora diario",E:"se les da retro de la i portancia de estar participando en los proyectos especiales",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'oscarrivera', nombre:"Oscar Rivera Gutierrez", puesto:"Vendedor De Refacciones Taller", jefe:"Ricardo Armando Barba De Anda", antiguedad:"16.5 años", agencia:"Honda Gonzalez Gallo", grupo:"hondagg",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:93.25, clasif:"ADECUADO", paei:{P:85.0,A:100.0,E:100.0,I:100.0}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:96.0, clasif:"SOBRESALIENTE", paei:{P:90.0,A:100.0,E:100.0,I:100.0}, comentarios:{P:"Sin información.",A:"DAR SEGUIMENTOS A LOS BO EN HDM",E:"Sin información.",I:"Sin información."}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },
+{ id:'pedroesteban', nombre:"Pedro Esteban Meza Garcia", puesto:"Vendedor De Accesorios", jefe:"Ricardo Armando Barba De Anda", antiguedad:"3.1 años", agencia:"Honda Gonzalez Gallo", grupo:"hondagg",
+  periods:[
+    {label:"Ene–Dic 2025 (anual)", global:86.2, clasif:"ADECUADO", paei:{P:86.7,A:86.7,E:86.7,I:84.8}, comentarios:{P:"Sin información.",A:"Sin información.",E:"Sin información.",I:"Sin información."}, acuerdos:null},
+    {label:"Ene–Jun 2026", global:84.5, clasif:"INSATISFACTORIO", paei:{P:90.0,A:80.0,E:80.0,I:90.0}, comentarios:{P:"MAYOR INVOLUCRAMIENTO EN COTIZACIONES Y PROGRAMACION DE VEHICULOS EN ENTREGA, MAYOR ENFOQUE",A:"MAYOR ENFOQUE EN ELABORACION DE PAQUETES DE AXS, INVOLUCRAMIENTO EN CATALOGO DE AXS, ESTAR ACTUALIZANDO PRECIOS DE AXS EN VENTAS",E:"MAYOR SEGUIIENTO EN LAS BASES DE DATOS DE CLIENTES, MAYOS ENFOQUE EN PUBLICACIONES",I:"PRECIOS EN UNIDADES DE VENTAS CON PRECIOS ACTUALIZADOS"}, acuerdos:null}
+  ],
+  atendido:"Ver comparación en el concentrado general.",
+  reco_full:[{texto:"Revisar expediente completo para definir plan de acción.", categoria:"Coaching del jefe"}], reco_accion:"Revisar en próxima sesión 1:1" },];
+
+function fmt(v){ return (v===null||v===undefined) ? '—' : (Number.isInteger(v) ? v.toString() : v.toFixed(2)); }
+function initials(name){ return name.split(' ').filter(w=>w.length>2||/[A-ZÁÉÍÓÚÑ]/.test(w[0])).slice(0,2).map(w=>w[0]).join('').toUpperCase().slice(0,2); }
+function tier(g){ if(g===null||g===undefined) return null; return g>=95?'SOBRESALIENTE':g>=85?'ADECUADO':'INSATISFACTORIO'; }
+function stars(g){ if(g===null) return ''; const n = g>=98?5:g>=95?5:g>=90?4:g>=85?3:g>=75?2:1; return '★'.repeat(n) + '☆'.repeat(5-n); }
+function deltaSpan(d){
+  if (d===null||d===undefined) return '<span class="delta-flat">—</span>';
+  if (d > 0.05) return `<span class="delta-up">▲ +${d.toFixed(1)}</span>`;
+  if (d < -0.05) return `<span class="delta-down">▼ ${d.toFixed(1)}</span>`;
+  return `<span class="delta-flat">▬ 0.0</span>`;
+}
+function curPeriod(p){ return p.periods[p.periods.length-1]; }
+function prevPeriod(p){ return p.periods.length>1 ? p.periods[p.periods.length-2] : null; }
+function personDelta(p){ const prev=prevPeriod(p); return prev && prev.global!==null && curPeriod(p).global!==null ? curPeriod(p).global - prev.global : null; }
+
+function lineChartSvg(series, opts){
+  opts = opts || {};
+  const n = opts.n || 2;
+  const W = opts.w||620, H = opts.h||280, padL=44, padR = opts.endLabels? 54:18, padT=16, padB=36;
+  const plotW=W-padL-padR, plotH=H-padT-padB;
+  const yMin = opts.yMin!==undefined?opts.yMin:0, yMax = opts.yMax!==undefined?opts.yMax:100;
+  const xPos = i => padL + (i/(n-1))*plotW;
+  const yPos = v => padT + plotH - ((v-yMin)/(yMax-yMin))*plotH;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">`;
+  const gridVals = opts.gridVals || [yMin, (yMin+yMax)/2, yMax];
+  gridVals.forEach(v=>{
+    const y = yPos(v);
+    svg += `<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="var(--line)" stroke-width="1"/>
+      <text x="${padL-8}" y="${y+4}" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="var(--muted)">${v.toFixed(0)}</text>`;
+  });
+  const xLabels = opts.xLabels || ['2025','2026'];
+  xLabels.forEach((lbl,i)=> svg += `<text x="${xPos(i)}" y="${H-12}" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="var(--muted)">${lbl}</text>`);
+  series.forEach(s=>{
+    const pts = s.values.map((v,i)=> v!==null ? `${xPos(i)},${yPos(v)}` : null).filter(Boolean);
+    svg += `<polyline points="${pts.join(' ')}" fill="none" stroke="${s.color}" stroke-width="${s.width||2.5}"/>`;
+    s.values.forEach((v,i)=>{ if(v!==null){
+      svg += `<circle cx="${xPos(i)}" cy="${yPos(v)}" r="4" fill="${s.color}"/>`;
+      if (s.showLabel) svg += `<text x="${xPos(i)}" y="${yPos(v)-11}" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="11" fill="var(--ink)">${v.toFixed(1)}</text>`;
+    }});
+  });
+  if (opts.endLabels){
+    let ends = series.map(s=>{
+      const lastIdx = s.values.map((v,i)=>v!==null?i:-1).filter(i=>i>=0).pop();
+      return lastIdx===undefined ? null : {y: yPos(s.values[lastIdx]), val:s.values[lastIdx], color:s.color, letter:s.letter};
+    }).filter(Boolean).sort((a,b)=>a.y-b.y);
+    for (let i=1;i<ends.length;i++){ if (ends[i].y-ends[i-1].y<16) ends[i].y = ends[i-1].y+16; }
+    ends.forEach(e=>{
+      svg += `<text x="${W-padR+8}" y="${e.y+4}" font-family="IBM Plex Mono" font-weight="700" font-size="11" fill="${e.color}">(${e.letter}) ${e.val.toFixed(1)}</text>`;
+    });
+  }
+  svg += `</svg>`;
+  return svg;
+}
+function paeiCircleSvg(letter, value, size){
+  size = size||130;
+  const r = size/2-13, cx=size/2, cy=size/2, circ=2*Math.PI*r;
+  const frac = Math.max(0, Math.min(1, (value||0)/100));
+  const dash = frac*circ;
+  const color = PAEI_HEX[letter];
+  return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--navy-3)" stroke-width="13"/>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="13" stroke-linecap="round" stroke-dasharray="${dash} ${circ-dash}" transform="rotate(-90 ${cx} ${cy})"/>
+    <text x="${cx}" y="${cy-4}" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="25" fill="var(--ink)">${value!==null?value.toFixed(1):'—'}</text>
+    <text x="${cx}" y="${cy+20}" text-anchor="middle" font-family="IBM Plex Mono" font-weight="700" font-size="15" fill="${color}">(${letter})</text>
+  </svg>`;
+}
+function renderCircleRow(containerId, items){
+  document.getElementById(containerId).innerHTML = `<div style="display:flex; gap:28px; justify-content:center; flex-wrap:wrap;">` +
+    items.map(it=>`<div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+      ${paeiCircleSvg(it.letter, it.value)}
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--muted); text-align:center; max-width:130px;">${PAEI_LABEL[it.letter]}</div>
+    </div>`).join('') + `</div>`;
+}
+
+function validPersonas(){ return PERSONAS.filter(p=>curPeriod(p).global!==null); }
+
+function renderKpis(){
+  const total = PERSONAS.length;
+  const valid = validPersonas();
+  const avg = valid.length ? valid.reduce((s,p)=>s+curPeriod(p).global,0)/valid.length : null;
+  const insat = valid.filter(p=>tier(curPeriod(p).global)==='INSATISFACTORIO').length;
+  const sobre = valid.filter(p=>tier(curPeriod(p).global)==='SOBRESALIENTE').length;
+  const pendientes = total - valid.length;
+  const tiles = [
+    {l:'Equipo total', n:total, sub:'9 agencias'},
+    {l:'Evaluados 2026', n:valid.length, sub:`${pendientes} pendientes de captura`},
+    {l:'Promedio 2026', n:avg!==null?avg.toFixed(1):'—', sub:`de los ${valid.length} evaluados`},
+    {l:'En riesgo', n:`${insat}/${valid.length}`, sub:'Insatisfactorio (de los evaluados)'},
+  ];
+  document.getElementById('kpiGrid').innerHTML = tiles.map(t=>`
+    <div class="card kpi"><div class="l">${t.l}</div><div class="n">${t.n}</div><div class="sub">${t.sub}</div></div>`).join('');
+}
+
+const ROSTER_2025 = {
+  'Audi Center Galerias': {roster:4, evaluados:4},
+  'Bmw Vanguardia Motors': {roster:8, evaluados:8},
+  'Body Bmw': {roster:1, evaluados:1},
+  'Geely Galerias': {roster:1, evaluados:1},
+  'Geely Gonzalez Gallo': {roster:0, evaluados:0},
+  'Honda Gonzalez Gallo': {roster:9, evaluados:9},
+  'Honda Vanguardia Colima': {roster:1, evaluados:1},
+  'Honda Vanguardia Galerias': {roster:8, evaluados:8},
+  'Motonova': {roster:2, evaluados:2},
+  'Renault Americas': {roster:2, evaluados:0},
+};
+
+function renderCumplimiento(){
+  const total2026 = PERSONAS.length;
+  const evaluados2026 = validPersonas().length;
+  const pct2026 = Math.round(evaluados2026/total2026*100);
+  const roster2025 = Object.values(ROSTER_2025).reduce((s,v)=>s+v.roster,0);
+  const evaluados2025 = Object.values(ROSTER_2025).reduce((s,v)=>s+v.evaluados,0);
+  const pct2025 = Math.round(evaluados2025/roster2025*100);
+  const tiles = [
+    {l:'2026', n:`${pct2026}%`, sub:`${evaluados2026} de ${total2026} en la lista de 2026 — 27 pendientes, concentrados en BMW, Renault, Motonova y Body BMW`},
+    {l:'2025', n:`${pct2025}%`, sub:`${evaluados2025} de ${roster2025} en la lista de 2025`},
+  ];
+  document.getElementById('cumplimientoGrid').innerHTML = tiles.map(t=>`
+    <div class="card kpi"><div class="l">${t.l}</div><div class="n">${t.n}</div><div class="sub">${t.sub}</div></div>`).join('');
+}
+
+function renderTeamCircles(){
+  const valid = validPersonas();
+  const cur={P:0,A:0,E:0,I:0}; valid.forEach(p=>{ ['P','A','E','I'].forEach(k=>cur[k]+=curPeriod(p).paei[k]); });
+  ['P','A','E','I'].forEach(k=>cur[k]/=valid.length);
+  renderCircleRow('circleRowTeam', ['P','A','E','I'].map(k=>({letter:k, value:cur[k]})));
+}
+
+function renderAgenciaTable(){
+  const agencias = [...new Set(PERSONAS.map(p=>p.agencia))].sort();
+  let html = '<thead><tr><th>Agencia</th><th style="text-align:right">Gente 2026</th><th style="text-align:right">Cumpl. 2026</th><th style="text-align:right">Cumpl. 2025</th><th style="text-align:right">Promedio 2026</th><th style="text-align:right">En riesgo</th></tr></thead><tbody>';
+  agencias.forEach(ag=>{
+    const allRows = PERSONAS.filter(p=>p.agencia===ag);
+    const rows = allRows.filter(p=>curPeriod(p).global!==null);
+    const avgA = rows.length ? rows.reduce((s,p)=>s+curPeriod(p).global,0)/rows.length : null;
+    const insat = rows.filter(p=>tier(curPeriod(p).global)==='INSATISFACTORIO').length;
+    const cumplimiento2026 = Math.round(rows.length/allRows.length*100);
+    const r25 = ROSTER_2025[ag];
+    const cumplimiento2025 = (r25 && r25.roster>0) ? Math.round(r25.evaluados/r25.roster*100) : null;
+    html += `<tr>
+      <td><b>${ag}</b></td>
+      <td class="num">${allRows.length}</td>
+      <td class="num" style="color:${cumplimiento2026<100?'var(--o)':'var(--g)'};">${cumplimiento2026}%</td>
+      <td class="num" style="color:${cumplimiento2025===null?'var(--muted)':cumplimiento2025<100?'var(--o)':'var(--g)'};">${cumplimiento2025!==null?cumplimiento2025+'%':'Sin roster 2025'}</td>
+      <td class="num" style="font-weight:800;">${avgA!==null?avgA.toFixed(1):'—'}</td>
+      <td class="num">${insat>0?`<span style="color:var(--r);font-weight:700;">${insat}</span>`:'0'}</td>
+    </tr>`;
+  });
+  document.getElementById('agenciaTable').innerHTML = html + '</tbody>';
+}
+
+function renderHighlights(){
+  const items = [
+    {label:'Mayor mejora (+6.0)', nombre:'José Raúl Díaz Esqueda', valor:'91 → 97', person:'joseraul'},
+    {label:'Mejora fuerte (+4.0)', nombre:'Óscar Ricardo Trujillo', valor:'94 → 98', person:'oscarricardo'},
+    {label:'Consistente en 98', nombre:'Silvestre Guzmán Guzmán', valor:'98 → 98', person:'silvestreguzman'},
+    {label:'Mejora (+2.75)', nombre:'Miroslava Verdugo', valor:'93.25 → 96', person:'miroslavaverdugo'},
+    {label:'Mejora (+2.75)', nombre:'Óscar Rivera Gutiérrez', valor:'93.25 → 96', person:'oscarrivera'},
+    {label:'Muy sólido', nombre:'José Guadalupe Aguilar', valor:'97 → 98', person:'joseguadalupe'},
+  ];
+  document.getElementById('highlightGrid').innerHTML = items.map(it=>`
+    <div class="card hl-card" onclick="openHistorial('${it.person}')">
+      <div class="stars">★★★</div>
+      <div class="hn">${it.nombre}</div>
+      <div class="hv">${it.valor}</div>
+      <div class="hl">${it.label}</div>
+    </div>`).join('');
+}
+
+function teamCardHtml(p){
+  const s = curPeriod(p);
+  const prev = prevPeriod(p);
+  const showLatest = s.global!==null;
+  const g = showLatest ? s.global : (prev ? prev.global : null);
+  const yearNote = showLatest ? '' : (prev ? ` <span style="font-size:9px; color:var(--muted);">(${prev.label})</span>` : '');
+  const d = personDelta(p);
+  const arrow = d===null?'':(d>0.5?'<span class="delta-up">↑</span>':d<-0.5?'<span class="delta-down">↓</span>':'<span class="delta-flat">→</span>');
+  return `<div class="card team-card" onclick="openHistorial('${p.id}')">
+    <div class="avatar">${initials(p.nombre)}</div>
+    <div class="tn">${p.nombre}</div>
+    <div class="tp">${p.puesto}</div>
+    <div class="tv">${fmt(g)}${showLatest?' '+arrow:''}</div>
+    <div class="stars">${g!==null ? stars(g)+yearNote : '<span class="pill-warn">Pendiente</span>'}</div>
+    <div class="tlink">Ver expediente →</div>
+  </div>`;
+}
+function renderTeamCards(){
+  document.getElementById('teamGridGerentes').innerHTML = PERSONAS.filter(p=>p.grupo==='gerentes').map(teamCardHtml).join('');
+  document.getElementById('teamGridAudi').innerHTML = PERSONAS.filter(p=>p.grupo==='audi').map(teamCardHtml).join('');
+  document.getElementById('teamGridBmw').innerHTML = PERSONAS.filter(p=>p.grupo==='bmw').map(teamCardHtml).join('');
+  document.getElementById('teamGridGeelygal').innerHTML = PERSONAS.filter(p=>p.grupo==='geelygal').map(teamCardHtml).join('');
+  document.getElementById('teamGridHondagg').innerHTML = PERSONAS.filter(p=>p.grupo==='hondagg').map(teamCardHtml).join('');
+  document.getElementById('teamGridHondacol').innerHTML = PERSONAS.filter(p=>p.grupo==='hondacol').map(teamCardHtml).join('');
+  document.getElementById('teamGridHondagal').innerHTML = PERSONAS.filter(p=>p.grupo==='hondagal').map(teamCardHtml).join('');
+  document.getElementById('teamGridMotonova').innerHTML = PERSONAS.filter(p=>p.grupo==='motonova').map(teamCardHtml).join('');
+  document.getElementById('teamGridRenault').innerHTML = PERSONAS.filter(p=>p.grupo==='renault').map(teamCardHtml).join('');
+}
+
+function renderComentario(){
+  const valid = validPersonas();
+  const avg = valid.reduce((s,p)=>s+curPeriod(p).global,0)/valid.length;
+  const withPrev = PERSONAS.filter(p=>prevPeriod(p) && prevPeriod(p).global!==null && curPeriod(p).global!==null);
+  const avgPrev = withPrev.reduce((s,p)=>s+prevPeriod(p).global,0)/withPrev.length;
+  const avgCur = withPrev.reduce((s,p)=>s+curPeriod(p).global,0)/withPrev.length;
+  document.getElementById('comentarioBox').innerHTML = `<div class="aihead">🧠 Generado a partir de los datos del periodo</div>
+    El departamento de Ventas Refacciones a nivel regional, bajo Mario Iván Castellanos Campos (46 colaboradores en 9 agencias), tiene un promedio de <b>${avg.toFixed(1)}</b> entre los 19 evaluados en 2026. <b>El hallazgo más importante es de cumplimiento, no de desempeño</b>: 27 de 46 (59%) no tienen calificación 2026 capturada — prácticamente todos los equipos de BMW Vanguardia Motors, Renault Américas y Motonova, además de Body BMW y varios Gerentes de Refacciones por agencia, incluyendo al propio Mario.<br><br>
+    De los 19 con dato real, el patrón es mixto: <b>Jhael Adonai Murga González</b> (Geely Galerías) tuvo la mayor caída (80.8→69.5, -11.3), y <b>David Licona Cordero</b> (Honda González Gallo) bajó desde calificación casi perfecta (99.25→90, -9.25). Del lado positivo, <b>José Raúl Díaz Esqueda</b> (Audi Center Galerías) tuvo la mayor mejora (91→97, +6.0).<br><br>
+    Un hallazgo histórico relevante: <b>José Alfredo Gómez Delgado</b> (Jefe de Refacciones, Honda Vanguardia Colima) tuvo en 2025 una calificación real de apenas 8.5, con tres de cuatro indicadores en cero — no es un error de formato, está confirmado en el archivo. No tiene todavía calificación 2026 capturada, así que no se puede saber si se corrigió.`;
+}
+
+function renderCasosAtencion(){
+  document.getElementById('casosAtencion').innerHTML = `
+    <div class="alert-box">
+      <b style="color:var(--r);">27 de 46 sin evaluación 2026</b> — concentrados en BMW Vanguardia Motors (8), Renault Américas (7), Motonova (5), Body BMW (1), y los Gerentes de Refacciones de BMW, Geely, Honda Vanguardia Galerías y Motonova, además del propio Mario. <b>Recomendación:</b> confirmar con Capital Humano el estatus de aplicación en estas agencias antes de evaluar desempeño.
+    </div>
+    <div class="alert-box">
+      <b style="color:var(--r);">José Alfredo Gómez Delgado</b> (Jefe de Refacciones, Honda Vanguardia Colima) — en 2025 tuvo una calificación real de 8.5, con Eficacia, Eficiencia y Proactividad en cero. Confirmado en el archivo, no es error de formato. Sin calificación 2026 todavía para saber si se corrigió.
+    </div>
+    <div class="alert-box">
+      <b style="color:var(--r);">Jhael Adonai Murga González</b> (Vendedor de Refacciones Taller, Geely Galerías) — la mayor caída entre los evaluados en 2026 (80.8→69.5, -11.3), el único en Insatisfactorio de los 19 con dato.
+    </div>
+    <div class="note-box">
+      <b style="color:var(--o);">David Licona Cordero</b> (Honda González Gallo) — bajó desde casi calificación perfecta (99.25→90, -9.25).
+    </div>
+    <div class="note-box">
+      <b style="color:var(--o);">Alfredo Flores Pérez</b> (Honda González Gallo) — bajó (97.5→90, -7.5).
+    </div>`;
+}
+
+function renderPromoCoach(){
+  const ids = ['joseraul','oscarricardo','silvestreguzman'];
+  document.getElementById('promoList').innerHTML = ids.map(id=>{
+    const p = PERSONAS.find(x=>x.id===id);
+    const g = curPeriod(p).global;
+    const labels = {joseraul:'Mayor mejora (+6.0)', oscarricardo:'Mejora fuerte (+4.0)', silvestreguzman:'Consistente en 98'};
+    return `<div class="card hl-card" onclick="openHistorial('${id}')">
+      <div class="stars">${stars(g)}</div>
+      <div class="hn">${p.nombre.split(' ')[0]} ${p.nombre.split(' ')[1]||''}</div>
+      <div class="hv">${fmt(g)}</div>
+      <div class="hl">${labels[id]}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderPlanGerencial(){
+  const PRIORIDAD = {jhaeladonai:'Alta', josealfredo:'Alta', davidlicona:'Media', alfredoflores:'Media', juanjose:'Baja', marthapatricia:'Baja', cesaryarosla:'Baja'};
+  const prioColor = {Alta:'var(--r)', Media:'var(--o)', Baja:'var(--g)'};
+  const validPend = PERSONAS.filter(p=>curPeriod(p).global===null);
+  let html = `<thead><tr><th>Colaborador</th><th>Agencia</th><th>Puesto</th><th>Calificación</th><th>Prioridad</th></tr></thead><tbody>`;
+  PERSONAS.forEach(p=>{
+    const g = curPeriod(p).global;
+    const prio = g===null ? 'Pendiente' : (PRIORIDAD[p.id]||'Baja');
+    const color = g===null ? 'var(--o)' : prioColor[prio];
+    html += `<tr onclick="openHistorial('${p.id}')" style="cursor:pointer;">
+      <td>${p.nombre}</td><td style="font-size:11.5px; color:var(--muted);">${p.agencia}</td><td style="font-size:11.5px;">${p.puesto}</td>
+      <td class="num" style="font-weight:800; color:${tier(g)==='INSATISFACTORIO'?'var(--r)':tier(g)==='SOBRESALIENTE'?'var(--g)':'var(--ink)'};">${fmt(g)}</td>
+      <td><span style="color:${color}; font-weight:700; font-family:'IBM Plex Mono',monospace; font-size:11px;">${prio}</span></td>
+    </tr>`;
+  });
+  document.getElementById('planGerencialTable').innerHTML = html + `</tbody>`;
+}
+
+function renderTendenciaEquipo(){
+  const withPrev = PERSONAS.filter(p=>prevPeriod(p) && prevPeriod(p).global!==null && curPeriod(p).global!==null);
+  const vals = [
+    withPrev.reduce((s,p)=>s+prevPeriod(p).global,0)/withPrev.length,
+    withPrev.reduce((s,p)=>s+curPeriod(p).global,0)/withPrev.length,
+  ];
+  document.getElementById('lineTeam').innerHTML = lineChartSvg([{values:vals, color:'var(--blue-light)', width:3, showLabel:true}], {n:2, xLabels:['2025','2026'], yMin:60, yMax:100});
+}
+function renderTendenciaPaei(){
+  const withPrev = PERSONAS.filter(p=>prevPeriod(p) && prevPeriod(p).paei.P!==null && curPeriod(p).paei.P!==null);
+  const series = ['P','A','E','I'].map(k=>{
+    const values = [
+      withPrev.reduce((s,p)=>s+prevPeriod(p).paei[k],0)/withPrev.length,
+      withPrev.reduce((s,p)=>s+curPeriod(p).paei[k],0)/withPrev.length,
+    ];
+    return {values, color:PAEI_HEX[k], width:2.75, letter:k};
+  });
+  document.getElementById('linePaei').innerHTML = lineChartSvg(series, {n:2, xLabels:['2025','2026'], endLabels:true, yMin:60, yMax:100});
+  document.getElementById('paeiLegend').innerHTML = ['P','A','E','I'].map(k=>`
+    <div style="display:flex; align-items:center; gap:6px; font-size:12px;">
+      <span style="width:16px; height:3px; background:${PAEI_HEX[k]}; display:inline-block; border-radius:2px;"></span>${PAEI_LABEL[k]}
+    </div>`).join('');
+}
+
+let currentHistId = PERSONAS[0].id;
+function renderHistList(){
+  document.getElementById('histList').innerHTML = PERSONAS.map(p=>`
+    <div class="hist-item ${p.id===currentHistId?'active':''}" data-id="${p.id}">
+      <span>${p.nombre}</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;">${fmt(curPeriod(p).global)}</span>
+    </div>`).join('');
+  document.getElementById('histList').querySelectorAll('.hist-item').forEach(el=>{
+    el.addEventListener('click', ()=>{ currentHistId = el.dataset.id; renderHistList(); renderExpediente(); });
+  });
+}
+function openHistorial(id){
+  currentHistId = id;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelector('.tab-btn[data-tab="historial"]').classList.add('active');
+  document.getElementById('panel-historial').classList.add('active');
+  renderHistList(); renderExpediente();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function renderExpediente(){
+  const p = PERSONAS.find(x=>x.id===currentHistId);
+  const cur = curPeriod(p); const g = cur.global; const t = tier(g);
+  const prev = prevPeriod(p);
+  const ranking = [...validPersonas()].sort((a,b)=>curPeriod(b).global-curPeriod(a).global);
+  const rankPos = ranking.findIndex(x=>x.id===p.id)+1;
+
+  const lineHtml = (prev && prev.global!==null && g!==null) ? lineChartSvg([{values:[prev.global, g], color:'var(--blue-light)', width:3, showLabel:true}], {n:2, xLabels:[prev.label, cur.label], yMin:0, yMax:100}) : '';
+  const circleItems = ['P','A','E','I'].map(k=>({letter:k, value:cur.paei[k]}));
+
+  const periods = prev ? [prev, cur] : [cur];
+  const periodsTableHtml = `<div style="overflow-x:auto;"><table class="rtable" style="min-width:700px;">
+    <thead><tr><th>Periodo</th><th style="text-align:right">General</th><th style="text-align:right">(P)</th><th style="text-align:right">(A)</th><th style="text-align:right">(E)</th><th style="text-align:right">(I)</th><th style="min-width:260px;">Comentarios</th></tr></thead>
+    <tbody>${periods.map(per=>{
+      const com = `<b style="color:var(--blue-light);">(P)</b> ${per.comentarios.P}<br><b style="color:var(--blue-light);">(A)</b> ${per.comentarios.A}<br><b style="color:var(--blue-light);">(E)</b> ${per.comentarios.E}<br><b style="color:var(--blue-light);">(I)</b> ${per.comentarios.I}${per.acuerdos?`<br><b style="color:var(--blue-light);">Acuerdo:</b> ${per.acuerdos}`:''}`;
+      return `<tr>
+        <td><b>${per.label}</b><br>${per.clasif ? `<span class="tier-pill ${per.clasif}" style="margin-top:4px;display:inline-block;">${per.clasif.charAt(0)+per.clasif.slice(1).toLowerCase()}</span>` : '<span class="pill-warn">Pendiente</span>'}</td>
+        <td class="num" style="font-weight:800;">${fmt(per.global)}</td>
+        <td class="num">${fmt(per.paei.P)}</td><td class="num">${fmt(per.paei.A)}</td><td class="num">${fmt(per.paei.E)}</td><td class="num">${fmt(per.paei.I)}</td>
+        <td style="font-size:12px; line-height:1.55;">${com}</td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table></div>`;
+
+  document.getElementById('expedienteCard').innerHTML = `
+    <div class="expediente-header">
+      <div style="display:flex; gap:14px; align-items:center;">
+        <div class="av-lg">${initials(p.nombre)}</div>
+        <div><div style="font-weight:800; font-size:18px;">${p.nombre}</div><div style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted);">${p.puesto} · ${p.agencia}</div></div>
+      </div>
+      <button class="btn-pdf" onclick="window.print()">⬇ Descargar PDF</button>
+    </div>
+    <div class="exp-meta">
+      <div class="em"><div class="ek">Antigüedad</div><div class="ev">${p.antiguedad}</div></div>
+      <div class="em"><div class="ek">Jefe</div><div class="ev" style="font-size:11.5px;">${p.jefe}</div></div>
+      <div class="em"><div class="ek">Calificación</div><div class="ev">${fmt(g)} ${t ? `<span class="tier-pill ${t}">${t.charAt(0)+t.slice(1).toLowerCase()}</span>` : '<span class="pill-warn">Pendiente</span>'}</div></div>
+      <div class="em"><div class="ek">Tendencia</div><div class="ev">${(prev&&prev.global!==null) ? deltaSpan(personDelta(p)) : (g!==null ? '<span class="pill-warn">Primer registro</span>' : '—')}</div></div>
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">Calificación por indicador — ${cur.label}</div>
+      <div id="circleRowPerson"></div>
+    </div>
+    ${lineHtml ? `<div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">Evolución de calificación</div>
+      <div style="display:flex; justify-content:center;">${lineHtml}</div>
+    </div>` : ''}
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">¿Se atendieron los puntos?</div>
+      <p style="font-size:13px; line-height:1.65; margin:0 0 14px;">${p.atendido}</p>
+      <div class="section-kicker" style="margin-bottom:10px;">Concentrado general</div>
+      ${periodsTableHtml}
+    </div>
+    <div style="padding:0 22px 20px;">
+      <div class="section-kicker" style="margin-bottom:10px;">Qué mide cada indicador en su puesto</div>
+      ${PUESTO_DEF[p.puesto] ? `<div class="doc-block"><p><b>P</b> — ${PUESTO_DEF[p.puesto].P}<br><b>A</b> — ${PUESTO_DEF[p.puesto].A}<br><b>E</b> — ${PUESTO_DEF[p.puesto].E}<br><b>I</b> — ${PUESTO_DEF[p.puesto].I}</p><p style="margin-top:8px; color:var(--muted); font-size:11px;">Fuente: Matriz de Ponderación oficial, plantillas PAEI Grupo Vanguardia.</p></div>` : `<div class="doc-block"><p style="color:var(--muted);">Definición de indicadores por puesto no disponible en este reporte para "${p.puesto}".</p></div>`}
+    </div>
+    <div style="padding:0 22px 24px;">
+      <div class="card ai-box"><div class="aihead">🧠 Recomendación IA</div>
+        <ul style="margin:0; padding-left:18px;">${p.reco_full.map(r=>`<li style="margin-bottom:8px;"><span class="pill-action" style="margin-bottom:4px;display:inline-block;">${r.categoria}</span><br>${r.texto}</li>`).join('')}</ul>
+      </div>
+    </div>
+  `;
+  renderCircleRow('circleRowPerson', circleItems);
+}
+
+function initAll(){
+  renderKpis();
+  renderCumplimiento();
+  renderTeamCircles();
+  renderAgenciaTable();
+  renderHighlights();
+  renderComentario();
+  renderTeamCards();
+  renderCasosAtencion();
+  renderPromoCoach();
+  renderPlanGerencial();
+  renderTendenciaEquipo();
+  renderTendenciaPaei();
+  renderHistList();
+  renderExpediente();
+}
+initAll();
+
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+</script>
+</body>
+</html>
